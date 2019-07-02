@@ -5,6 +5,8 @@ Date: 02.07.2019
 */
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.sql.Date;
 
@@ -16,6 +18,8 @@ public class Transit extends BasicEntity {
     private BigDecimal price;
     private Date date;
 
+    @ManyToOne
+    @JoinColumn(name = "driver_id")
     private Driver driver;
 
     public Transit() {
