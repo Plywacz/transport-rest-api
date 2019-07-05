@@ -4,12 +4,17 @@ Author: BeGieU
 Date: 04.07.2019
 */
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.mplywacz.demo.json.TransitDtoDeserialization;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.sql.Date;
 
+@JsonDeserialize(using = TransitDtoDeserialization.class)
 public class TransitDto {
     @NotBlank
     private String sourceAddress;
@@ -21,8 +26,8 @@ public class TransitDto {
     @Max(9999999)
     private BigDecimal price;
 
-    @NotBlank
-    private LocalDate date;
+    @NotNull
+    private Date date;
 
     public TransitDto() {
     }
@@ -51,11 +56,11 @@ public class TransitDto {
         this.price = price;
     }
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 }
