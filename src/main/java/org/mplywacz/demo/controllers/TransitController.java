@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api")
 public class TransitController {
@@ -18,7 +20,7 @@ public class TransitController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody Transit addTransit(@RequestBody TransitDto transitDto) {
+    public @ResponseBody Transit addTransit(@Valid @RequestBody TransitDto transitDto) {
 
 
         return null;
