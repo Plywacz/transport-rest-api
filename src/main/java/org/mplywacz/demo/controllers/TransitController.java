@@ -4,12 +4,11 @@ Author: BeGieU
 Date: 02.07.2019
 */
 
+import org.mplywacz.demo.dto.TransitDto;
+import org.mplywacz.demo.model.Transit;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -19,7 +18,9 @@ public class TransitController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public String addTransit() {
-        return "XD";
+    public @ResponseBody Transit addTransit(@RequestBody TransitDto transitDto) {
+
+
+        return null;
     }
 }
