@@ -17,6 +17,8 @@ public class Transit extends BasicEntity {
     private String destinationAddress;
     private BigDecimal price;
     private Date date;
+    //needs to be calculated based source and destiny address
+    private BigDecimal distance;
 
     @ManyToOne
     @JoinColumn(name = "driver_id")
@@ -63,5 +65,13 @@ public class Transit extends BasicEntity {
 
     public void setDriver(Driver driver) {
         this.driver = driver;
+    }
+
+    public BigDecimal getDistance() {
+        return distance;
+    }
+
+    public void setDistance(BigDecimal distance) {
+        this.distance = distance;
     }
 }
