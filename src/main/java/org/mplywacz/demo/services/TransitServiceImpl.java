@@ -49,8 +49,6 @@ public class TransitServiceImpl implements TransitService {
         return null;
     }
 
-    //private static final BigDecimal sd = new BigDecimal(0.7d, MathContext.DECIMAL64)
-
     //calculate distance using OpenDirectionsApi
     private BigDecimal calculateDistance(TransitDto transitDto) throws IOException {
         var uriVariables = new HashMap<String, String>();
@@ -59,9 +57,9 @@ public class TransitServiceImpl implements TransitService {
         var expandedURI = uriTemplate.expand(uriVariables);
 
         final JsonNode node = objectMapper.readTree(expandedURI.toURL());
-        double distance = node.get("route").get("distance").asDouble();
+        String distanceStr = node.get("route").get("distance").asText();
 
-        return BigDecimal.valueOf(distance);
+        return new BigDecimal(distanceStr);
     }
 
 
