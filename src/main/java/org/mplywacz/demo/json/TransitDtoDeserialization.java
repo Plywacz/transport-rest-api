@@ -17,6 +17,10 @@ import java.sql.Date;
 
 public class TransitDtoDeserialization extends StdDeserializer<TransitDto> {
 
+    public TransitDtoDeserialization() {
+        this(null);
+    }
+
     public TransitDtoDeserialization(Class<?> vc) {
         super(vc);
     }
