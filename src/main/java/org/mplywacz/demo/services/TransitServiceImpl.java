@@ -35,7 +35,7 @@ public class TransitServiceImpl implements TransitService {
         var transit = new Transit();
         transit.setSourceAddress(transitDto.getSourceAddress());
         transit.setDestinationAddress(transitDto.getDestinationAddress());
-        transit.setDate(transitDto.getDate()); // localdate -> sqldate
+        transit.setDate(transitDto.getDate());
         transit.setPrice(transitDto.getPrice());
 
         try {

@@ -6,6 +6,7 @@ Date: 04.07.2019
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.mplywacz.demo.json.TransitDtoDeserialization;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -16,17 +17,18 @@ import java.sql.Date;
 
 @JsonDeserialize(using = TransitDtoDeserialization.class)
 public class TransitDto {
-    @NotBlank
+    @NotBlank(message = "source address must not be blank")
     private String sourceAddress;
 
-    @NotBlank
+    @NotBlank(message = "destination address must not be blank")
     private String destinationAddress;
 
-    @Min(0)
-    @Max(9999999)
+    @Min(value = 0,message = "price must be greater than 0")
+    @Max(value = 9999999,message = "price must be lesser than 9999999")
     private BigDecimal price;
 
-    @NotNull
+    @NotNull(message = "you have to provide valid date")
+    @DateTimeFormat(pattern = "yyyy-mm-dd") //todo migrate type of date because  @DateTimeFormat doesnt service current type
     private Date date;
 
     public TransitDto() {
