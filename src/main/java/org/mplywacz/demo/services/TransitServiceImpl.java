@@ -42,6 +42,7 @@ public class TransitServiceImpl implements TransitService {
             transit.setDistance(calculateDistance(transitDto));
         }
         catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
 
@@ -50,7 +51,7 @@ public class TransitServiceImpl implements TransitService {
 
     //calculate distance using OpenDirectionsApi
     //todo try to make this async
-    private BigDecimal calculateDistance(TransitDto transitDto) throws IOException {
+    private BigDecimal calculateDistance(TransitDto transitDto) throws IOException, IncorrectLocationException {
         var uriVariables = new HashMap<String, String>();
         uriVariables.put("from", transitDto.getSourceAddress());
         uriVariables.put("to", transitDto.getDestinationAddress());
