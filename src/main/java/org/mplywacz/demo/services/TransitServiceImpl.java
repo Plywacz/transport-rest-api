@@ -61,7 +61,9 @@ public class TransitServiceImpl implements TransitService {
         JsonNode distanceNode = routeInfoNode.get("route").get("distance");
 
         if (distanceNode == null) {
-            throw new IncorrectLocationException("couldn't calculate distance given source or destination address is unacceptable");
+            throw new IncorrectLocationException("couldn't calculate distance given source or destination address is unacceptable\n" +
+                    "  sourceAddress: " + transitDto.getSourceAddress() + "\n" +
+                    "  destinationAddress: " + transitDto.getDestinationAddress());
         }
 
         return new BigDecimal(distanceNode.asText());
