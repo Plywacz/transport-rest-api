@@ -1,12 +1,14 @@
 package org.mplywacz.demo.controllers;
 
 import org.hamcrest.Matchers;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mplywacz.demo.dto.TransitDto;
+import org.mplywacz.demo.exceptions.IncorrectLocationException;
 import org.mplywacz.demo.model.Transit;
 import org.mplywacz.demo.services.TransitService;
 import org.springframework.http.MediaType;
@@ -23,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class TransitControllerTest {
-
     MockMvc mockMvc;
 
     @Mock
@@ -31,13 +32,6 @@ public class TransitControllerTest {
 
     @InjectMocks
     TransitController transitController;
-
-    static final String testTransitJsonString="{\n" +
-            "  \"source_address\":      \"ul. Zakręt 8, Poznań\",\n" +
-            "  \"destination_address\": \"Złota 44, Warszawa\",\n" +
-            "  \"price\":               450,\n" +
-            "  \"date\":                \"2018-03-15\"\n" +
-            "}";
 
     @Before
     public void setUp() throws Exception {
@@ -48,27 +42,42 @@ public class TransitControllerTest {
 
     @Test
     public void addTransitHappyPath() throws Exception {
-        var transitDto = new TransitDto();
-        transitDto.setSourceAddress("ul. Zakręt 8, Poznań");
-        transitDto.setDestinationAddress("Złota 44, Warszawa");
-        transitDto.setPrice(BigDecimal.valueOf(450));
-        transitDto.setDate(Date.valueOf("2011-10-11"));
+        JSONObject inputJson = new JSONObject()
+                .put("source_address", "ul. Zakręt 8, Poznań")
+                .put("destination_address", "Złota 44, Warszawa")
+                .put("price", "450")
+                .put("date", "2018-03-15");
 
         var savedTransit = new Transit();
-        savedTransit.setSourceAddress(transitDto.getSourceAddress());
-        savedTransit.setDestinationAddress(transitDto.getDestinationAddress());
-        savedTransit.setPrice(transitDto.getPrice());
-        savedTransit.setDate(transitDto.getDate());
+        savedTransit.setSourceAddress(inputJson.getString("source_address"));
+        savedTransit.setDestinationAddress(inputJson.getString("destination_address"));
+        savedTransit.setPrice(BigDecimal.valueOf(inputJson.getDouble("price")));
+        savedTransit.setDate(Date.valueOf(inputJson.getString("date")));
         savedTransit.setDistance(BigDecimal.valueOf(12));
 
         when(transitService.addTransit(any(TransitDto.class))).thenReturn(savedTransit);
 
         mockMvc.perform(post("/api/transits/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(testTransitJsonString))
+                .content(inputJson.toString()))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.distance", Matchers.equalTo(12)));
 
     }
 
+    @Test
+    public void addTransitIncorrectAddress() throws Exception {
+        JSONObject inputJson = new JSONObject()
+                .put("source_address", "ul. xsafasfsafasfas fas")
+                .put("destination_address", "fsafsafas")
+                .put("price", "450")
+                .put("date", "2018-03-15");
+
+        when(transitService.addTransit(any(TransitDto.class))).thenThrow(new IncorrectLocationException("EXC"));
+
+        mockMvc.perform(post("/api/transits/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(inputJson.toString()))
+                .andExpect(status().is4xxClientError());
+    }
 }
