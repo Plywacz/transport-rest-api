@@ -15,7 +15,6 @@ import org.springframework.web.util.UriTemplate;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.util.HashMap;
 
 @Service
@@ -36,7 +35,7 @@ public class TransitServiceImpl implements TransitService {
         var transit = new Transit();
         transit.setSourceAddress(transitDto.getSourceAddress());
         transit.setDestinationAddress(transitDto.getDestinationAddress());
-        transit.setDate(Date.valueOf(transitDto.getDate()));
+        transit.setDate(transitDto.getDate());
         transit.setPrice(transitDto.getPrice());
 
         //handling checked exception, converting them to unchecked

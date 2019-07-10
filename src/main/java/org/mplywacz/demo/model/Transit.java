@@ -74,4 +74,5 @@ public class Transit extends BasicEntity {
     public void setDistance(BigDecimal distance) {
         this.distance = distance;
     }
+
 }

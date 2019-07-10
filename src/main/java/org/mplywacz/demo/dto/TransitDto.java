@@ -12,7 +12,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.sql.Date;
 
 @JsonDeserialize(using = TransitDtoDeserialization.class)
 public class TransitDto {
@@ -27,7 +27,7 @@ public class TransitDto {
     private BigDecimal price;
 
     @NotNull(message = "you have to provide valid date")
-    private LocalDate date;
+    private Date date;
 
     public TransitDto() {
     }
@@ -56,11 +56,11 @@ public class TransitDto {
         this.price = price;
     }
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 }

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 
 @ControllerAdvice
@@ -35,7 +34,7 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    @ExceptionHandler(value = DateTimeParseException.class)
+    @ExceptionHandler(value = IllegalArgumentException.class)
     ResponseEntity<Object> handleIncorrectDateInput(RuntimeException ex) {
         return new ResponseEntity<>("Given date is wrong, couldn't parse. Appropriate format: yyyy-mm-dd",
                 HttpStatus.UNPROCESSABLE_ENTITY);

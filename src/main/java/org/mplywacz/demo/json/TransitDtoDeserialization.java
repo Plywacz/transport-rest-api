@@ -13,7 +13,7 @@ import org.mplywacz.demo.dto.TransitDto;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.sql.Date;
 
 public class TransitDtoDeserialization extends StdDeserializer<TransitDto> {
 
@@ -32,7 +32,7 @@ public class TransitDtoDeserialization extends StdDeserializer<TransitDto> {
         transit.setSourceAddress(node.get("source_address").asText());
         transit.setDestinationAddress(node.get("destination_address").asText());
         transit.setPrice(BigDecimal.valueOf(node.get("price").asDouble()));
-        transit.setDate(LocalDate.parse(node.get("date").asText()));
+        transit.setDate(Date.valueOf(node.get("date").asText()));
 
 
         return transit;
