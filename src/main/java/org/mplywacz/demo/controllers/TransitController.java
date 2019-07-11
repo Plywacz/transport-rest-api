@@ -4,6 +4,8 @@ Author: BeGieU
 Date: 02.07.2019
 */
 
+import org.json.JSONObject;
+import org.mplywacz.demo.dto.RangeReportDto;
 import org.mplywacz.demo.dto.TransitDto;
 import org.mplywacz.demo.model.Transit;
 import org.mplywacz.demo.services.TransitService;
@@ -29,4 +31,13 @@ public class TransitController {
     public @ResponseBody Transit addTransit(@Valid @RequestBody TransitDto transitDto) { //todo return custom validation message if it has failed
         return transitService.addTransit(transitDto);
     }
+
+    @GetMapping(value = "/reports/range",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public @ResponseBody JSONObject getRangeReport(@Valid @RequestBody RangeReportDto rangeReportDto) {
+        return transitService.getRangeReport(rangeReportDto);
+    }
+
 }
