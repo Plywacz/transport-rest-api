@@ -18,12 +18,14 @@ import java.util.HashMap;
 public class CustomExceptionHandler {
     @ExceptionHandler(value = IncorrectLocationException.class)
     ResponseEntity<Object> handleIncorrectLocation(RuntimeException ex) {
+        ex.printStackTrace();
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     //handle error msg's for @Valid
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     ResponseEntity<Object> handleDtoValidation(MethodArgumentNotValidException ex) {
+        ex.printStackTrace();
         var errors = new HashMap<String, String>();
         ex.getBindingResult().getAllErrors().forEach(er -> {
             String fieldName = ((FieldError) er).getField();
@@ -33,11 +35,11 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    @ExceptionHandler(value = IllegalArgumentException.class)
+    @ExceptionHandler(value = {IllegalArgumentException.class})
     ResponseEntity<Object> handleIncorrectDateInput(RuntimeException ex) {
-        return new ResponseEntity<>(ex.getMessage() + "Given date is wrong, couldn't parse. Appropriate format: yyyy-mm-dd",
+        ex.printStackTrace();
+        return new ResponseEntity<>(ex.getMessage() ,
                 HttpStatus.UNPROCESSABLE_ENTITY);
-
     }
 
 }
