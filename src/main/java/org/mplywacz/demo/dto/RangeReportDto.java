@@ -4,9 +4,13 @@ Author: BeGieU
 Date: 10.07.2019
 */
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.mplywacz.demo.json.RangeReportDtoDeserialization;
+
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
+@JsonDeserialize(using = RangeReportDtoDeserialization.class)
 public class RangeReportDto {
 
     @NotNull(message = "start date cannot be null")

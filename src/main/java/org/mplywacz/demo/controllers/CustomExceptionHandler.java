@@ -11,7 +11,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
 
 import java.util.HashMap;
 
@@ -24,7 +23,7 @@ public class CustomExceptionHandler {
 
     //handle error msg's for @Valid
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    ResponseEntity<Object> handleDtoValidation(MethodArgumentNotValidException ex, WebRequest request) {
+    ResponseEntity<Object> handleDtoValidation(MethodArgumentNotValidException ex) {
         var errors = new HashMap<String, String>();
         ex.getBindingResult().getAllErrors().forEach(er -> {
             String fieldName = ((FieldError) er).getField();
@@ -36,7 +35,7 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(value = IllegalArgumentException.class)
     ResponseEntity<Object> handleIncorrectDateInput(RuntimeException ex) {
-        return new ResponseEntity<>("Given date is wrong, couldn't parse. Appropriate format: yyyy-mm-dd",
+        return new ResponseEntity<>(ex.getMessage() + "Given date is wrong, couldn't parse. Appropriate format: yyyy-mm-dd",
                 HttpStatus.UNPROCESSABLE_ENTITY);
 
     }

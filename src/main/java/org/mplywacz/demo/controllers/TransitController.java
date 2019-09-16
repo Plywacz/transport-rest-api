@@ -36,7 +36,7 @@ public class TransitController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public @ResponseBody JSONObject getRangeReport(@Valid @RequestBody RangeReportDto rangeReportDto) {
+    public @ResponseBody JSONObject getRangeReport( @Valid @RequestBody RangeReportDto rangeReportDto) {
         return transitService.getRangeReport(rangeReportDto);
     }
 

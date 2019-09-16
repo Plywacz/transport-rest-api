@@ -5,7 +5,6 @@ Date: 05.07.2019
 */
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
@@ -25,7 +24,7 @@ public class TransitDtoDeserialization extends StdDeserializer<TransitDto> {
         super(vc);
     }
 
-    @Override public TransitDto deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    @Override public TransitDto deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         JsonNode node = jp.getCodec().readTree(jp);
 
         var transit = new TransitDto();
@@ -33,7 +32,6 @@ public class TransitDtoDeserialization extends StdDeserializer<TransitDto> {
         transit.setDestinationAddress(node.get("destination_address").asText());
         transit.setPrice(BigDecimal.valueOf(node.get("price").asDouble()));
         transit.setDate(Date.valueOf(node.get("date").asText()));
-
 
         return transit;
     }

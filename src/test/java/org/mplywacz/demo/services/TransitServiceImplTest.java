@@ -53,13 +53,9 @@ public class TransitServiceImplTest {
         when(transitRepo.save(any())).thenReturn(savedTransit);
         var returned = transitService.addTransit(transitDto);
 
-        //        when(transitMapper.convertTransitDto(transitDto)).thenReturn(savedTransit);
-        //        var returned = transitService.addTransit(transitDto);
-
         //then
         assertEquals(returned.getSourceAddress(), transitDto.getSourceAddress());
         assertNotNull(returned.getDistance());
     }
-
 
 }

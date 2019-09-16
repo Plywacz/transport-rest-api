@@ -12,7 +12,6 @@ import org.mplywacz.demo.dto.mappers.TransitMapper;
 import org.mplywacz.demo.model.Transit;
 import org.mplywacz.demo.repositories.TransitRepo;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriTemplate;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -21,10 +20,6 @@ import java.util.Set;
 public class TransitServiceImpl implements TransitService {
     private final TransitRepo transitRepository;
     private final TransitMapper transitMapper;
-
-    //todo Externalize properties like api link to app.properties file
-    public static final UriTemplate uriTemplate = new UriTemplate(
-            "http://open.mapquestapi.com/directions/v2/route?key=wNq7cvi0pFSuG50szmeFaYI6VH9c2KEP&unit=k&from={from}&to={to}");
 
     public TransitServiceImpl(TransitRepo transitRepository, TransitMapper transitMapperImpl) {
         this.transitRepository = transitRepository;
