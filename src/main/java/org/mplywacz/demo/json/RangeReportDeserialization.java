@@ -5,7 +5,6 @@ Date: 10.07.2019
 */
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
@@ -24,7 +23,7 @@ public class RangeReportDeserialization extends StdDeserializer<RangeReportDto> 
     }
 
     @Override
-    public RangeReportDto deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public RangeReportDto deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         JsonNode node = jp.getCodec().readTree(jp);
 
         var dto = new RangeReportDto();
