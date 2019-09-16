@@ -44,8 +44,8 @@ public class TransitServiceImpl implements TransitService {
         //todo check what happens when exception is thrown inside this block
         try {
             return new JSONObject()
-                    .put("total_distance", distanceSum)
-                    .put("total_price", priceSum);
+                    .put("total_distance", distanceSum.toString())
+                    .put("total_price", priceSum.toString());
         }
         catch (JSONException e) {
             throw new RuntimeException(e);
