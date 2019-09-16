@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mplywacz.demo.dto.TransitDto;
+import org.mplywacz.demo.dto.mappers.TransitMapper;
 import org.mplywacz.demo.model.Transit;
 import org.mplywacz.demo.repositories.TransitRepo;
 
@@ -21,12 +22,15 @@ public class TransitServiceImplTest {
     @Mock
     TransitRepo transitRepo;
 
-    TransitService transitService = new TransitServiceImpl(transitRepo);
+    @Mock
+    TransitMapper transitMapper;
+
+    TransitService transitService;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        transitService = new TransitServiceImpl(transitRepo);
+        transitService = new TransitServiceImpl(transitRepo, transitMapper);
     }
 
     @Test
@@ -48,6 +52,9 @@ public class TransitServiceImplTest {
         //when
         when(transitRepo.save(any())).thenReturn(savedTransit);
         var returned = transitService.addTransit(transitDto);
+
+        //        when(transitMapper.convertTransitDto(transitDto)).thenReturn(savedTransit);
+        //        var returned = transitService.addTransit(transitDto);
 
         //then
         assertEquals(returned.getSourceAddress(), transitDto.getSourceAddress());

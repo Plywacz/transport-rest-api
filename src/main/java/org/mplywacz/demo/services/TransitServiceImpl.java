@@ -4,7 +4,6 @@ Author: BeGieU
 Date: 05.07.2019
 */
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mplywacz.demo.dto.RangeReportDto;
@@ -21,7 +20,6 @@ import java.util.Set;
 @Service
 public class TransitServiceImpl implements TransitService {
     private final TransitRepo transitRepository;
-    private final ObjectMapper objectMapper = new ObjectMapper();
     private final TransitMapper transitMapper;
 
     //todo Externalize properties like api link to app.properties file
@@ -34,7 +32,7 @@ public class TransitServiceImpl implements TransitService {
     }
 
     public Transit addTransit(final TransitDto transitDto) {
-                return transitMapper.convertTransitDto(transitDto);
+        return transitRepository.save(transitMapper.convertTransitDto(transitDto));
     }
 
     @Override public JSONObject getRangeReport(RangeReportDto rangeReportDto) {
