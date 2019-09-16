@@ -13,7 +13,7 @@ import java.util.Set;
 
 public interface TransitRepo extends CrudRepository<Transit, Long> {
 
-    @Query(value = "SELECT * FROM transit t WHERE t.date BETWEEN date1=?1 AND date2=?2",
+    @Query(value = "SELECT * FROM transit t WHERE t.date >= ?1 AND t.date<=?2",
             nativeQuery = true)
     Set<Transit> selectTransitsInDateRange(Date date1, Date date2);
 }
