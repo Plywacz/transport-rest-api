@@ -27,7 +27,7 @@ public class TransitController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody Transit addTransit(@Valid @RequestBody TransitDto transitDto) { //todo return custom validation message if it has failed
+    public @ResponseBody Transit addTransit(@Valid @RequestBody(required = false) TransitDto transitDto) { //todo return custom validation message if it has failed
         return transitService.addTransit(transitDto);
     }
 
@@ -35,9 +35,8 @@ public class TransitController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public @ResponseBody String getRangeReport( @Valid @RequestBody RangeReportDto rangeReportDto) {
-         return transitService.getRangeReport(rangeReportDto).toString();
+    public @ResponseBody String getRangeReport(@Valid @RequestBody(required = false) RangeReportDto rangeReportDto) {
+        return transitService.getRangeReport(rangeReportDto).toString();
 
     }
-
 }

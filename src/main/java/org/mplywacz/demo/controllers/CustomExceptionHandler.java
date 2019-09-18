@@ -38,7 +38,7 @@ public class CustomExceptionHandler {
     @ExceptionHandler(value = {IllegalArgumentException.class})
     ResponseEntity<Object> handleIncorrectDateInput(RuntimeException ex) {
         ex.printStackTrace();
-        return new ResponseEntity<>(ex.getMessage() ,
+        return new ResponseEntity<>(ex.getMessage(),
                 HttpStatus.UNPROCESSABLE_ENTITY);
     }
 

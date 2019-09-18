@@ -27,10 +27,18 @@ public class TransitServiceImpl implements TransitService {
     }
 
     public Transit addTransit(final TransitDto transitDto) {
+        if (transitDto==null){
+            throw new IllegalArgumentException("you must provide information about transit");
+        }
         return transitRepository.save(transitMapper.convertTransitDto(transitDto));
     }
 
-    @Override public JSONObject getRangeReport(RangeReportDto rangeReportDto) {
+    @Override
+    public JSONObject getRangeReport(RangeReportDto rangeReportDto) {
+        if (rangeReportDto == null) {
+            throw new IllegalArgumentException("you must provide start and end date");
+        }
+
         Set<Transit> transits = transitRepository
                 .selectTransitsInDateRange(rangeReportDto.getStartDate(), rangeReportDto.getEndDate());
 
@@ -51,6 +59,7 @@ public class TransitServiceImpl implements TransitService {
             throw new RuntimeException(e);
         }
     }
+
 
 
 }
