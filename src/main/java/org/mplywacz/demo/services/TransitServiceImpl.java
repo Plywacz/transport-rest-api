@@ -6,6 +6,7 @@ Date: 05.07.2019
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.mplywacz.demo.dto.MonthInfoDto;
 import org.mplywacz.demo.dto.RangeReportDto;
 import org.mplywacz.demo.dto.TransitDto;
 import org.mplywacz.demo.dto.mappers.TransitMapper;
@@ -14,6 +15,9 @@ import org.mplywacz.demo.repositories.TransitRepo;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -27,7 +31,7 @@ public class TransitServiceImpl implements TransitService {
     }
 
     public Transit addTransit(final TransitDto transitDto) {
-        if (transitDto==null){
+        if (transitDto == null) {
             throw new IllegalArgumentException("you must provide information about transit");
         }
         return transitRepository.save(transitMapper.convertTransitDto(transitDto));
@@ -60,6 +64,32 @@ public class TransitServiceImpl implements TransitService {
         }
     }
 
+    @Override
+    public List<MonthInfoDto> getMonthlyReport() {
+        var dates = getStartAndEndEdgeDates();
+        transitRepository.selectTransitsInDateRange(dates[0], dates[1]);
+
+
+        return null;
+    }
+
+    //method generates dates required to fetch transits which took place in current month
+    //we need beginEdgeDate which represents first day of current month and
+    //endEdgeDate which stands for current day
+    private Date[] getStartAndEndEdgeDates() {
+        var currDate = new java.util.Date();
+        var formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+        var endEdgeDate = formatter.format(currDate);
+
+        //generate date that represents first day of current month
+        var beginEdgeDate = endEdgeDate.substring(0, endEdgeDate.length() - 3) + "-01";
+
+        java.sql.Date sDate = java.sql.Date.valueOf(beginEdgeDate);
+        java.sql.Date eDate = java.sql.Date.valueOf(endEdgeDate);
+
+        return new Date[]{sDate, eDate};
+    }
 
 
 }
