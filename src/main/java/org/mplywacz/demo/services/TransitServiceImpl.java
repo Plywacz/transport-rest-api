@@ -30,6 +30,7 @@ public class TransitServiceImpl implements TransitService {
         this.transitMapper = transitMapperImpl;
     }
 
+    //todo fix bug: app adds to DB transit which date  is incorrect i.e you add transit with 2019-09-01 date it saves 2019-08-31
     public Transit addTransit(final TransitDto transitDto) {
         if (transitDto == null) {
             throw new IllegalArgumentException("you must provide information about transit");
@@ -67,7 +68,8 @@ public class TransitServiceImpl implements TransitService {
     @Override
     public List<MonthInfoDto> getMonthlyReport() {
         var dates = getStartAndEndEdgeDates();
-        transitRepository.selectTransitsInDateRange(dates[0], dates[1]);
+        var transits = transitRepository.selectTransitsInDateRange(dates[0], dates[1]);
+
 
 
         return null;

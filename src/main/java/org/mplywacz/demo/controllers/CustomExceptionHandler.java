@@ -4,6 +4,7 @@ Author: BeGieU
 Date: 09.07.2019
 */
 
+import org.mplywacz.demo.exceptions.IllegalDateInputException;
 import org.mplywacz.demo.exceptions.IncorrectLocationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    @ExceptionHandler(value = {IllegalArgumentException.class})
+    @ExceptionHandler(value = {IllegalArgumentException.class, IllegalDateInputException.class})
     ResponseEntity<Object> handleIncorrectDateInput(RuntimeException ex) {
         ex.printStackTrace();
         return new ResponseEntity<>(ex.getMessage(),

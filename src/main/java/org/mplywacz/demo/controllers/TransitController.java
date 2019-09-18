@@ -39,4 +39,11 @@ public class TransitController {
         return transitService.getRangeReport(rangeReportDto).toString();
 
     }
+
+    @GetMapping(value = "/reports/monthly",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void getMonthlyReport() {
+        transitService.getMonthlyReport();
+    }
 }

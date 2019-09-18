@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import org.mplywacz.demo.dto.TransitDto;
+import org.mplywacz.demo.exceptions.IllegalDateInputException;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -28,10 +29,15 @@ public class TransitDtoDeserialization extends StdDeserializer<TransitDto> {
         JsonNode node = jp.getCodec().readTree(jp);
 
         var transit = new TransitDto();
-        transit.setSourceAddress(node.get("source_address").asText());
-        transit.setDestinationAddress(node.get("destination_address").asText());
-        transit.setPrice(BigDecimal.valueOf(node.get("price").asDouble()));
-        transit.setDate(Date.valueOf(node.get("date").asText()));
+
+            transit.setSourceAddress(node.get("source_address").asText());
+            transit.setDestinationAddress(node.get("destination_address").asText());
+            transit.setPrice(BigDecimal.valueOf(node.get("price").asDouble()));
+        try {
+            transit.setDate(Date.valueOf(node.get("date").asText()));
+        }catch (IllegalArgumentException e){
+            throw new IllegalDateInputException("provide correct date. yyyy-mm-dd",e);
+        }
 
         return transit;
     }
