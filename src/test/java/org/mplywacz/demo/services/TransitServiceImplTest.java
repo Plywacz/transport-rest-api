@@ -10,7 +10,7 @@ import org.mplywacz.demo.model.Transit;
 import org.mplywacz.demo.repositories.TransitRepo;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -40,7 +40,7 @@ public class TransitServiceImplTest {
         transitDto.setSourceAddress("ul. Zakręt 8, Poznań");
         transitDto.setDestinationAddress("Złota 44, Warszawa");
         transitDto.setPrice(BigDecimal.valueOf(450));
-        transitDto.setDate(Date.valueOf(("2018-11-10")));
+        transitDto.setDate(LocalDate.parse(("2018-11-10")));
 
         var savedTransit = new Transit();
         savedTransit.setSourceAddress(transitDto.getSourceAddress());

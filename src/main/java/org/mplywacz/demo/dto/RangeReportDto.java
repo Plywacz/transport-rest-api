@@ -8,33 +8,33 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.mplywacz.demo.json.RangeReportDtoDeserialization;
 
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @JsonDeserialize(using = RangeReportDtoDeserialization.class)
 public class RangeReportDto {
 
     @NotNull(message = "start date cannot be null")
-    private Date startDate;
+    private LocalDate startDate;
 
     @NotNull(message = "start date cannot be null")
-    private Date endDate;
+    private LocalDate endDate;
 
     public RangeReportDto() {
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 }

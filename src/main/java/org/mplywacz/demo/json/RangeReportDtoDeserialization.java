@@ -12,7 +12,8 @@ import org.mplywacz.demo.dto.RangeReportDto;
 import org.mplywacz.demo.exceptions.IllegalDateInputException;
 
 import java.io.IOException;
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class RangeReportDtoDeserialization extends StdDeserializer<RangeReportDto> {
 
@@ -30,9 +31,9 @@ public class RangeReportDtoDeserialization extends StdDeserializer<RangeReportDt
 
         var dto = new RangeReportDto();
         try {
-            dto.setStartDate(Date.valueOf(node.get("start_date").asText()));
-            dto.setEndDate(Date.valueOf(node.get("end_date").asText()));
-        }catch (IllegalArgumentException e){
+            dto.setStartDate(LocalDate.parse(node.get("start_date").asText()));
+            dto.setEndDate(LocalDate.parse(node.get("end_date").asText()));
+        }catch (DateTimeParseException e){
             throw new IllegalDateInputException("provide correct data format yyyy-mm-dd",e);
         }
 

@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class SimpleDateFormatTest {
@@ -61,5 +62,14 @@ public class SimpleDateFormatTest {
 
         //generate dates to select period of current month that has passed
         System.out.println("SELECT * FROM transit t WHERE t.date >= " + beginEdgeDate + " AND t.date<= " + endEdgeDate);
+    }
+
+    @Test
+    public void localDateTest() {
+        String date= "2019-09-18";
+
+        var localDate=LocalDate.parse(date);
+        System.out.println(localDate);
+
     }
 }

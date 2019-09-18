@@ -4,11 +4,12 @@ Author: BeGieU
 Date: 02.07.2019
 */
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 public class Transit extends BasicEntity {
@@ -16,7 +17,8 @@ public class Transit extends BasicEntity {
     private String sourceAddress;
     private String destinationAddress;
     private BigDecimal price;
-    private Date date;
+    @Column(name = "date", columnDefinition = "DATE")
+    private LocalDate date; //todo : Migrate sql.Date , unit.Date to LocalDate since JDBC supports LocalDate
     //needs to be calculated based source and destiny address
     private BigDecimal distance;
 
@@ -51,11 +53,11 @@ public class Transit extends BasicEntity {
         this.price = price;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

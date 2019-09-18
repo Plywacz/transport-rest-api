@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -52,7 +52,7 @@ public class TransitControllerTest {
         savedTransit.setSourceAddress(inputJson.getString("source_address"));
         savedTransit.setDestinationAddress(inputJson.getString("destination_address"));
         savedTransit.setPrice(BigDecimal.valueOf(inputJson.getDouble("price")));
-        savedTransit.setDate(Date.valueOf(inputJson.getString("date")));
+        savedTransit.setDate(LocalDate.parse(inputJson.getString("date")));
         savedTransit.setDistance(BigDecimal.valueOf(12));
 
         when(transitService.addTransit(any(TransitDto.class))).thenReturn(savedTransit);

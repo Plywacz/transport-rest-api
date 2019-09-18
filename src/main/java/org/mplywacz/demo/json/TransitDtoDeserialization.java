@@ -13,7 +13,8 @@ import org.mplywacz.demo.exceptions.IllegalDateInputException;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class TransitDtoDeserialization extends StdDeserializer<TransitDto> {
 
@@ -34,8 +35,8 @@ public class TransitDtoDeserialization extends StdDeserializer<TransitDto> {
             transit.setDestinationAddress(node.get("destination_address").asText());
             transit.setPrice(BigDecimal.valueOf(node.get("price").asDouble()));
         try {
-            transit.setDate(Date.valueOf(node.get("date").asText()));
-        }catch (IllegalArgumentException e){
+            transit.setDate(LocalDate.parse(node.get("date").asText()));
+        }catch (DateTimeParseException e){
             throw new IllegalDateInputException("provide correct date. yyyy-mm-dd",e);
         }
 

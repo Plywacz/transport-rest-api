@@ -15,8 +15,7 @@ import org.mplywacz.demo.repositories.TransitRepo;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -78,19 +77,19 @@ public class TransitServiceImpl implements TransitService {
     //method generates dates required to fetch transits which took place in current month
     //we need beginEdgeDate which represents first day of current month and
     //endEdgeDate which stands for current day
-    private Date[] getStartAndEndEdgeDates() {
-        var currDate = new java.util.Date();
-        var formatter = new SimpleDateFormat("yyyy-MM-dd");
+    private LocalDate[] getStartAndEndEdgeDates() {
+        var currDate = LocalDate.now();
+      //  var formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-        var endEdgeDate = formatter.format(currDate);
+        var endEdgeDateStr = currDate.toString();
 
         //generate date that represents first day of current month
-        var beginEdgeDate = endEdgeDate.substring(0, endEdgeDate.length() - 3) + "-01";
+        var beginEdgeDateStr = endEdgeDateStr.substring(0, endEdgeDateStr.length() - 3) + "-01";
 
-        java.sql.Date sDate = java.sql.Date.valueOf(beginEdgeDate);
-        java.sql.Date eDate = java.sql.Date.valueOf(endEdgeDate);
+        LocalDate sDate = LocalDate.parse(beginEdgeDateStr);
+        LocalDate eDate = LocalDate.parse(endEdgeDateStr);
 
-        return new Date[]{sDate, eDate};
+        return new LocalDate[]{sDate, eDate};
     }
 
 
