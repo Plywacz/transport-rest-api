@@ -6,6 +6,7 @@ Date: 02.07.2019
 
 import org.mplywacz.demo.dto.RangeReportDto;
 import org.mplywacz.demo.dto.TransitDto;
+import org.mplywacz.demo.model.DailyInfo;
 import org.mplywacz.demo.model.Transit;
 import org.mplywacz.demo.services.TransitService;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -27,7 +29,7 @@ public class TransitController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody Transit addTransit(@Valid @RequestBody(required = false) TransitDto transitDto) { //todo return custom validation message if it has failed
+    public @ResponseBody Transit addTransit(@Valid @RequestBody(required = false) TransitDto transitDto) {
         return transitService.addTransit(transitDto);
     }
 
@@ -43,7 +45,7 @@ public class TransitController {
     @GetMapping(value = "/reports/monthly",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void getMonthlyReport() {
-        transitService.getMonthlyReport();
+    public List<DailyInfo> getMonthlyReport() {
+        return transitService.getMonthlyReport();
     }
 }

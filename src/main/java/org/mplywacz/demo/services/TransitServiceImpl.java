@@ -6,10 +6,10 @@ Date: 05.07.2019
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.mplywacz.demo.dto.MonthInfoDto;
 import org.mplywacz.demo.dto.RangeReportDto;
 import org.mplywacz.demo.dto.TransitDto;
 import org.mplywacz.demo.dto.mappers.TransitMapper;
+import org.mplywacz.demo.model.DailyInfo;
 import org.mplywacz.demo.model.Transit;
 import org.mplywacz.demo.repositories.TransitRepo;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class TransitServiceImpl implements TransitService {
         this.transitMapper = transitMapperImpl;
     }
 
-    //todo fix bug: app adds to DB transit which date  is incorrect i.e you add transit with 2019-09-01 date it saves 2019-08-31
+    //todo fix bug: app adds to DB transit which date  is incorrect i.e you add transit with 2019-09-01 date it saves 2019-08-31 !!!!!!!!!
     public Transit addTransit(final TransitDto transitDto) {
         if (transitDto == null) {
             throw new IllegalArgumentException("you must provide information about transit");
@@ -53,7 +53,7 @@ public class TransitServiceImpl implements TransitService {
             distanceSum = distanceSum.add(t.getDistance());
             priceSum = priceSum.add(t.getPrice());
         }
-        //todo check what happens when exception is thrown inside this block
+
         try {
             return new JSONObject()
                     .put("total_distance", distanceSum.toString())
@@ -62,16 +62,14 @@ public class TransitServiceImpl implements TransitService {
         catch (JSONException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     @Override
-    public List<MonthInfoDto> getMonthlyReport() {
+    public List<DailyInfo> getMonthlyReport() {
         var dates = getStartAndEndEdgeDates();
-        var transits = transitRepository.selectTransitsInDateRange(dates[0], dates[1]);
-
-
-
-        return null;
+        //list of objects that are consistent with query in transitRepo
+       return transitRepository.getMonthlyInfoFromDB(dates[0], dates[1]);
     }
 
     //method generates dates required to fetch transits which took place in current month
@@ -79,7 +77,7 @@ public class TransitServiceImpl implements TransitService {
     //endEdgeDate which stands for current day
     private LocalDate[] getStartAndEndEdgeDates() {
         var currDate = LocalDate.now();
-      //  var formatter = new SimpleDateFormat("yyyy-MM-dd");
+        //  var formatter = new SimpleDateFormat("yyyy-MM-dd");
 
         var endEdgeDateStr = currDate.toString();
 

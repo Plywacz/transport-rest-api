@@ -18,7 +18,7 @@ public class Transit extends BasicEntity {
     private String destinationAddress;
     private BigDecimal price;
     @Column(name = "date", columnDefinition = "DATE")
-    private LocalDate date; //todo : Migrate sql.Date , unit.Date to LocalDate since JDBC supports LocalDate
+    private LocalDate date;
     //needs to be calculated based source and destiny address
     private BigDecimal distance;
 

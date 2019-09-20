@@ -43,4 +43,11 @@ public class CustomExceptionHandler {
                 HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
+    @ExceptionHandler(value = Throwable.class)
+    ResponseEntity<Object> printStackTrace(RuntimeException ex) {
+        ex.printStackTrace();
+        return new ResponseEntity<>(ex.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }
