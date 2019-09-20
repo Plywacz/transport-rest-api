@@ -77,9 +77,9 @@ public class TransitServiceImpl implements TransitService {
     //endEdgeDate which stands for current day
     private LocalDate[] getStartAndEndEdgeDates() {
         var currDate = LocalDate.now();
-        var endEdgeDate = LocalDate.of(currDate.getYear(), currDate.getMonth(), 1);
+        var sDate = LocalDate.of(currDate.getYear(), currDate.getMonth(), 1);
 
-        return new LocalDate[]{currDate, endEdgeDate};
+        return new LocalDate[]{sDate, currDate};
     }
 
 
