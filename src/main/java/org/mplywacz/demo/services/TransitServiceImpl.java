@@ -69,7 +69,7 @@ public class TransitServiceImpl implements TransitService {
     public List<DailyInfo> getMonthlyReport() {
         var dates = getStartAndEndEdgeDates();
         //list of objects that are consistent with query in transitRepo
-       return transitRepository.getMonthlyInfoFromDB(dates[0], dates[1]);
+        return transitRepository.getMonthlyInfoFromDB(dates[0], dates[1]);
     }
 
     //method generates dates required to fetch transits which took place in current month
@@ -77,17 +77,9 @@ public class TransitServiceImpl implements TransitService {
     //endEdgeDate which stands for current day
     private LocalDate[] getStartAndEndEdgeDates() {
         var currDate = LocalDate.now();
-        //  var formatter = new SimpleDateFormat("yyyy-MM-dd");
+        var endEdgeDate = LocalDate.of(currDate.getYear(), currDate.getMonth(), 1);
 
-        var endEdgeDateStr = currDate.toString();
-
-        //generate date that represents first day of current month
-        var beginEdgeDateStr = endEdgeDateStr.substring(0, endEdgeDateStr.length() - 3) + "-01";
-
-        LocalDate sDate = LocalDate.parse(beginEdgeDateStr);
-        LocalDate eDate = LocalDate.parse(endEdgeDateStr);
-
-        return new LocalDate[]{sDate, eDate};
+        return new LocalDate[]{currDate, endEdgeDate};
     }
 
 
