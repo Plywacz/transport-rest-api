@@ -8,6 +8,7 @@ import org.mplywacz.demo.exceptions.IllegalDateInputException;
 import org.mplywacz.demo.exceptions.IncorrectLocationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -43,8 +44,16 @@ public class CustomExceptionHandler {
                 HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
+    @ExceptionHandler(value = {HttpMessageNotReadableException.class})
+    ResponseEntity<Object> handleEmptyDto(RuntimeException ex) {
+        ex.printStackTrace();
+        return new ResponseEntity<>("Required request body is missing",
+                HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    //only for debugging purposes
     @ExceptionHandler(value = Throwable.class)
-    ResponseEntity<Object> printStackTrace(RuntimeException ex) {
+    ResponseEntity<Object> printStackTrace(Exception ex) {
         ex.printStackTrace();
         return new ResponseEntity<>(ex.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR);

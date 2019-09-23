@@ -29,7 +29,7 @@ public class TransitController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody Transit addTransit(@Valid @RequestBody(required = false) TransitDto transitDto) {
+    public @ResponseBody Transit addTransit(@Valid @RequestBody TransitDto transitDto) {
         return transitService.addTransit(transitDto);
     }
 
@@ -37,7 +37,7 @@ public class TransitController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public @ResponseBody String getRangeReport(@Valid @RequestBody(required = false) RangeReportDto rangeReportDto) {
+    public @ResponseBody String getRangeReport(@Valid @RequestBody RangeReportDto rangeReportDto) {
         return transitService.getRangeReport(rangeReportDto).toString();
 
     }
