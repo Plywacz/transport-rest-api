@@ -55,7 +55,7 @@ public class TransitMapperImpl implements TransitMapper {
         JsonNode routeInfoNode = objectMapper.readTree(expandedURI.toURL());
         JsonNode distanceNode = routeInfoNode.get("route").get("distance");
 
-        if (distanceNode == null) {
+        if (distanceNode == null || distanceNode.toString().equals("0")) {
             //this exception will be caught only by method in CustomException handler, so bigDecimal won't be returned but that
             //what handling method returns
             //same thing happens in getRangeReport Method

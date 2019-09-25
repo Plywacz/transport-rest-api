@@ -31,27 +31,36 @@ public class TransitServiceImpl implements TransitService {
 
     //todo fix bug: app adds to DB transit which date  is incorrect i.e you add transit with 2019-09-01 date it saves 2019-08-31 !!!!!!!!!
     public Transit addTransit(final TransitDto transitDto) {
-        if (transitDto == null) {
-            throw new IllegalArgumentException("you must provide information about transit");
-        }
         return transitRepository.save(transitMapper.convertTransitDto(transitDto));
     }
 
     @Override
     public JSONObject getRangeReport(RangeReportDto rangeReportDto) {
-        if (rangeReportDto == null) {
-            throw new IllegalArgumentException("you must provide start and end date");
+        var sDate = rangeReportDto.getStartDate();
+        var eDate = rangeReportDto.getEndDate();
+
+        //no need to check if sDate or eDate is null 'cause it is already done in deserializer
+        if (sDate.compareTo(eDate) > 0) {
+            throw new IllegalArgumentException("you  provided wrong start and end date");
         }
 
+        //TODO: may replace below logic with SQL query
         Set<Transit> transits = transitRepository
-                .selectTransitsInDateRange(rangeReportDto.getStartDate(), rangeReportDto.getEndDate());
+                .selectTransitsInDateRange(sDate, eDate);
 
         BigDecimal distanceSum = new BigDecimal(0);
         BigDecimal priceSum = new BigDecimal(0);
 
         for (Transit t : transits) {
-            distanceSum = distanceSum.add(t.getDistance());
-            priceSum = priceSum.add(t.getPrice());
+            var distance = t.getDistance();
+            var price = t.getPrice();
+            if (distance.compareTo(BigDecimal.ZERO) < 0 ||
+                    price.compareTo(BigDecimal.ZERO) < 0) {
+                throw new RuntimeException("Records fetched from DB are corrupted by STH !!!");
+            }
+
+            distanceSum = distanceSum.add(distance);
+            priceSum = priceSum.add(price);
         }
 
         try {

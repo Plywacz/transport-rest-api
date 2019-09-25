@@ -29,15 +29,31 @@ public class TransitDtoDeserialization extends StdDeserializer<TransitDto> {
     @Override public TransitDto deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         JsonNode node = jp.getCodec().readTree(jp);
 
-        var transit = new TransitDto();
+        if (!node.hasNonNull("source_address") ||
+                !node.hasNonNull("destination_address") ||
+                !node.hasNonNull("price") ||
+                !node.hasNonNull("date") ||
+                node.size() != 4) {
+            throw new IllegalDateInputException("provide date in correct format, example :" +
+                    "{\n" +
+                    "  \"source_address\":      \"ul. Zakręt 8, Poznań\",\n" +
+                    "  \"destination_address\": \"Złota 44, Warszawa\",\n" +
+                    "  \"price\":               450,\n" +
+                    "  \"date\":                \"2018-03-15\"\n" +
+                    "}"
+            );
+        }
 
-            transit.setSourceAddress(node.get("source_address").asText());
-            transit.setDestinationAddress(node.get("destination_address").asText());
-            transit.setPrice(BigDecimal.valueOf(node.get("price").asDouble()));
+        var transit = new TransitDto();
+        transit.setSourceAddress(node.get("source_address").asText());
+        transit.setDestinationAddress(node.get("destination_address").asText());
+        transit.setPrice(BigDecimal.valueOf(node.get("price").asDouble(-1)));
+
         try {
             transit.setDate(LocalDate.parse(node.get("date").asText()));
-        }catch (DateTimeParseException e){
-            throw new IllegalDateInputException("provide correct date. yyyy-mm-dd",e);
+        }
+        catch (DateTimeParseException e) {
+            throw new IllegalDateInputException("provide correct date. yyyy-mm-dd", e);
         }
 
         return transit;

@@ -30,11 +30,21 @@ public class RangeReportDtoDeserialization extends StdDeserializer<RangeReportDt
         JsonNode node = jp.getCodec().readTree(jp);
 
         var dto = new RangeReportDto();
+
+        if (!node.hasNonNull("start_date") || !node.hasNonNull("end_date") || node.size() != 2) {
+            throw new IllegalDateInputException("provide date in correct format, example :"
+                    + " {\n" +
+                    "  \"start_date\": \"2018-01-20\",\n" +
+                    "  \"end_date\":  \"2018-01-25\"\n" +
+                    "}");
+        }
+
         try {
-            dto.setStartDate(LocalDate.parse(node.get("start_date").asText()));
-            dto.setEndDate(LocalDate.parse(node.get("end_date").asText()));
-        }catch (DateTimeParseException e){
-            throw new IllegalDateInputException("provide correct data format yyyy-mm-dd",e);
+            dto.setStartDate(LocalDate.parse(node.get("start_date").textValue()));
+            dto.setEndDate(LocalDate.parse(node.get("end_date").textValue()));
+        }
+        catch (DateTimeParseException e) {
+            throw new IllegalDateInputException("provide correct data format yyyy-mm-dd", e);
         }
 
         return dto;
