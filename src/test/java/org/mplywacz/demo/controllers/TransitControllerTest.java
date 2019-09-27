@@ -137,7 +137,7 @@ public class TransitControllerTest {
     }
 
     @Test
-    public void addTransitParsingDate() throws Exception{
+    public void addTransitParsingDate() throws Exception {
         JSONObject inputJson = new JSONObject()
                 .put("source_address", "val")
                 .put("destination_address", "val")
@@ -217,6 +217,18 @@ public class TransitControllerTest {
     }
 
     @Test
+    public void getRangeReportWrongEntity2() throws Exception {
+        var content = new JSONObject()
+                .put("", "f21")
+                .put("", "vad");
+
+        mockMvc.perform(get("/api/reports/range")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content((content).toString()))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
     public void getRangeReportUnsuitedEntity() throws Exception {
         JSONObject inputJson = new JSONObject()
                 .put("source_address", "21") //blank
@@ -227,6 +239,14 @@ public class TransitControllerTest {
         mockMvc.perform(get("/api/reports/range")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content((inputJson).toString()))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void getRangeReportNull() throws Exception {
+        mockMvc.perform(get("/api/reports/range")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(""))
                 .andExpect(status().is4xxClientError());
     }
 

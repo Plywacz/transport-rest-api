@@ -97,8 +97,8 @@ public class TransitServiceImplTest {
     public void getRangeReportHappy() throws JSONException {
         //given
         var rangeRepDto = new RangeReportDto();
-        rangeRepDto.setStartDate(LocalDate.of(2016, 1, 1));
-        rangeRepDto.setEndDate(LocalDate.of(2017, 1, 1));
+        rangeRepDto.setStartDate(new POJONode(LocalDate.of(2016, 1, 1)));
+        rangeRepDto.setEndDate(new POJONode(LocalDate.of(2017, 1, 1)));
 
         var t1 = new Transit();
         t1.setDistance(BigDecimal.valueOf(100));
@@ -129,8 +129,8 @@ public class TransitServiceImplTest {
     public void getRangeReportFaultyResultFromDB() throws JSONException {
         //given
         var rangeRepDto = new RangeReportDto();
-        rangeRepDto.setStartDate(LocalDate.of(2016, 1, 1));
-        rangeRepDto.setEndDate(LocalDate.of(2017, 1, 1));
+        rangeRepDto.setStartDate(new POJONode(LocalDate.of(2016, 1, 1)));
+        rangeRepDto.setEndDate(new POJONode(LocalDate.of(2017, 1, 1)));
 
         var t1 = new Transit();
         t1.setDistance(BigDecimal.valueOf(100));

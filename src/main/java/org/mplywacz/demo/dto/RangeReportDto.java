@@ -4,11 +4,13 @@ Author: BeGieU
 Date: 10.07.2019
 */
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.mplywacz.demo.json.RangeReportDtoDeserialization;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 @JsonDeserialize(using = RangeReportDtoDeserialization.class)
 public class RangeReportDto {
@@ -26,15 +28,29 @@ public class RangeReportDto {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+    public void setStartDate(JsonNode startDate) {
+        this.startDate = buildDate(startDate);
     }
 
     public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public void setEndDate(JsonNode endDate) {
+        this.endDate = buildDate(endDate);
+    }
+
+    private LocalDate buildDate(JsonNode date) {
+        LocalDate ld=null;
+        if (date != null) {
+            try {
+                ld = LocalDate.parse(date.asText());
+            }
+            catch (DateTimeParseException e) {
+                CharSequence cs = date.asText();
+                throw new DateTimeParseException("provide date in correct format i.e: yyyy-mm-dd", cs, 400);
+            }
+        }
+        return ld;
     }
 }

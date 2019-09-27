@@ -9,11 +9,8 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import org.mplywacz.demo.dto.RangeReportDto;
-import org.mplywacz.demo.exceptions.IllegalDateInputException;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 
 public class RangeReportDtoDeserialization extends StdDeserializer<RangeReportDto> {
 
@@ -31,21 +28,16 @@ public class RangeReportDtoDeserialization extends StdDeserializer<RangeReportDt
 
         var dto = new RangeReportDto();
 
-        if (!node.hasNonNull("start_date") || !node.hasNonNull("end_date") || node.size() != 2) {
-            throw new IllegalDateInputException("provide date in correct format, example :"
+        if (node.size() != 2) {
+            throw new IllegalArgumentException("provide inputJson in  in correct format, example :"
                     + " {\n" +
                     "  \"start_date\": \"2018-01-20\",\n" +
                     "  \"end_date\":  \"2018-01-25\"\n" +
-                    "}");
+                    "} \n this one was to long");
         }
 
-        try {
-            dto.setStartDate(LocalDate.parse(node.get("start_date").textValue()));
-            dto.setEndDate(LocalDate.parse(node.get("end_date").textValue()));
-        }
-        catch (DateTimeParseException e) {
-            throw new IllegalDateInputException("provide correct data format yyyy-mm-dd", e);
-        }
+        dto.setStartDate(node.get("start_date"));
+        dto.setEndDate(node.get("end_date"));
 
         return dto;
     }
