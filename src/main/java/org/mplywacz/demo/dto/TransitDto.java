@@ -14,7 +14,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
+
+import static org.mplywacz.demo.dto.BasicDto.buildDate;
 
 @JsonDeserialize(using = TransitDtoDeserialization.class)
 public class TransitDto {
@@ -82,14 +83,6 @@ public class TransitDto {
     }
 
     public void setDate(JsonNode date) {
-        if (date != null) {
-            try {
-                this.date = LocalDate.parse(date.asText());
-            }
-            catch (DateTimeParseException e) {
-                CharSequence cs = date.asText();
-                throw new DateTimeParseException("provide date in correct format i.e: yyyy-mm-dd", cs, 400);
-            }
-        }
+       this.date=buildDate(date);
     }
 }

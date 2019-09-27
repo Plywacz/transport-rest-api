@@ -10,7 +10,8 @@ import org.mplywacz.demo.json.RangeReportDtoDeserialization;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
+
+import static org.mplywacz.demo.dto.BasicDto.buildDate;
 
 @JsonDeserialize(using = RangeReportDtoDeserialization.class)
 public class RangeReportDto {
@@ -40,17 +41,5 @@ public class RangeReportDto {
         this.endDate = buildDate(endDate);
     }
 
-    private LocalDate buildDate(JsonNode date) {
-        LocalDate ld=null;
-        if (date != null) {
-            try {
-                ld = LocalDate.parse(date.asText());
-            }
-            catch (DateTimeParseException e) {
-                CharSequence cs = date.asText();
-                throw new DateTimeParseException("provide date in correct format i.e: yyyy-mm-dd", cs, 400);
-            }
-        }
-        return ld;
-    }
+
 }
