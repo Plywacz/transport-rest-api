@@ -4,26 +4,21 @@ Author: BeGieU
 Date: 16.09.2019
 */
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mplywacz.demo.dto.TransitDto;
-import org.mplywacz.demo.exceptions.IncorrectLocationException;
 import org.mplywacz.demo.model.Transit;
+import org.mplywacz.demo.services.DistanceCalculator;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.UriTemplate;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.HashMap;
 
 @Component
 public class TransitMapperImpl implements TransitMapper {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final DistanceCalculator distanceCalculator;
 
-    //todo Externalize properties like api link to app.properties file
-    public static final UriTemplate uriTemplate = new UriTemplate(
-            "http://open.mapquestapi.com/directions/v2/route?key=wNq7cvi0pFSuG50szmeFaYI6VH9c2KEP&unit=k&from={from}&to={to}");
+    public TransitMapperImpl(DistanceCalculator distanceCalculator) {
+        this.distanceCalculator = distanceCalculator;
+    }
 
     public Transit convertTransitDto(TransitDto dto) {
         var transit = new Transit();
@@ -34,37 +29,13 @@ public class TransitMapperImpl implements TransitMapper {
 
         //handling checked exception, converting them to unchecked
         try {
-            transit.setDistance(calculateDistance(
-                    dto.getSourceAddress(),dto.getDestinationAddress()));
+            transit.setDistance(distanceCalculator.calculateDistance(
+                    dto.getSourceAddress(), dto.getDestinationAddress()));
         }
         catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
         return transit;
-    }
-
-    //calculating distance using OpenDirectionsApi
-    //todo try to make this async
-    //todo use interface distance interface and create OpenDirectionsApiDistanceCalculator.class
-    private BigDecimal calculateDistance(String fromAdr,String toAdr) throws IOException, IncorrectLocationException {
-        var uriVariables = new HashMap<String, String>();
-        uriVariables.put("from", fromAdr);
-        uriVariables.put("to", toAdr);
-        var expandedURI = uriTemplate.expand(uriVariables);
-
-        JsonNode routeInfoNode = objectMapper.readTree(expandedURI.toURL());
-        JsonNode distanceNode = routeInfoNode.get("route").get("distance");
-
-        if (distanceNode == null || distanceNode.toString().equals("0")) {
-            //this exception will be caught only by method in CustomException handler, so bigDecimal won't be returned but that
-            //what handling method returns
-            //same thing happens in getRangeReport Method
-            throw new IncorrectLocationException("couldn't calculate distance given source or destination address is unacceptable\n" +
-                    "  sourceAddress: " + fromAdr + "\n" +
-                    "  destinationAddress: " + toAdr);
-        }
-
-        return new BigDecimal(distanceNode.asText());
     }
 }
