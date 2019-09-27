@@ -46,6 +46,7 @@ public class TransitMapperImpl implements TransitMapper {
 
     //calculating distance using OpenDirectionsApi
     //todo try to make this async
+    //todo use interface distance interface and create OpenDirectionsApiDistanceCalculator.class
     private BigDecimal calculateDistance(String fromAdr,String toAdr) throws IOException, IncorrectLocationException {
         var uriVariables = new HashMap<String, String>();
         uriVariables.put("from", fromAdr);

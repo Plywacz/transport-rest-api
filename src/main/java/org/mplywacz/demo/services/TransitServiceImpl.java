@@ -44,7 +44,7 @@ public class TransitServiceImpl implements TransitService {
             throw new IllegalArgumentException("you  provided wrong start and end date");
         }
 
-        //TODO: may replace below logic with SQL query
+        //TODO: may replace below logic with SQL query(not sure if it's necessary)
         Set<Transit> transits = transitRepository
                 .selectTransitsInDateRange(sDate, eDate);
 

@@ -14,6 +14,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 
 @ControllerAdvice
@@ -37,7 +38,8 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    @ExceptionHandler(value = {IllegalArgumentException.class, IllegalDateInputException.class})
+    @ExceptionHandler(value = {IllegalArgumentException.class, IllegalDateInputException.class,
+            DateTimeParseException.class,})
     ResponseEntity<Object> handleIncorrectDateInput(RuntimeException ex) {
         ex.printStackTrace();
         return new ResponseEntity<>(ex.getMessage(),

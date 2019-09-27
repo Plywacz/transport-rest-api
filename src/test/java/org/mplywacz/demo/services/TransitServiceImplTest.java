@@ -1,5 +1,7 @@
 package org.mplywacz.demo.services;
 
+import com.fasterxml.jackson.databind.node.POJONode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,12 +45,14 @@ public class TransitServiceImplTest {
 
     @Test
     public void addTransitHappyPath() {
+
+
         //given
         var transitDto = new TransitDto();
-        transitDto.setSourceAddress(SOURCE_ADDRESS);
-        transitDto.setDestinationAddress(DESTINATION_ADDRESS);
-        transitDto.setPrice(PRICE);
-        transitDto.setDate(DATE);
+        transitDto.setSourceAddress(new TextNode(SOURCE_ADDRESS));
+        transitDto.setDestinationAddress(new TextNode(DESTINATION_ADDRESS));
+        transitDto.setPrice(new POJONode(PRICE));
+        transitDto.setDate(new POJONode(DATE));
 
         var savedTransit = new Transit();
         savedTransit.setSourceAddress(transitDto.getSourceAddress());
@@ -66,28 +70,28 @@ public class TransitServiceImplTest {
         assertNotNull(returned.getDistance());
     }
 
-        //impossible as we have validation in controller
+    //impossible as we have validation in controller
 
-//    @Test(expected = IllegalArgumentException.class)
-//    public void addTransitWithIncorrectInfo() {
-//        var transitDto = new TransitDto();
-//        transitDto.setSourceAddress(SOURCE_ADDRESS);
-//        transitDto.setDestinationAddress(DESTINATION_ADDRESS);
-//        transitDto.setPrice(WRONG_PRICE);
-//        transitDto.setDate(DATE);
-//
-//        var savedTransit = new Transit();
-//
-//        //when
-//        when(transitRepo.save(any())).thenReturn(savedTransit);
-//        var returned = transitService.addTransit(transitDto);
-//    }
+    //    @Test(expected = IllegalArgumentException.class)
+    //    public void addTransitWithIncorrectInfo() {
+    //        var transitDto = new TransitDto();
+    //        transitDto.setSourceAddress(SOURCE_ADDRESS);
+    //        transitDto.setDestinationAddress(DESTINATION_ADDRESS);
+    //        transitDto.setPrice(WRONG_PRICE);
+    //        transitDto.setDate(DATE);
+    //
+    //        var savedTransit = new Transit();
+    //
+    //        //when
+    //        when(transitRepo.save(any())).thenReturn(savedTransit);
+    //        var returned = transitService.addTransit(transitDto);
+    //    }
 
     //impossible to pass null argument to the service since there is validation
-//    @Test(expected = IllegalArgumentException.class)
-//    public void addNullTransitDto() {
-//        transitService.addTransit(null);
-//    }
+    //    @Test(expected = IllegalArgumentException.class)
+    //    public void addNullTransitDto() {
+    //        transitService.addTransit(null);
+    //    }
 
     @Test
     public void getRangeReportHappy() throws JSONException {
@@ -151,14 +155,14 @@ public class TransitServiceImplTest {
 
     }
     //no need fot this test 'cause data validation is made in upper layer
-//    @Test(expected = IllegalArgumentException.class)
-//    public void getRangeReportIllegalArg() {
-//        var rangeRepDto = new RangeReportDto();
-//        rangeRepDto.setStartDate(null);
-//        rangeRepDto.setEndDate(LocalDate.of(2017, 1, 1));
-//
-//        transitService.getRangeReport(rangeRepDto);
-//    }
+    //    @Test(expected = IllegalArgumentException.class)
+    //    public void getRangeReportIllegalArg() {
+    //        var rangeRepDto = new RangeReportDto();
+    //        rangeRepDto.setStartDate(null);
+    //        rangeRepDto.setEndDate(LocalDate.of(2017, 1, 1));
+    //
+    //        transitService.getRangeReport(rangeRepDto);
+    //    }
 
     //i think there is no need te test  getMonthlyReport because it almost entirely utilises external libraries that are already well tested
 }

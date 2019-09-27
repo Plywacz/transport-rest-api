@@ -124,10 +124,25 @@ public class TransitControllerTest {
     @Test
     public void addTransitParsingPrice() throws Exception {
         JSONObject inputJson = new JSONObject()
-                .put("source_address", "val") //blank
+                .put("source_address", "val")
                 .put("destination_address", "val")
                 .put("price", "s")
                 .put("date", "2018-03-15");
+
+
+        mockMvc.perform(post("/api/transits/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content((inputJson).toString()))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void addTransitParsingDate() throws Exception{
+        JSONObject inputJson = new JSONObject()
+                .put("source_address", "val")
+                .put("destination_address", "val")
+                .put("price", "1")
+                .put("date", "wrong_date");
 
 
         mockMvc.perform(post("/api/transits/")
