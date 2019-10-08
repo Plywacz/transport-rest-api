@@ -77,4 +77,5 @@ public class Transit extends BasicEntity {
         this.distance = distance;
     }
 
+
 }
