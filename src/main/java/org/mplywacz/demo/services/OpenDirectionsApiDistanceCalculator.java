@@ -18,12 +18,10 @@ import java.util.HashMap;
 public class OpenDirectionsApiDistanceCalculator implements DistanceCalculator {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    //todo Externalize properties like api link to app.properties file
     public static final UriTemplate uriTemplate = new UriTemplate(
             "http://open.mapquestapi.com/directions/v2/route?key=wNq7cvi0pFSuG50szmeFaYI6VH9c2KEP&unit=k&from={from}&to={to}");
 
-
-    //todo try to make this async
+    //todo try to make this async ( if possible or sensible)
     @Override public BigDecimal calculateDistance(String fromAdr, String toAdr) throws IOException {
         var uriVariables = new HashMap<String, String>();
         uriVariables.put("from", fromAdr);

@@ -8,7 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mplywacz.demo.dto.RangeReportDto;
 import org.mplywacz.demo.dto.TransitDto;
-import org.mplywacz.demo.dto.mappers.TransitMapper;
+import org.mplywacz.demo.dto.mappers.Mapper;
 import org.mplywacz.demo.model.DailyInfo;
 import org.mplywacz.demo.model.Transit;
 import org.mplywacz.demo.repositories.TransitRepo;
@@ -22,16 +22,16 @@ import java.util.Set;
 @Service
 public class TransitServiceImpl implements TransitService {
     private final TransitRepo transitRepository;
-    private final TransitMapper transitMapper;
+    private final Mapper<TransitDto,Transit> transitMapper;
 
-    public TransitServiceImpl(TransitRepo transitRepository, TransitMapper transitMapperImpl) {
+    public TransitServiceImpl(TransitRepo transitRepository, Mapper<TransitDto, Transit> transitMapper) {
         this.transitRepository = transitRepository;
-        this.transitMapper = transitMapperImpl;
+        this.transitMapper = transitMapper;
     }
 
     //todo fix bug: app adds to DB transit which date  is incorrect i.e you add transit with 2019-09-01 date it saves 2019-08-31 !!!!!!!!!
     public Transit addTransit(final TransitDto transitDto) {
-        return transitRepository.save(transitMapper.convertTransitDto(transitDto));
+        return transitRepository.save(transitMapper.convertDto(transitDto));
     }
 
     @Override

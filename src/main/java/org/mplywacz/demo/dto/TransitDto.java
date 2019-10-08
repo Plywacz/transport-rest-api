@@ -6,7 +6,7 @@ Date: 04.07.2019
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.mplywacz.demo.json.TransitDtoDeserialization;
+import org.mplywacz.demo.json.TransitDtoDeserializer;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -15,9 +15,9 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import static org.mplywacz.demo.dto.BasicDto.buildDate;
+import static org.mplywacz.demo.dto.Dto.buildDate;
 
-@JsonDeserialize(using = TransitDtoDeserialization.class)
+@JsonDeserialize(using = TransitDtoDeserializer.class)
 public class TransitDto {
     @NotBlank(message = "source address must not be blank")
     private String sourceAddress;

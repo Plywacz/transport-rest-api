@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
-public abstract class BasicDto {
+public abstract class Dto {
     public  static final LocalDate buildDate(JsonNode date){
         LocalDate ld=null;
         if (date != null) {

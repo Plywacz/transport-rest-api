@@ -12,13 +12,13 @@ import org.mplywacz.demo.dto.RangeReportDto;
 
 import java.io.IOException;
 
-public class RangeReportDtoDeserialization extends StdDeserializer<RangeReportDto> {
+public class RangeReportDtoDeserializer extends StdDeserializer<RangeReportDto> {
 
-    public RangeReportDtoDeserialization() {
+    public RangeReportDtoDeserializer() {
         this(null);
     }
 
-    public RangeReportDtoDeserialization(Class<?> vc) {
+    public RangeReportDtoDeserializer(Class<?> vc) {
         super(vc);
     }
 

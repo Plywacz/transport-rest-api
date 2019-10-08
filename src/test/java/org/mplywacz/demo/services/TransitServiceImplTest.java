@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mplywacz.demo.dto.RangeReportDto;
 import org.mplywacz.demo.dto.TransitDto;
-import org.mplywacz.demo.dto.mappers.TransitMapper;
+import org.mplywacz.demo.dto.mappers.Mapper;
 import org.mplywacz.demo.model.Transit;
 import org.mplywacz.demo.repositories.TransitRepo;
 
@@ -33,7 +33,7 @@ public class TransitServiceImplTest {
     TransitRepo transitRepo;
 
     @Mock
-    TransitMapper transitMapper;
+    Mapper<TransitDto,Transit> transitMapper;
 
     TransitService transitService;
 

@@ -6,14 +6,14 @@ Date: 10.07.2019
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.mplywacz.demo.json.RangeReportDtoDeserialization;
+import org.mplywacz.demo.json.RangeReportDtoDeserializer;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-import static org.mplywacz.demo.dto.BasicDto.buildDate;
+import static org.mplywacz.demo.dto.Dto.buildDate;
 
-@JsonDeserialize(using = RangeReportDtoDeserialization.class)
+@JsonDeserialize(using = RangeReportDtoDeserializer.class)
 public class RangeReportDto {
 
     @NotNull(message = "start date cannot be null")

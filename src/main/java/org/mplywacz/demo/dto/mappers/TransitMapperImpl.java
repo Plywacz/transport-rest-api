@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class TransitMapperImpl implements TransitMapper {
+public class TransitMapperImpl implements Mapper<TransitDto,Transit>{
 
     private final DistanceCalculator distanceCalculator;
 
@@ -20,7 +20,7 @@ public class TransitMapperImpl implements TransitMapper {
         this.distanceCalculator = distanceCalculator;
     }
 
-    public Transit convertTransitDto(TransitDto dto) {
+    public Transit convertDto(TransitDto dto) {
         var transit = new Transit();
         transit.setSourceAddress(dto.getSourceAddress());
         transit.setDestinationAddress(dto.getDestinationAddress());

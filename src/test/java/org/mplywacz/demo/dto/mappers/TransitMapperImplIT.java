@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mplywacz.demo.dto.TransitDto;
 import org.mplywacz.demo.exceptions.IncorrectLocationException;
+import org.mplywacz.demo.model.Transit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TransitMapperImplIT {
 
     @Autowired
-    TransitMapper transitMapper;
+    Mapper<TransitDto, Transit> transitMapper;
 
     public static final String SOURCE_ADR = "Złota 44, Warszawa";
     public static final String DESTINATION_ADR = "ul. Zakret 8, Poznan";
@@ -37,7 +38,7 @@ public class TransitMapperImplIT {
         transitDto.setDate(new POJONode(LocalDate.now()));
         transitDto.setPrice(new POJONode(BigDecimal.valueOf(DEFAULT_PRICE)));
 
-        var convertedTransit = transitMapper.convertTransitDto(transitDto);
+        var convertedTransit = transitMapper.convertDto(transitDto);
 
         assertEquals(transitDto.getSourceAddress(), convertedTransit.getSourceAddress());
         assertEquals(transitDto.getDestinationAddress(), convertedTransit.getDestinationAddress());
@@ -56,7 +57,7 @@ public class TransitMapperImplIT {
         transitDto.setDate(new POJONode(LocalDate.now()));
         transitDto.setPrice(new POJONode(BigDecimal.valueOf(DEFAULT_PRICE)));
 
-        var convertedTransit = transitMapper.convertTransitDto(transitDto);
+        var convertedTransit = transitMapper.convertDto(transitDto);
 
         assertEquals(transitDto.getSourceAddress(), convertedTransit.getSourceAddress());
         assertEquals(transitDto.getDestinationAddress(), convertedTransit.getDestinationAddress());
@@ -70,7 +71,7 @@ public class TransitMapperImplIT {
         transitDto.setDate(new POJONode(LocalDate.now()));
         transitDto.setPrice(new POJONode(BigDecimal.valueOf(DEFAULT_PRICE)));
 
-        var convertedTransit = transitMapper.convertTransitDto(transitDto);
+        var convertedTransit = transitMapper.convertDto(transitDto);
 
         assertEquals(transitDto.getDate(), convertedTransit.getDate());
         assertEquals(transitDto.getPrice(), convertedTransit.getPrice());
