@@ -19,6 +19,10 @@ import static org.mplywacz.demo.dto.Dto.buildDate;
 
 @JsonDeserialize(using = TransitDtoDeserializer.class)
 public class TransitDto {
+
+    @NotNull(message = "driver id cannot be null")
+    private Long driverId;
+
     @NotBlank(message = "source address must not be blank")
     private String sourceAddress;
 
@@ -33,6 +37,19 @@ public class TransitDto {
     private LocalDate date;
 
     public TransitDto() {
+    }
+
+    public Long getDriverId() {
+        return driverId;
+    }
+
+    public void setDriverId(JsonNode driverId) {
+        if (driverId != null) {
+            this.driverId = driverId.asLong();
+        }
+        else {
+            throw new IllegalArgumentException("you have not provided source address");
+        }
     }
 
     public String getSourceAddress() {

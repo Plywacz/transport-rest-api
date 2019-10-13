@@ -1,4 +1,4 @@
-package org.mplywacz.demo.model;
+package org.mplywacz.demo.dto;
 /*
 Author: BeGieU
 Date: 19.09.2019

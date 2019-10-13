@@ -6,14 +6,16 @@ Date: 05.07.2019
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.mplywacz.demo.dto.DailyInfo;
 import org.mplywacz.demo.dto.RangeReportDto;
 import org.mplywacz.demo.dto.TransitDto;
 import org.mplywacz.demo.dto.mappers.Mapper;
-import org.mplywacz.demo.model.DailyInfo;
 import org.mplywacz.demo.model.Transit;
+import org.mplywacz.demo.repositories.DriverRepo;
 import org.mplywacz.demo.repositories.TransitRepo;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -22,16 +24,46 @@ import java.util.Set;
 @Service
 public class TransitServiceImpl implements TransitService {
     private final TransitRepo transitRepository;
-    private final Mapper<TransitDto,Transit> transitMapper;
+    private final DriverRepo driverRepo;
+    private final Mapper<TransitDto, Transit> transitMapper;
+    private final DistanceCalculator distanceCalculator;
 
-    public TransitServiceImpl(TransitRepo transitRepository, Mapper<TransitDto, Transit> transitMapper) {
+    public TransitServiceImpl(TransitRepo transitRepository,
+                              DriverRepo driverRepo,
+                              Mapper<TransitDto, Transit> transitMapper,
+                              DistanceCalculator distanceCalculator) {
         this.transitRepository = transitRepository;
+        this.driverRepo = driverRepo;
         this.transitMapper = transitMapper;
+        this.distanceCalculator = distanceCalculator;
     }
 
     //todo fix bug: app adds to DB transit which date  is incorrect i.e you add transit with 2019-09-01 date it saves 2019-08-31 !!!!!!!!!
     public Transit addTransit(final TransitDto transitDto) {
-        return transitRepository.save(transitMapper.convertDto(transitDto));
+        var incompleteTransit = transitMapper.convertDto(transitDto);
+
+        try {
+            incompleteTransit.setDistance(distanceCalculator.calculateDistance(
+                    transitDto.getSourceAddress(),
+                    transitDto.getDestinationAddress()));
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        var driverId = transitDto.getDriverId();
+        var driverOpt = driverRepo.findById(driverId);
+        if (driverOpt.isEmpty()) {
+            throw new RuntimeException("couldn't add transit to db because driver with ID: "
+                    + driverId + " related with this transit doesn't exist in db. ");
+        }
+
+        var driver = driverOpt.get();
+        incompleteTransit.setDriver(driver);
+        //after this line incomplete transit is already complete
+        driver.addTransit(incompleteTransit);
+
+        return transitRepository.save(incompleteTransit);
     }
 
     @Override

@@ -6,6 +6,8 @@ import org.mplywacz.demo.model.Driver;
 import org.mplywacz.demo.repositories.DriverRepo;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 /*
 Author: BeGieU
 Date: 08.10.2019
@@ -25,8 +27,26 @@ public class DriverServiceImpl implements DriverService {
         return driverRepo.save(driverMapper.convertDto(driverDto));
     }
 
-    @Override public String deleteDriver(Long id) {
-        driverRepo.deleteById(id);
+    @Override public Driver getDriver(String id) {
+        var idVal = parseId(id);
+        return driverRepo.findById(idVal).orElseThrow(
+                () -> new NoSuchElementException("Element with given id: " + id + " not found"));
+    }
+
+    @Override public String deleteDriver(String id) {
+        var idVal = parseId(id);
+        driverRepo.deleteById(idVal);
         return "deleted driver with id: " + id;
+    }
+
+    private Long parseId(String sId) {
+        var idVal = Long.MIN_VALUE;
+        try {
+            idVal = Long.parseLong(sId);
+        }
+        catch (NumberFormatException e) {
+            throw new NumberFormatException("given value cannot be parsed to Long: " + sId);
+        }
+        return idVal;
     }
 }

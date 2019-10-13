@@ -26,9 +26,10 @@ public class TransitDtoDeserializer extends StdDeserializer<TransitDto> {
     public TransitDto deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
 
         JsonNode node = jp.getCodec().readTree(jp);
-        if (node.size() != 4) {
+        if (node.size() != 5) {
             throw new IllegalArgumentException("incorrect json object passed, correct format:" +
                     "{\n" +
+                    "  \"driver_id\":      \"1\",\n" +
                     "  \"source_address\":      \"ul. Zakręt 8, Poznań\",\n" +
                     "  \"destination_address\": \"Złota 44, Warszawa\",\n" +
                     "  \"price\":               450,\n" +
@@ -37,6 +38,7 @@ public class TransitDtoDeserializer extends StdDeserializer<TransitDto> {
         }
 
         var transitDto = new TransitDto();
+        transitDto.setDriverId(node.get("driver_id"));
         transitDto.setSourceAddress(node.get("source_address"));
         transitDto.setDestinationAddress(node.get("destination_address"));
         transitDto.setPrice(node.get("price"));

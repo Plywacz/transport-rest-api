@@ -42,6 +42,10 @@ public class Driver extends BasicEntity {
             fetch = FetchType.LAZY)
     private Set<Transit> transits = new HashSet<>();
 
+    public void addTransit(Transit transit){
+        transits.add(transit);
+    }
+
     public Set<Transit> getTransits() {
         return transits;
     }

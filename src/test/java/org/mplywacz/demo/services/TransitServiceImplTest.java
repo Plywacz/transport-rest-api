@@ -11,6 +11,7 @@ import org.mplywacz.demo.dto.RangeReportDto;
 import org.mplywacz.demo.dto.TransitDto;
 import org.mplywacz.demo.dto.mappers.Mapper;
 import org.mplywacz.demo.model.Transit;
+import org.mplywacz.demo.repositories.DriverRepo;
 import org.mplywacz.demo.repositories.TransitRepo;
 
 import java.math.BigDecimal;
@@ -33,14 +34,20 @@ public class TransitServiceImplTest {
     TransitRepo transitRepo;
 
     @Mock
-    Mapper<TransitDto,Transit> transitMapper;
+    DriverRepo driverRepo;
+
+    @Mock
+    Mapper<TransitDto, Transit> transitMapper;
+
+    @Mock
+    DistanceCalculator distanceCalculator;
 
     TransitService transitService;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        transitService = new TransitServiceImpl(transitRepo, transitMapper);
+        transitService = new TransitServiceImpl(transitRepo, driverRepo, transitMapper,distanceCalculator);
     }
 
     @Test

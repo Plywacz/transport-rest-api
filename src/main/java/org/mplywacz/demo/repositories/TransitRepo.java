@@ -4,7 +4,7 @@ Author: BeGieU
 Date: 05.07.2019
 */
 
-import org.mplywacz.demo.model.DailyInfo;
+import org.mplywacz.demo.dto.DailyInfo;
 import org.mplywacz.demo.model.Transit;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -21,7 +21,7 @@ public interface TransitRepo extends CrudRepository<Transit, Long> {
 
     //https://stackoverflow.com/questions/36328063/how-to-return-a-custom-object-from-a-spring-data-jpa-group-by-query
     @Query(value = "SELECT " +
-            "new org.mplywacz.demo.model.DailyInfo(t.date, SUM(t.distance), AVG(t.distance), AVG(t.price)) " +
+            "new org.mplywacz.demo.dto.DailyInfo(t.date, SUM(t.distance), AVG(t.distance), AVG(t.price)) " +
             "from Transit t " +
             "WHERE t.date >= ?1 AND t.date <= ?2 " +
             "GROUP BY t.date " +

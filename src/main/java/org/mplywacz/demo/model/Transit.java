@@ -4,6 +4,9 @@ Author: BeGieU
 Date: 02.07.2019
 */
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.mplywacz.demo.json.TransitDtoSerializer;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -12,6 +15,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
+@JsonSerialize(using = TransitDtoSerializer.class)
 public class Transit extends BasicEntity {
 
     private String sourceAddress;

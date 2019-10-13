@@ -6,20 +6,18 @@ Date: 16.09.2019
 
 import org.mplywacz.demo.dto.TransitDto;
 import org.mplywacz.demo.model.Transit;
-import org.mplywacz.demo.services.DistanceCalculator;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-
 @Component
-public class TransitMapperImpl implements Mapper<TransitDto,Transit>{
-
-    private final DistanceCalculator distanceCalculator;
-
-    public TransitMapperImpl(DistanceCalculator distanceCalculator) {
-        this.distanceCalculator = distanceCalculator;
+public class TransitMapperImpl implements Mapper<TransitDto, Transit> {
+    public TransitMapperImpl() {
     }
 
+    /**
+     * @param dto to be mapped on model object
+     * @return unfinished model object which contains only fields that assignment to them requires no logic.
+     * basic
+     */
     public Transit convertDto(TransitDto dto) {
         var transit = new Transit();
         transit.setSourceAddress(dto.getSourceAddress());
@@ -27,15 +25,6 @@ public class TransitMapperImpl implements Mapper<TransitDto,Transit>{
         transit.setDate(dto.getDate());
         transit.setPrice(dto.getPrice());
 
-        //handling checked exception, converting them to unchecked
-        try {
-            transit.setDistance(distanceCalculator.calculateDistance(
-                    dto.getSourceAddress(), dto.getDestinationAddress()));
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
         return transit;
     }
 }

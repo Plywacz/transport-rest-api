@@ -4,9 +4,9 @@ Author: BeGieU
 Date: 02.07.2019
 */
 
+import org.mplywacz.demo.dto.DailyInfo;
 import org.mplywacz.demo.dto.RangeReportDto;
 import org.mplywacz.demo.dto.TransitDto;
-import org.mplywacz.demo.model.DailyInfo;
 import org.mplywacz.demo.model.Transit;
 import org.mplywacz.demo.services.TransitService;
 import org.springframework.http.HttpStatus;

@@ -31,10 +31,19 @@ public class DriverController {
         return driverService.addDriver(driverDto);
     }
 
+    @GetMapping(value = "/drivers/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody Driver getDriver(@Valid @PathVariable String id) {
+        return driverService.getDriver(id);
+    }
+
+
     @DeleteMapping(value = "/drivers/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public @ResponseBody String deleteDriver(@PathVariable Long id) {
+    public @ResponseBody String deleteDriver(@PathVariable String id) {
         return driverService.deleteDriver(id);
     }
 }
