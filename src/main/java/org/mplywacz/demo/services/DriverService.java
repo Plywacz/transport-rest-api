@@ -10,7 +10,7 @@ import org.mplywacz.demo.model.Driver;
 public interface DriverService {
     Driver addDriver(DriverDto driverDto);
 
-    Driver getDriver(String id);
+    Driver getDriver(Long id);
 
-    String deleteDriver(String id);
+    String deleteDriver(Long id);
 }

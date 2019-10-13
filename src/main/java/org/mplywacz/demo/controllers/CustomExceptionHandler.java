@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 
+//todo fix unsuitable HttpsStatus in response entity
+
 @ControllerAdvice
 public class CustomExceptionHandler {
     @ExceptionHandler(value = IncorrectLocationException.class)

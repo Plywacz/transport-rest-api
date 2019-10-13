@@ -27,26 +27,15 @@ public class DriverServiceImpl implements DriverService {
         return driverRepo.save(driverMapper.convertDto(driverDto));
     }
 
-    @Override public Driver getDriver(String id) {
-        var idVal = parseId(id);
-        return driverRepo.findById(idVal).orElseThrow(
+    @Override public Driver getDriver(Long id) {
+        return driverRepo.findById(id).orElseThrow(
                 () -> new NoSuchElementException("Element with given id: " + id + " not found"));
     }
 
-    @Override public String deleteDriver(String id) {
-        var idVal = parseId(id);
-        driverRepo.deleteById(idVal);
+    @Override public String deleteDriver(Long id) {
+        driverRepo.deleteById(id);
         return "deleted driver with id: " + id;
     }
 
-    private Long parseId(String sId) {
-        var idVal = Long.MIN_VALUE;
-        try {
-            idVal = Long.parseLong(sId);
-        }
-        catch (NumberFormatException e) {
-            throw new NumberFormatException("given value cannot be parsed to Long: " + sId);
-        }
-        return idVal;
-    }
+
 }
