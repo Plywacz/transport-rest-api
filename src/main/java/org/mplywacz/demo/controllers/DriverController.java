@@ -49,4 +49,5 @@ public class DriverController {
     public @ResponseBody String deleteDriver(@PathVariable @Min(1) Long id) {
         return driverService.deleteDriver(id);
     }
+
 }

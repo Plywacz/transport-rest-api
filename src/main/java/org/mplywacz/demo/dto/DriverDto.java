@@ -17,14 +17,22 @@ public class DriverDto {
     @NotBlank(message = "last name cannot be empty")
     private String lastName;
 
+    @NotBlank(message = "userName  cannot be empty")
+    private String userName;
+    @NotBlank(message = "last name cannot be empty")
+    private String password;
+
     private DriverDto() {
 
     }
 
-    public static DriverDto buildDriverDto(JsonNode fName, JsonNode lName) {
+    public static DriverDto buildDriverDto(JsonNode fName, JsonNode lName,
+                                           JsonNode uName, JsonNode pWord) {
         var dto = new DriverDto();
         dto.setFirstName(fName);
         dto.setLastName(lName);
+        dto.setUserName(uName);
+        dto.setPassword(pWord);
         return dto;
     }
 
@@ -33,12 +41,7 @@ public class DriverDto {
     }
 
     private void setFirstName(JsonNode firstName) {
-        if (firstName != null) {
-            this.firstName = firstName.asText();
-        }
-        else {
-            throw new IllegalArgumentException("you have not provided first Name of driver");
-        }
+        this.firstName = getNodeValue(firstName, "you have not provided first Name of driver");
 
     }
 
@@ -47,12 +50,31 @@ public class DriverDto {
     }
 
     private void setLastName(JsonNode lastName) {
-        if (lastName != null) {
-            this.lastName = lastName.asText();
-        }
-        else {
-            throw new IllegalArgumentException("you have not provided last name of driver");
-        }
+        this.lastName = getNodeValue(lastName, "you have not provided last Name of driver");
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(JsonNode userName) {
+        this.userName = getNodeValue(userName, "you have not provided proper userName of driver");
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(JsonNode password) {
+        this.password = getNodeValue(password, "you have not provided proper password of driver");
+    }
+
+    private String getNodeValue(JsonNode node, String errorMsg) {
+        if (node != null) {
+            return node.asText();
+        }
+        else {
+            throw new IllegalArgumentException(errorMsg);
+        }
+    }
 }
