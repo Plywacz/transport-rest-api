@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/transits")
 public class TransitController {
     private final TransitService transitService;
 
@@ -25,7 +25,7 @@ public class TransitController {
         this.transitService = transitService;
     }
 
-    @PostMapping(value = "/transits/",
+    @PostMapping(value = "/",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -34,8 +34,7 @@ public class TransitController {
     }
 
     @GetMapping(value = "/reports/range",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public @ResponseBody String getRangeReport(@Valid @RequestBody RangeReportDto rangeReportDto) {
         return transitService.getRangeReport(rangeReportDto).toString();

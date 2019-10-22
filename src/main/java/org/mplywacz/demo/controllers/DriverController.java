@@ -9,15 +9,13 @@ import org.mplywacz.demo.model.Driver;
 import org.mplywacz.demo.services.DriverService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
 @RestController
-@RequestMapping("/api")
-@Validated //
+@RequestMapping("/api/drivers")
 public class DriverController {
 
     private final DriverService driverService;
@@ -26,7 +24,7 @@ public class DriverController {
         this.driverService = driverService;
     }
 
-    @PostMapping(value = "/drivers/",
+    @PostMapping(value = "/",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -34,8 +32,7 @@ public class DriverController {
         return driverService.addDriver(driverDto);
     }
 
-    @GetMapping(value = "/drivers/{id}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
+    @GetMapping(value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Driver getDriver( @PathVariable @Min(1) Long id) {
@@ -43,7 +40,7 @@ public class DriverController {
     }
 
 
-    @DeleteMapping(value = "/drivers/{id}",
+    @DeleteMapping(value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody String deleteDriver(@PathVariable @Min(1) Long id) {
