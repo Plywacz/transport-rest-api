@@ -31,15 +31,12 @@ public class DriverDtoDeserializer extends StdDeserializer<DriverDto> {
                     "{\n" +
                     "  \"first_name\":      \"Jan\",\n" +
                     "  \"last_name\": \"Kowalski\",\n" +
-                    "  \"user_name\": \"jan\",\n" +
-                    "  \"pass_word\": \"jan123\",\n" +
                     "}");
         }
 
         return DriverDto.buildDriverDto(
                 requestBodyContent.get("first_name"),
-                requestBodyContent.get("last_name"),
-                requestBodyContent.get("user_name"),
-                requestBodyContent.get("pass_word"));
+                requestBodyContent.get("last_name")
+        );
     }
 }
