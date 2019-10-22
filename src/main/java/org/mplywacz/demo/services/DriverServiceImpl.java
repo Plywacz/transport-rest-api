@@ -4,6 +4,7 @@ import org.mplywacz.demo.dto.DriverDto;
 import org.mplywacz.demo.dto.mappers.Mapper;
 import org.mplywacz.demo.model.Driver;
 import org.mplywacz.demo.repositories.DriverRepo;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -29,11 +30,15 @@ public class DriverServiceImpl implements DriverService {
 
     @Override public Driver getDriver(Long id) {
         return driverRepo.findById(id).orElseThrow(
-                () -> new NoSuchElementException("Element with given id: " + id + " not found"));
+                () -> new NoSuchElementException("Driver with given id: " + id + " not found"));
     }
 
     @Override public String deleteDriver(Long id) {
-        driverRepo.deleteById(id);
+        try {
+            driverRepo.deleteById(id);
+        }catch (DataAccessException e){
+            throw new NoSuchElementException("Driver with given id: " + id + " not found, so we couldn't delete");
+        }
         return "deleted driver with id: " + id;
     }
 

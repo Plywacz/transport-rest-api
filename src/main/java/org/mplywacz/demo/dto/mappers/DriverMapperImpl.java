@@ -20,8 +20,6 @@ public class DriverMapperImpl implements Mapper<DriverDto, Driver> {
          */
         return new Driver(driverDto.getFirstName(),
                 driverDto.getLastName(),
-                driverDto.getUserName(),
-                driverDto.getPassword(),
                 LocalDate.now());
     }
 }

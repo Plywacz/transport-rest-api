@@ -16,6 +16,9 @@ abstract class BasicEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    public BasicEntity() {
+    }
+
     public Long getId() {
         return id;
     }
