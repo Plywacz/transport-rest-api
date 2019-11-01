@@ -26,7 +26,6 @@ public class CustomExceptionHandler {
         ex.printStackTrace();
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
-
     //handle error msg's for @Valid
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     ResponseEntity<Object> handleDtoValidation(MethodArgumentNotValidException ex) {
@@ -51,7 +50,7 @@ public class CustomExceptionHandler {
     @ExceptionHandler(value = {HttpMessageNotReadableException.class})
     ResponseEntity<Object> handleEmptyDto(RuntimeException ex) {
         ex.printStackTrace();
-        return new ResponseEntity<>("Required request body is missing",
+        return new ResponseEntity<>("Required request body is missing, or wrong json format",
                 HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
@@ -62,5 +61,6 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
 }

@@ -33,6 +33,7 @@ public class TransitController {
         return transitService.addTransit(transitDto);
     }
 
+    //get report that contains stats about whole transits that took place between given dates
     @GetMapping(value = "/reports/range",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -41,6 +42,7 @@ public class TransitController {
 
     }
 
+    //returns report that contains stats about transits that took place in current month
     @GetMapping(value = "/reports/monthly",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)

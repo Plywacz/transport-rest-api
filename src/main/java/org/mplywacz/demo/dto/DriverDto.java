@@ -17,11 +17,9 @@ public class DriverDto {
     @NotBlank(message = "last name cannot be empty")
     private String lastName;
 
-
     private DriverDto() {
 
     }
-
     public static DriverDto buildDriverDto(JsonNode fName, JsonNode lName) {
         var dto = new DriverDto();
         dto.setFirstName(fName);
