@@ -5,6 +5,7 @@ Date: 08.10.2019
 */
 
 import org.mplywacz.demo.dto.DriverDto;
+import org.mplywacz.demo.dto.DriverReport;
 import org.mplywacz.demo.model.Driver;
 
 public interface DriverService {
@@ -13,4 +14,6 @@ public interface DriverService {
     Driver getDriver(Long id);
 
     String deleteDriver(Long id);
+
+    DriverReport getDriverReport(Long id);
 }
