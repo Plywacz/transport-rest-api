@@ -12,6 +12,8 @@ import org.mplywacz.demo.dto.RangeReportDto;
 
 import java.io.IOException;
 
+import static org.mplywacz.demo.json.DeserializerHelper.buildDateFromNode;
+
 public class RangeReportDtoDeserializer extends StdDeserializer<RangeReportDto> {
 
     public RangeReportDtoDeserializer() {
@@ -24,11 +26,9 @@ public class RangeReportDtoDeserializer extends StdDeserializer<RangeReportDto> 
 
     @Override
     public RangeReportDto deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
-        JsonNode node = jp.getCodec().readTree(jp);
+        JsonNode requestBodyContent = jp.getCodec().readTree(jp);
 
-        var dto = new RangeReportDto();
-
-        if (node.size() != 2) {
+        if (requestBodyContent.size() != 2) {
             throw new IllegalArgumentException("provide inputJson in  in correct format, example :"
                     + " {\n" +
                     "  \"start_date\": \"2018-01-20\",\n" +
@@ -36,9 +36,9 @@ public class RangeReportDtoDeserializer extends StdDeserializer<RangeReportDto> 
                     "} \n this one was to long");
         }
 
-        dto.setStartDate(node.get("start_date"));
-        dto.setEndDate(node.get("end_date"));
-
-        return dto;
+        return new RangeReportDto(
+                buildDateFromNode(requestBodyContent.get("start_date")),
+                buildDateFromNode(requestBodyContent.get("end_date"))
+        );
     }
 }

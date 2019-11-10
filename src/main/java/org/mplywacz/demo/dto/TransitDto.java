@@ -4,7 +4,6 @@ Author: BeGieU
 Date: 04.07.2019
 */
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.mplywacz.demo.json.TransitDtoDeserializer;
 
@@ -14,8 +13,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
-import static org.mplywacz.demo.dto.Dto.buildDate;
 
 @JsonDeserialize(using = TransitDtoDeserializer.class)
 public class TransitDto {
@@ -36,70 +33,37 @@ public class TransitDto {
     @NotNull(message = "you have to provide valid date")
     private LocalDate date;
 
-    public TransitDto() {
+    public TransitDto(Long driverId,
+                      String sourceAddress,
+                      String destinationAddress,
+                      BigDecimal price,
+                      LocalDate date) {
+        this.driverId = driverId;
+        this.sourceAddress = sourceAddress;
+        this.destinationAddress = destinationAddress;
+        this.price = price;
+        this.date = date;
     }
 
     public Long getDriverId() {
         return driverId;
     }
 
-    public void setDriverId(JsonNode driverId) {
-        if (driverId != null) {
-            this.driverId = driverId.asLong();
-        }
-        else {
-            throw new IllegalArgumentException("you have not provided source address");
-        }
-    }
-
     public String getSourceAddress() {
         return sourceAddress;
-    }
-
-    public void setSourceAddress(JsonNode sourceAddress) {
-        if (sourceAddress != null) {
-            this.sourceAddress = sourceAddress.asText();
-        }
-        else {
-            throw new IllegalArgumentException("you have not provided source address");
-        }
     }
 
     public String getDestinationAddress() {
         return destinationAddress;
     }
 
-    public void setDestinationAddress(JsonNode destinationAddress) {
-        if (destinationAddress != null) {
-            this.destinationAddress = destinationAddress.asText();
-        }
-        else {
-            throw new IllegalArgumentException("you have not provided destination address");
-        }
-    }
-
     public BigDecimal getPrice() {
         return price;
-    }
-
-    public void setPrice(JsonNode price) {
-        if (price != null) {
-            try {
-                Double val = Double.parseDouble(price.asText());
-                this.price = BigDecimal.valueOf(val);
-            }
-            catch (NumberFormatException e) {
-                throw new NumberFormatException("provide correct numerical price value given: " + price.asText());
-            }
-
-        }
     }
 
     public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(JsonNode date) {
-       this.date=buildDate(date);
-    }
+
 }

@@ -13,7 +13,7 @@ import org.mplywacz.demo.dto.DriverDto;
 
 import java.io.IOException;
 
-import static org.mplywacz.demo.json.DeserializerHelper.getNodeValue;
+import static org.mplywacz.demo.json.DeserializerHelper.getNodeStringValue;
 
 public class DriverDtoDeserializer extends StdDeserializer<DriverDto> {
     public DriverDtoDeserializer() {
@@ -44,8 +44,8 @@ public class DriverDtoDeserializer extends StdDeserializer<DriverDto> {
         }
 
         return new DriverDto(
-                getNodeValue(requestBodyContent.get("first_name"), "you haven't provided proper first name"),
-                getNodeValue(requestBodyContent.get("last_name"), "you haven't provided proper last name")
+                getNodeStringValue(requestBodyContent.get("first_name"), "you haven't provided proper first name"),
+                getNodeStringValue(requestBodyContent.get("last_name"), "you haven't provided proper last name")
         );
     }
 }

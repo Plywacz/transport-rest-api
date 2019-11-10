@@ -12,6 +12,9 @@ import org.mplywacz.demo.dto.TransitDto;
 
 import java.io.IOException;
 
+import static org.mplywacz.demo.json.DeserializerHelper.buildDateFromNode;
+import static org.mplywacz.demo.json.DeserializerHelper.getNodeBigDecimalValue;
+
 public class TransitDtoDeserializer extends StdDeserializer<TransitDto> {
 
     public TransitDtoDeserializer() {
@@ -25,8 +28,8 @@ public class TransitDtoDeserializer extends StdDeserializer<TransitDto> {
     @Override
     public TransitDto deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
 
-        JsonNode node = jp.getCodec().readTree(jp);
-        if (node.size() != 5) {
+        JsonNode requestBodyNode = jp.getCodec().readTree(jp);
+        if (requestBodyNode.size() != 5) {
             throw new IllegalArgumentException("incorrect json object passed, correct format:" +
                     "{\n" +
                     "  \"driver_id\":      \"1\",\n" +
@@ -37,14 +40,13 @@ public class TransitDtoDeserializer extends StdDeserializer<TransitDto> {
                     "}");
         }
 
-        var transitDto = new TransitDto();
-        transitDto.setDriverId(node.get("driver_id"));
-        transitDto.setSourceAddress(node.get("source_address"));
-        transitDto.setDestinationAddress(node.get("destination_address"));
-        transitDto.setPrice(node.get("price"));
-        transitDto.setDate(node.get("date"));
-
-        return transitDto;
+        return new TransitDto(
+                requestBodyNode.get("driver_id").asLong(),
+                requestBodyNode.get("source_address").asText(),
+                requestBodyNode.get("destination_address").asText(),
+                getNodeBigDecimalValue(requestBodyNode.get("price"), "price not provided"),
+                buildDateFromNode(requestBodyNode.get("date"))
+        );
     }
 
 }
