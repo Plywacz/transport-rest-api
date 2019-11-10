@@ -12,8 +12,7 @@ import org.mplywacz.demo.dto.TransitDto;
 
 import java.io.IOException;
 
-import static org.mplywacz.demo.json.DeserializerHelper.buildDateFromNode;
-import static org.mplywacz.demo.json.DeserializerHelper.getNodeBigDecimalValue;
+import static org.mplywacz.demo.json.DeserializerHelper.*;
 
 public class TransitDtoDeserializer extends StdDeserializer<TransitDto> {
 
@@ -40,10 +39,11 @@ public class TransitDtoDeserializer extends StdDeserializer<TransitDto> {
                     "}");
         }
 
+        //all this below static methods in TransitDto(...) are needed to prevent null pointer exceptions
         return new TransitDto(
-                requestBodyNode.get("driver_id").asLong(),
-                requestBodyNode.get("source_address").asText(),
-                requestBodyNode.get("destination_address").asText(),
+                getNodeLongValue(requestBodyNode.get("driver_id"), "you havent provided driver's id"),
+                getNodeStringValue(requestBodyNode.get("source_address"), "you haven't provided source address"),
+                getNodeStringValue(requestBodyNode.get("destination_address"), "you havent provided destination address"),
                 getNodeBigDecimalValue(requestBodyNode.get("price"), "price not provided"),
                 buildDateFromNode(requestBodyNode.get("date"))
         );
