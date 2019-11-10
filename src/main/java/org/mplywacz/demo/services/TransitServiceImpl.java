@@ -54,7 +54,7 @@ public class TransitServiceImpl implements TransitService {
         var driverId = transitDto.getDriverId();
         var driverOpt = driverRepo.findById(driverId);
         if (driverOpt.isEmpty()) {
-            throw new RuntimeException("couldn't add transit to db because driver with ID: "
+            throw new IllegalArgumentException("couldn't add transit to db because driver with ID: "
                     + driverId + " related with this transit doesn't exist in db. ");
         }
 

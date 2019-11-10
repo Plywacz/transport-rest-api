@@ -24,12 +24,12 @@ public class TransitDtoSerializer extends StdSerializer<Transit> {
     public void serialize(Transit value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         gen.writeStartObject();
         gen.writeNumberField("id", value.getId());
-        gen.writeStringField("source_address", value.getSourceAddress());
-        gen.writeStringField("destination_address", value.getDestinationAddress());
+        gen.writeStringField("sourceAddress", value.getSourceAddress());
+        gen.writeStringField("destinationAddress", value.getDestinationAddress());
         gen.writeStringField("price", value.getPrice().toString());
         gen.writeStringField("date", value.getDate().toString());
         gen.writeStringField("distance", value.getDistance().toString());
-        gen.writeNumberField("driver_id", value.getDriver().getId());
+        gen.writeNumberField("driverId", value.getDriver().getId());
         gen.writeEndObject();
 
     }

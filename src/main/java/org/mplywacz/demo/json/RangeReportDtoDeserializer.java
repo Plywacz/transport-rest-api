@@ -31,14 +31,14 @@ public class RangeReportDtoDeserializer extends StdDeserializer<RangeReportDto> 
         if (requestBodyContent.size() != 2) {
             throw new IllegalArgumentException("provide inputJson in  in correct format, example :"
                     + " {\n" +
-                    "  \"start_date\": \"2018-01-20\",\n" +
-                    "  \"end_date\":  \"2018-01-25\"\n" +
+                    "  \"startDate\": \"2018-01-20\",\n" +
+                    "  \"endDate\":  \"2018-01-25\"\n" +
                     "} \n this one was to long");
         }
 
         return new RangeReportDto(
-                buildDateFromNode(requestBodyContent.get("start_date")),
-                buildDateFromNode(requestBodyContent.get("end_date"))
+                buildDateFromNode(requestBodyContent.get("startDate")),
+                buildDateFromNode(requestBodyContent.get("endDate"))
         );
     }
 }

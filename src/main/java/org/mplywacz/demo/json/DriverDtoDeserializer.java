@@ -38,14 +38,14 @@ public class DriverDtoDeserializer extends StdDeserializer<DriverDto> {
         if (requestBodyContent.size() != 2) {
             throw new IllegalArgumentException("incorrect json object passed, correct format:" +
                     "{\n" +
-                    "  \"first_name\": \"Jan\",\n" +
-                    "  \"last_name\": \"Kowalski\",\n" +
+                    "  \"firstName\": \"Jan\",\n" +
+                    "  \"lastName\": \"Kowalski\",\n" +
                     "}");
         }
 
         return new DriverDto(
-                getNodeStringValue(requestBodyContent.get("first_name"), "you haven't provided proper first name"),
-                getNodeStringValue(requestBodyContent.get("last_name"), "you haven't provided proper last name")
+                getNodeStringValue(requestBodyContent.get("firstName"), "you haven't provided proper first name"),
+                getNodeStringValue(requestBodyContent.get("lastName"), "you haven't provided proper last name")
         );
     }
 }

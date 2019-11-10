@@ -4,6 +4,9 @@ Author: BeGieU
 Date: 02.07.2019
 */
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +15,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+@ApiModel(description = "All details about the driver")
 @Entity
 public class Driver extends BasicEntity {
 
@@ -20,9 +24,35 @@ public class Driver extends BasicEntity {
      * then we add him to DB, therefore
      * enrolledDate is set by service not sent with json
      */
+    @ApiModelProperty(
+            notes = "enrollment date",
+            required = true,
+            position = 1)
     private LocalDate enrolledDate;
+
+    @ApiModelProperty(
+            notes = "first name of employee",
+            required = true,
+            position = 2,
+            example = "Jan")
     private String firstName;
+    @ApiModelProperty(
+            notes = "last name of employee",
+            required = true,
+            position = 3,
+            example = "Doe")
     private String lastName;
+
+    @ApiModelProperty(
+            notes = "transits realised by this driver",
+            required = true,
+            dataType = "Set<Transit>",
+            position = 4)
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            mappedBy = "driver",
+            fetch = FetchType.LAZY)
+    private Set<Transit> transits = new HashSet<>();
 
     /**
      * For hibernate usage
@@ -36,11 +66,6 @@ public class Driver extends BasicEntity {
         this.firstName = firstName;
         this.lastName = lastName;
     }
-
-    @OneToMany(cascade = CascadeType.ALL,
-            mappedBy = "driver",
-            fetch = FetchType.LAZY)
-    private Set<Transit> transits = new HashSet<>();
 
     public void addTransit(Transit transit) {
         transits.add(transit);

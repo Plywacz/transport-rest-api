@@ -27,9 +27,9 @@ public class DailyInfoSerializer extends StdSerializer<DailyInfo> {
     public void serialize(DailyInfo value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         gen.writeStartObject();
         gen.writeStringField("date", convertDate(value.getDate()));
-        gen.writeNumberField("total_distance", value.getTotalDistance());
-        gen.writeNumberField("avg_distance", value.getAvgDistance());
-        gen.writeNumberField("avg_price", value.getAvgPrice());
+        gen.writeNumberField("totalDistance", value.getTotalDistance());
+        gen.writeNumberField("avgDistance", value.getAvgDistance());
+        gen.writeNumberField("avgPrice", value.getAvgPrice());
         gen.writeEndObject();
 
     }

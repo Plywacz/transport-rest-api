@@ -31,9 +31,9 @@ public class TransitDtoDeserializer extends StdDeserializer<TransitDto> {
         if (requestBodyNode.size() != 5) {
             throw new IllegalArgumentException("incorrect json object passed, correct format:" +
                     "{\n" +
-                    "  \"driver_id\":      \"1\",\n" +
-                    "  \"source_address\":      \"ul. Zakręt 8, Poznań\",\n" +
-                    "  \"destination_address\": \"Złota 44, Warszawa\",\n" +
+                    "  \"driverId\":      \"1\",\n" +
+                    "  \"sourceAddress\":      \"ul. Zakręt 8, Poznań\",\n" +
+                    "  \"destinationAddress\": \"Złota 44, Warszawa\",\n" +
                     "  \"price\":               450,\n" +
                     "  \"date\":                \"2018-03-15\"\n" +
                     "}");
@@ -41,9 +41,9 @@ public class TransitDtoDeserializer extends StdDeserializer<TransitDto> {
 
         //all this below static methods in TransitDto(...) are needed to prevent null pointer exceptions
         return new TransitDto(
-                getNodeLongValue(requestBodyNode.get("driver_id"), "you havent provided driver's id"),
-                getNodeStringValue(requestBodyNode.get("source_address"), "you haven't provided source address"),
-                getNodeStringValue(requestBodyNode.get("destination_address"), "you havent provided destination address"),
+                getNodeLongValue(requestBodyNode.get("driverId"), "you havent provided driver's id"),
+                getNodeStringValue(requestBodyNode.get("sourceAddress"), "you haven't provided source address"),
+                getNodeStringValue(requestBodyNode.get("destinationAddress"), "you havent provided destination address"),
                 getNodeBigDecimalValue(requestBodyNode.get("price"), "price not provided"),
                 buildDateFromNode(requestBodyNode.get("date"))
         );

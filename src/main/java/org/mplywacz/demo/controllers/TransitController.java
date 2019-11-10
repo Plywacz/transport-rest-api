@@ -4,6 +4,10 @@ Author: BeGieU
 Date: 02.07.2019
 */
 
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.mplywacz.demo.dto.DailyInfo;
 import org.mplywacz.demo.dto.RangeReportDto;
 import org.mplywacz.demo.dto.TransitDto;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+@Api(value = "Transit Management System", description = "Operations pertaining to transits in Transit Management System")
 @RestController
 @RequestMapping("/api/transits")
 public class TransitController {
@@ -25,24 +30,39 @@ public class TransitController {
         this.transitService = transitService;
     }
 
+    @ApiOperation(value = "Add transit to the system", response = Transit.class)
     @PostMapping(value = "/",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody Transit addTransit(@Valid @RequestBody TransitDto transitDto) {
+    public @ResponseBody Transit addTransit(
+            @ApiParam(value = "object that represents transit", required = true)
+            @Valid
+            @RequestBody
+                    TransitDto transitDto) {
         return transitService.addTransit(transitDto);
     }
 
+    //todo  replace RangeReportDto object with @PathVariableArgs
     //get report that contains stats about whole transits that took place between given dates
+    @ApiOperation(value = "View report from given period",
+            response = String.class)
     @GetMapping(value = "/reports/range",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public @ResponseBody String getRangeReport(@Valid @RequestBody RangeReportDto rangeReportDto) {
+    public @ResponseBody String getRangeReport(
+            @ApiParam(value = "object that represents period of time",
+                    required = true)
+            @Valid
+            @RequestBody
+                    RangeReportDto rangeReportDto) {
         return transitService.getRangeReport(rangeReportDto).toString();
 
     }
 
-    //returns report that contains stats about transits that took place in current month
+    @ApiOperation(value = "View operations that took place in current month to this day",
+            response = DailyInfo.class,
+            responseContainer = "List")
     @GetMapping(value = "/reports/monthly",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
