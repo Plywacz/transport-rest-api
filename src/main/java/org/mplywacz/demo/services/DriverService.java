@@ -16,4 +16,6 @@ public interface DriverService {
     String deleteDriver(Long id);
 
     DriverReport getDriverReport(Long id);
+
+    Driver updateDriver(DriverDto driverDto, Long id);
 }

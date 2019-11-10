@@ -96,5 +96,15 @@ public class DriverServiceImpl implements DriverService {
         return driverReport;
     }
 
+    @Override public Driver updateDriver(DriverDto driverDto, Long id) {
+        driverRepo
+                .findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Driver with given id: " + id + " doesnt exist"));
+
+        var updatedDriver = driverMapper.convertDto(driverDto);
+        updatedDriver.setId(id);
+        return driverRepo.save(updatedDriver);
+    }
+
 
 }

@@ -29,7 +29,7 @@ public class DriverDtoDeserializer extends StdDeserializer<DriverDto> {
         if (requestBodyContent.size() != 2) {
             throw new IllegalArgumentException("incorrect json object passed, correct format:" +
                     "{\n" +
-                    "  \"first_name\":      \"Jan\",\n" +
+                    "  \"first_name\": \"Jan\",\n" +
                     "  \"last_name\": \"Kowalski\",\n" +
                     "}");
         }
