@@ -25,6 +25,7 @@ public class TransitDtoSerializer extends StdSerializer<Transit> {
         gen.writeStartObject();
         gen.writeNumberField("id", value.getId());
         gen.writeStringField("source_address", value.getSourceAddress());
+        gen.writeStringField("destination_address", value.getDestinationAddress());
         gen.writeStringField("price", value.getPrice().toString());
         gen.writeStringField("date", value.getDate().toString());
         gen.writeStringField("distance", value.getDistance().toString());
