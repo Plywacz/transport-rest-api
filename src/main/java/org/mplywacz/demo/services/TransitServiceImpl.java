@@ -7,7 +7,6 @@ Date: 05.07.2019
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mplywacz.demo.dto.DailyInfo;
-import org.mplywacz.demo.dto.RangeReportDto;
 import org.mplywacz.demo.dto.TransitDto;
 import org.mplywacz.demo.dto.mappers.Mapper;
 import org.mplywacz.demo.model.Transit;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Set;
 
@@ -67,9 +67,9 @@ public class TransitServiceImpl implements TransitService {
     }
 
     @Override
-    public JSONObject getRangeReport(RangeReportDto rangeReportDto) {
-        var sDate = rangeReportDto.getStartDate();
-        var eDate = rangeReportDto.getEndDate();
+    public JSONObject getRangeReport(String startDate, String endDate) {
+        LocalDate sDate = getLocalDateFromString(startDate);
+        LocalDate eDate = getLocalDateFromString(endDate);
 
         //no need to check if sDate or eDate is null 'cause it is already done in deserializer
         if (sDate.compareTo(eDate) > 0) {
@@ -102,7 +102,16 @@ public class TransitServiceImpl implements TransitService {
         catch (JSONException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    private LocalDate getLocalDateFromString(String date) {
+        try {
+            return LocalDate.parse(date);
+        }
+        catch (DateTimeParseException e) {
+            CharSequence cs = date;
+            throw new DateTimeParseException("provide date in correct format i.e: yyyy-mm-dd", cs, 400);
+        }
     }
 
     @Override

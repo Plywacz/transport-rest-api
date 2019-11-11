@@ -6,7 +6,6 @@ Date: 05.07.2019
 
 import org.json.JSONObject;
 import org.mplywacz.demo.dto.DailyInfo;
-import org.mplywacz.demo.dto.RangeReportDto;
 import org.mplywacz.demo.dto.TransitDto;
 import org.mplywacz.demo.model.Transit;
 
@@ -15,7 +14,7 @@ import java.util.List;
 public interface TransitService {
     Transit addTransit(final TransitDto transitDto);
 
-    JSONObject getRangeReport(final RangeReportDto rangeReportDto);
+    JSONObject getRangeReport(String startDate, String endDate);
 
     List<DailyInfo> getMonthlyReport();
 

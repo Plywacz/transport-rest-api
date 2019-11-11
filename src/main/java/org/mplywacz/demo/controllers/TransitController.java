@@ -9,7 +9,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.mplywacz.demo.dto.DailyInfo;
-import org.mplywacz.demo.dto.RangeReportDto;
 import org.mplywacz.demo.dto.TransitDto;
 import org.mplywacz.demo.model.Transit;
 import org.mplywacz.demo.services.TransitService;
@@ -18,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Api(value = "Transit Management System", description = "Operations pertaining to transits in Transit Management System")
@@ -43,20 +43,23 @@ public class TransitController {
         return transitService.addTransit(transitDto);
     }
 
-    //todo  replace RangeReportDto object with @PathVariableArgs
+
     //get report that contains stats about whole transits that took place between given dates
     @ApiOperation(value = "View report from given period",
             response = String.class)
-    @GetMapping(value = "/reports/range",
+    @GetMapping(value = "/reports/range/{date1}&&{date2}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public @ResponseBody String getRangeReport(
-            @ApiParam(value = "object that represents period of time",
-                    required = true)
-            @Valid
-            @RequestBody
-                    RangeReportDto rangeReportDto) {
-        return transitService.getRangeReport(rangeReportDto).toString();
+            @ApiParam(value = "date where report begins", required = true,example = "2001-12-01")
+            @PathVariable
+            @NotEmpty(message = "date where report ends")
+                    String date1,
+            @ApiParam(value = "object that represents period of time", required = true,example = "2012-02-20")
+            @PathVariable
+            @NotEmpty(message = "end date cannot be null")
+                    String date2) {
+        return transitService.getRangeReport(date1,date2).toString();
 
     }
 
