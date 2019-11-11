@@ -4,6 +4,7 @@ Author: BeGieU
 Date: 09.07.2019
 */
 
+import com.fasterxml.jackson.core.JsonParseException;
 import org.mplywacz.demo.exceptions.IllegalDateInputException;
 import org.mplywacz.demo.exceptions.IncorrectLocationException;
 import org.springframework.http.HttpStatus;
@@ -13,9 +14,14 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 //todo fix unsuitable HttpsStatus in response entity
 
@@ -26,6 +32,7 @@ public class CustomExceptionHandler {
         ex.printStackTrace();
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
+
     //handle error msg's for @Valid
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     ResponseEntity<Object> handleDtoValidation(MethodArgumentNotValidException ex) {
@@ -41,17 +48,43 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(value = {IllegalArgumentException.class, IllegalDateInputException.class,
             DateTimeParseException.class,})
-    ResponseEntity<Object> handleIncorrectDateInput(RuntimeException ex) {
+    ResponseEntity<Object> handleIncorrectDateInput(RuntimeException ex,HttpServletResponse response) throws IOException {
         ex.printStackTrace();
+        response.sendError(HttpStatus.UNPROCESSABLE_ENTITY.value());
         return new ResponseEntity<>(ex.getMessage(),
                 HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
+    //has to return ModelAndView because swagger doesnt handle response entity :(
     @ExceptionHandler(value = {HttpMessageNotReadableException.class})
-    ResponseEntity<Object> handleEmptyDto(RuntimeException ex) {
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseBody ResponseEntity<Object> handleEmptyDto(HttpMessageNotReadableException ex,
+                                                        HttpServletResponse response) throws IOException {
         ex.printStackTrace();
-        return new ResponseEntity<>("Required request body is missing, or wrong json format",
+        response.sendError(HttpStatus.UNPROCESSABLE_ENTITY.value());
+        return new ResponseEntity<>(ex.getMessage(),
                 HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(value = {JsonParseException.class})
+    @ResponseBody ResponseEntity<String> handleWrongJsonInput(RuntimeException ex,
+                                                              HttpServletResponse response) throws  IOException {
+        ex.printStackTrace();
+        response.sendError(HttpStatus.UNPROCESSABLE_ENTITY.value());
+        return new ResponseEntity<>(ex.getMessage(),
+                HttpStatus.UNPROCESSABLE_ENTITY);
+
+    }
+    //NoSuchElementException
+
+    @ExceptionHandler(value = {NoSuchElementException.class})
+    @ResponseBody ResponseEntity<String> handleWrongGivenId(NoSuchElementException ex,
+                                                            HttpServletResponse response) throws IOException {
+        ex.printStackTrace();
+        response.sendError(HttpStatus.NOT_ACCEPTABLE.value());
+        return new ResponseEntity<>(ex.getMessage(),
+                HttpStatus.UNPROCESSABLE_ENTITY);
+
     }
 
     //only for debugging purposes
@@ -61,6 +94,4 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-
 }

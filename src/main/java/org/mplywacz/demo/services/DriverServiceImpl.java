@@ -58,7 +58,7 @@ public class DriverServiceImpl implements DriverService {
         var mostExpensiveTransit = totalDriverInfo.get(0)[5];
 
         if (driverId == null) {
-            throw new RuntimeException("Wanted driver doesnt exist in DB or doesnt have any reported transits");//todo throw appropriate exception
+            throw new NoSuchElementException("Wanted driver doesnt exist in DB or doesnt have any reported transits");//todo throw appropriate exception
         }
         if (driverLastName == null || driverLastName.getClass() != String.class ||
                 driverFirstName == null || driverFirstName.getClass() != String.class ||
@@ -85,7 +85,7 @@ public class DriverServiceImpl implements DriverService {
                     totalMonthlyDistance == null || totalMonthlyDistance.getClass() != BigDecimal.class ||
                     maxMonthlyDistance == null || maxMonthlyDistance.getClass() != BigDecimal.class ||
                     maxMonthlyTransitPrice == null || maxMonthlyTransitPrice.getClass() != BigDecimal.class) {
-                throw new RuntimeException("Unexpected result from database");//todo throw appropriate exception
+                throw new InternalError("Unexpected result from database");//todo throw appropriate exception
             }
             driverReport.addMonthlyInfo(
                     (String) formattedDate,

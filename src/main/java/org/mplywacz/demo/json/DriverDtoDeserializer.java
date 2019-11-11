@@ -32,7 +32,7 @@ public class DriverDtoDeserializer extends StdDeserializer<DriverDto> {
             requestBodyContent = jp.getCodec().readTree(jp);
         }
         catch (JsonParseException e) {
-            throw new RuntimeException("couldn't parse given JSON", e);
+            throw new JsonParseException(jp,"couldn't parse given JSON");
         }
 
         if (requestBodyContent.size() != 2) {
