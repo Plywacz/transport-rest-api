@@ -7,6 +7,7 @@ Date: 08.10.2019
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.json.JSONException;
 import org.mplywacz.demo.dto.DriverDto;
 import org.mplywacz.demo.dto.DriverReport;
 import org.mplywacz.demo.model.Driver;
@@ -76,12 +77,12 @@ public class DriverController {
     @DeleteMapping(value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public @ResponseBody String deleteDriver(
+    public void deleteDriver(
             @ApiParam("Id of driver to be deleted")
             @PathVariable
             @Min(1)
-                    Long id) {
-        return driverService.deleteDriver(id);
+                    Long id) throws JSONException {
+        driverService.deleteDriver(id);
     }
 
     @ApiOperation(value = "View report of driver",response = DriverReport.class)
