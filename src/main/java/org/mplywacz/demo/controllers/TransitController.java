@@ -5,9 +5,7 @@ Date: 02.07.2019
 */
 
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.mplywacz.demo.dto.DailyInfo;
 import org.mplywacz.demo.dto.TransitDto;
 import org.mplywacz.demo.model.Transit;
@@ -31,6 +29,13 @@ public class TransitController {
     }
 
     @ApiOperation(value = "Add transit to the system", response = Transit.class)
+    @ApiResponses( value = {
+            @ApiResponse(code = 201, message = "Successfully added transit to the system"),
+            @ApiResponse(code = 401, message = "You are not authorized to add the resource"),
+            @ApiResponse(code = 403, message = "access to resource is forbidden- access denied"),
+            @ApiResponse(code = 404, message = "resource not fund"),
+            @ApiResponse(code = 422, message = "The resource you were trying to add is not suitable")
+    })
     @PostMapping(value = "/",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -47,6 +52,13 @@ public class TransitController {
     //get report that contains stats about whole transits that took place between given dates
     @ApiOperation(value = "View report from given period",
             response = String.class)
+    @ApiResponses( value = {
+            @ApiResponse(code = 200, message = "Successfully viewed period report "),
+            @ApiResponse(code = 202, message = "Dates accepted and Successfully viewed period report "),
+            @ApiResponse(code = 401, message = "You are not authorized to get the resource"),
+            @ApiResponse(code = 403, message = "access to resource is forbidden- access denied"),
+            @ApiResponse(code = 422, message = "couldn't generate report from given dates")
+    })
     @GetMapping(value = "/reports/range/{date1}&&{date2}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -66,6 +78,13 @@ public class TransitController {
     @ApiOperation(value = "View operations that took place in current month to this day",
             response = DailyInfo.class,
             responseContainer = "List")
+    @ApiResponses( value = {
+            @ApiResponse(code = 200, message = "Successfully viewed monthly report "),
+            @ApiResponse(code = 202, message = " accepted and Successfully viewed monthly report "),
+            @ApiResponse(code = 401, message = "You are not authorized to get the resource"),
+            @ApiResponse(code = 403, message = "access to resource is forbidden- access denied"),
+            @ApiResponse(code = 422, message = "couldn't generate report from given dates")
+    })
     @GetMapping(value = "/reports/monthly",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)

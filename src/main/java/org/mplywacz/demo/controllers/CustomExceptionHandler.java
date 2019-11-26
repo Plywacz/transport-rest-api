@@ -48,8 +48,9 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(value = {IllegalArgumentException.class, IllegalDateInputException.class,
             DateTimeParseException.class,})
-    ResponseEntity<Object> handleIncorrectDateInput(RuntimeException ex,HttpServletResponse response) throws IOException {
+    ResponseEntity<Object> handleIncorrectDateInput(RuntimeException ex, HttpServletResponse response) throws IOException {
         ex.printStackTrace();
+        //todo note that when there is no below single line of code then swagger-ui doesnt see response body and status code
         response.sendError(HttpStatus.UNPROCESSABLE_ENTITY.value());
         return new ResponseEntity<>(ex.getMessage(),
                 HttpStatus.UNPROCESSABLE_ENTITY);
@@ -68,7 +69,7 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(value = {JsonParseException.class})
     @ResponseBody ResponseEntity<String> handleWrongJsonInput(RuntimeException ex,
-                                                              HttpServletResponse response) throws  IOException {
+                                                              HttpServletResponse response) throws IOException {
         ex.printStackTrace();
         response.sendError(HttpStatus.UNPROCESSABLE_ENTITY.value());
         return new ResponseEntity<>(ex.getMessage(),
@@ -78,12 +79,11 @@ public class CustomExceptionHandler {
     //NoSuchElementException
 
     @ExceptionHandler(value = {NoSuchElementException.class})
-    @ResponseBody ResponseEntity<String> handleWrongGivenId(NoSuchElementException ex,
+    @ResponseBody ResponseEntity<Object> handleWrongGivenId(NoSuchElementException ex,
                                                             HttpServletResponse response) throws IOException {
         ex.printStackTrace();
-        response.sendError(HttpStatus.NOT_ACCEPTABLE.value());
-        return new ResponseEntity<>(ex.getMessage(),
-                HttpStatus.UNPROCESSABLE_ENTITY);
+        response.sendError(HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_ACCEPTABLE);
 
     }
 
