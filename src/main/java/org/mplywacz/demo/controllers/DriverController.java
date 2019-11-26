@@ -112,7 +112,7 @@ public class DriverController {
 
     @ApiOperation(value = "View report of driver",response = DriverReport.class)
 
-    @GetMapping(value = "/reports/{id}",
+    @GetMapping(value = "/{id}/report",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses( value = {
             @ApiResponse(code = 200, message = "Successfully viewed driver report "),
