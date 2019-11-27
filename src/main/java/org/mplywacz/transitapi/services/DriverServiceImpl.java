@@ -1,5 +1,6 @@
 package org.mplywacz.transitapi.services;
 
+import org.mplywacz.jwtsecurity.exceptions.EntityAlreadyExistInDbException;
 import org.mplywacz.transitapi.dto.DriverDto;
 import org.mplywacz.transitapi.dto.DriverReport;
 import org.mplywacz.transitapi.dto.mappers.Mapper;
@@ -28,7 +29,16 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override public Driver addDriver(DriverDto driverDto) {
+        isAlreadyInDb(driverDto);
         return driverRepo.save(driverMapper.convertDto(driverDto));
+    }
+
+    private void isAlreadyInDb(DriverDto driverDto) {
+        if(driverRepo.findDriverByFirstNameAndLastName(
+                driverDto.getFirstName(),
+                driverDto.getLastName())!=null){
+            throw new EntityAlreadyExistInDbException("driver with given first name and alst name already exist in db");
+        }
     }
 
     @Override public Driver getDriver(Long id) {
@@ -97,6 +107,7 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override public Driver updateDriver(DriverDto driverDto, Long id) {
+        isAlreadyInDb(driverDto);
         driverRepo
                 .findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Driver with given id: " + id + " doesnt exist"));

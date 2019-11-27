@@ -4,6 +4,7 @@ Author: BeGieU
 Date: 26.11.2019
 */
 
+import org.mplywacz.jwtsecurity.exceptions.EntityAlreadyExistInDbException;
 import org.mplywacz.jwtsecurity.model.UserDao;
 import org.mplywacz.jwtsecurity.model.UserDto;
 import org.mplywacz.jwtsecurity.repo.UserRepo;
@@ -39,9 +40,8 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     public UserDao save(UserDto user) {
         String username = user.getUsername();
-
         if (userRepo.findByUsername(username) != null) {
-            throw new RuntimeException("username is not available");
+            throw new EntityAlreadyExistInDbException("username is not available");
         }
 
         UserDao newUser = new UserDao();

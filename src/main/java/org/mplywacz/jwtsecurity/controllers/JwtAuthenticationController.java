@@ -32,7 +32,6 @@ public class JwtAuthenticationController {
 
     @PostMapping(value = "/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody @Valid JwtRequest authenticationRequest) throws Exception {
-
         return ResponseEntity.ok(
                 authenticationService.authenticate(
                         authenticationRequest.getUsername(),

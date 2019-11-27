@@ -13,6 +13,7 @@ import java.util.List;
 
 public interface DriverRepo extends CrudRepository<Driver, Long> {
 
+    Driver findDriverByFirstNameAndLastName(String firstName,String lastName);
 
     @Query(value =
             "SELECT t.id,d.first_name ,d.last_name ,SUM(t.distance),MAX(t.distance),MAX(t.price) " +

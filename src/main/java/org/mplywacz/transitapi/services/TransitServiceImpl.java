@@ -6,6 +6,7 @@ Date: 05.07.2019
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.mplywacz.jwtsecurity.exceptions.EntityAlreadyExistInDbException;
 import org.mplywacz.transitapi.dto.DailyInfo;
 import org.mplywacz.transitapi.dto.TransitDto;
 import org.mplywacz.transitapi.dto.mappers.Mapper;
@@ -54,7 +55,7 @@ public class TransitServiceImpl implements TransitService {
         var driverId = transitDto.getDriverId();
         var driverOpt = driverRepo.findById(driverId);
         if (driverOpt.isEmpty()) {
-            throw new IllegalArgumentException("couldn't add transit to db because driver with ID: "
+            throw new EntityAlreadyExistInDbException("couldn't add transit to db because driver with ID: "
                     + driverId + " related with this transit doesn't exist in db. ");
         }
 

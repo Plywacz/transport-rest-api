@@ -5,6 +5,7 @@ Date: 09.07.2019
 */
 
 import com.fasterxml.jackson.core.JsonParseException;
+import org.mplywacz.transitapi.exceptions.EntityDoesntExistInDbException;
 import org.mplywacz.transitapi.exceptions.IllegalDateInputException;
 import org.mplywacz.transitapi.exceptions.IncorrectLocationException;
 import org.springframework.http.HttpStatus;
@@ -68,8 +69,7 @@ public class CustomExceptionHandler {
     }
 
     @ExceptionHandler(value = {JsonParseException.class})
-    @ResponseBody ResponseEntity<String> handleWrongJsonInput(RuntimeException ex,
-                                                              HttpServletResponse response) throws IOException {
+    @ResponseBody ResponseEntity<String> handleWrongJsonInput(RuntimeException ex,HttpServletResponse response) throws IOException {
         ex.printStackTrace();
         response.sendError(HttpStatus.UNPROCESSABLE_ENTITY.value());
         return new ResponseEntity<>(ex.getMessage(),
@@ -84,6 +84,15 @@ public class CustomExceptionHandler {
         ex.printStackTrace();
         response.sendError(HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+
+    }
+
+    @ExceptionHandler(value = {EntityDoesntExistInDbException.class})
+    @ResponseBody ResponseEntity<String> handleEntityDoesntExistInDb(RuntimeException ex,HttpServletResponse response) throws IOException {
+        ex.printStackTrace();
+        response.sendError(HttpStatus.CONFLICT.value());
+        return new ResponseEntity<>(ex.getMessage(),
+                HttpStatus.CONFLICT);
 
     }
 

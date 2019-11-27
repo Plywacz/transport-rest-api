@@ -3,9 +3,7 @@ package org.mplywacz;
 
 //todo: fix tests
 
-//todo: 1. ADD RESPONSE MESSAGES TO SWAGGER DOC
-
-//JWT jason web token authentication
+//TODO: remove old swagger-ui doc from code
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
