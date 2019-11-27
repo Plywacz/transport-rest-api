@@ -57,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
-                .authorizeRequests().antMatchers("/login", "/register").permitAll()
+                .authorizeRequests().antMatchers("/api/users/login", "/api/users/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 // make sure we use stateless session; session won't be used to

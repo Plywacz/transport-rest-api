@@ -9,14 +9,12 @@ import org.mplywacz.jwtsecurity.model.UserDto;
 import org.mplywacz.jwtsecurity.services.AuthenticationService;
 import org.mplywacz.jwtsecurity.services.JwtUserDetailsService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@RestController(value = "/api/user")
+@RestController
+@RequestMapping("/api/users")
 @CrossOrigin
 public class JwtAuthenticationController {
 
