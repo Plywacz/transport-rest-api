@@ -1,4 +1,4 @@
-package org.mplywacz.demo;
+package org.mplywacz.transitapi;
 /*
 Author: BeGieU
 Date: 05.07.2019

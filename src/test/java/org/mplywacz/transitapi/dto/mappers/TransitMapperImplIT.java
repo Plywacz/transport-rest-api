@@ -1,11 +1,8 @@
-package org.mplywacz.demo.dto.mappers;
+package org.mplywacz.transitapi.dto.mappers;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mplywacz.demo.dto.TransitDto;
-import org.mplywacz.demo.exceptions.IncorrectLocationException;
-import org.mplywacz.demo.model.Transit;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mplywacz.transitapi.exceptions.IncorrectLocationException;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -15,8 +12,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 public class TransitMapperImplIT {
 
-    @Autowired
-    Mapper<TransitDto, Transit> transitMapper;
+//    @Autowired
+//    Mapper<TransitDto, Transit> transitMapper;
 
     public static final String SOURCE_ADR = "Złota 44, Warszawa";
     public static final String DESTINATION_ADR = "ul. Zakret 8, Poznan";

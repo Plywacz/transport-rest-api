@@ -1,15 +1,15 @@
-package org.mplywacz.demo.services;
+package org.mplywacz.transitapi.services;
 
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mplywacz.demo.dto.TransitDto;
-import org.mplywacz.demo.dto.mappers.Mapper;
-import org.mplywacz.demo.model.Transit;
-import org.mplywacz.demo.repositories.DriverRepo;
-import org.mplywacz.demo.repositories.TransitRepo;
+import org.mplywacz.transitapi.dto.TransitDto;
+import org.mplywacz.transitapi.dto.mappers.Mapper;
+import org.mplywacz.transitapi.model.Transit;
+import org.mplywacz.transitapi.repositories.DriverRepo;
+import org.mplywacz.transitapi.repositories.TransitRepo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

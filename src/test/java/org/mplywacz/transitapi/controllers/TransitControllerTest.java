@@ -1,4 +1,4 @@
-package org.mplywacz.demo.controllers;
+package org.mplywacz.transitapi.controllers;
 
 import org.hamcrest.Matchers;
 import org.json.JSONObject;
@@ -7,10 +7,10 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mplywacz.demo.dto.DailyInfo;
-import org.mplywacz.demo.dto.TransitDto;
-import org.mplywacz.demo.model.Transit;
-import org.mplywacz.demo.services.TransitService;
+import org.mplywacz.transitapi.dto.DailyInfo;
+import org.mplywacz.transitapi.dto.TransitDto;
+import org.mplywacz.transitapi.model.Transit;
+import org.mplywacz.transitapi.services.TransitService;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
