@@ -12,18 +12,13 @@ public class DriverReport {
 
     private final String firstName;
 
-
     private final String lastName;
-
 
     private final BigDecimal totalDistance;
 
-
     private final BigDecimal longestTransit;
 
-
     private final BigDecimal mostExpensiveTransit;
-
 
     private final List<MonthlyInfo> monthlyInfos = new LinkedList<>();
 

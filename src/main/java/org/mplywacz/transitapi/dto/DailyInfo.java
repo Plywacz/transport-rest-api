@@ -12,13 +12,10 @@ import java.time.LocalDate;
 
 @JsonSerialize(using = DailyInfoSerializer.class)
 public class DailyInfo {
-    private LocalDate date;
-    private BigDecimal totalDistance;
-    private double avgDistance;
-    private double avgPrice;
-
-    public DailyInfo() {
-    }
+    private final LocalDate date;
+    private final BigDecimal totalDistance;
+    private final double avgDistance;
+    private final double avgPrice;
 
 
     //constructor is based on what is returned from JPA query in TransitRepo,
@@ -35,31 +32,16 @@ public class DailyInfo {
         return date;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
     public BigDecimal getTotalDistance() {
         return totalDistance;
-    }
-
-    public void setTotalDistance(BigDecimal totalDistance) {
-        this.totalDistance = totalDistance;
     }
 
     public double getAvgDistance() {
         return avgDistance;
     }
 
-    public void setAvgDistance(double avgDistance) {
-        this.avgDistance = avgDistance;
-    }
-
     public double getAvgPrice() {
         return avgPrice;
     }
 
-    public void setAvgPrice(double avgPrice) {
-        this.avgPrice = avgPrice;
-    }
 }
