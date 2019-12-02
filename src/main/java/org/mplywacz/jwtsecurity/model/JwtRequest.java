@@ -5,11 +5,9 @@ Date: 26.11.2019
 */
 
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 
-public class JwtRequest implements Serializable {
+public class JwtRequest   {
 
-    private static final long serialVersionUID = 5926468583005150707L;
 
     @NotBlank
     private String username;
