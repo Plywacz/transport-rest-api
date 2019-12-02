@@ -21,6 +21,14 @@ public class UserDao {
     @JsonIgnore
     private String password;
 
+    public UserDao() {
+    }
+
+    public UserDao(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     public String getUsername() {
         return username;
     }
