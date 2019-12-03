@@ -13,6 +13,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static org.mplywacz.transitapi.services.Services.containsOnlyLetter;
+
 /*
 Author: BeGieU
 Date: 08.10.2019
@@ -29,14 +31,17 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override public Driver addDriver(DriverDto driverDto) {
+        containsOnlyLetter(driverDto.getFirstName(),"illegal first name given");
+        containsOnlyLetter(driverDto.getLastName(),"illegal last name given");
         isAlreadyInDb(driverDto);
         return driverRepo.save(driverMapper.convertDto(driverDto));
     }
 
     private void isAlreadyInDb(DriverDto driverDto) {
-        if(driverRepo.findDriverByFirstNameAndLastName(
-                driverDto.getFirstName(),
-                driverDto.getLastName())!=null){
+        if (
+                driverRepo.findDriverByFirstNameAndLastName(
+                        driverDto.getFirstName(),
+                        driverDto.getLastName()) != null) {
             throw new EntityAlreadyExistInDbException("driver with given first name and alst name already exist in db");
         }
     }

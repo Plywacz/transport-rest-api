@@ -41,6 +41,7 @@ public class TransitDto {
         this.date = date;
     }
 
+
     public Long getDriverId() {
         return driverId;
     }

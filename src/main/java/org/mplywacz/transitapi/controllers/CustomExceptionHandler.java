@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -83,7 +84,7 @@ public class CustomExceptionHandler {
                                                             HttpServletResponse response) throws IOException {
         ex.printStackTrace();
         response.sendError(HttpStatus.NOT_FOUND.value());
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
 
     }
 
@@ -93,6 +94,15 @@ public class CustomExceptionHandler {
         response.sendError(HttpStatus.CONFLICT.value());
         return new ResponseEntity<>(ex.getMessage(),
                 HttpStatus.CONFLICT);
+
+    }
+
+    @ExceptionHandler(value = {MethodArgumentTypeMismatchException.class})
+    @ResponseBody ResponseEntity<String> handleWrongPathVariable(RuntimeException ex,HttpServletResponse response) throws IOException {
+        ex.printStackTrace();
+        response.sendError(HttpStatus.BAD_REQUEST.value());
+        return new ResponseEntity<>(ex.getMessage(),
+                HttpStatus.BAD_REQUEST);
 
     }
 

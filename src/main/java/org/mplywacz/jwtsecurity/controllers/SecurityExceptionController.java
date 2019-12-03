@@ -18,13 +18,12 @@ import java.io.IOException;
 @ControllerAdvice
 public class SecurityExceptionController {
     @ExceptionHandler(value = { MethodArgumentNotValidException.class})
-    @ResponseBody ResponseEntity<String> handleWrongJson(RuntimeException ex, HttpServletResponse response)
+    @ResponseBody ResponseEntity<String> handleWrongJson(Exception ex, HttpServletResponse response)
             throws IOException {
         ex.printStackTrace();
         response.sendError(HttpStatus.UNPROCESSABLE_ENTITY.value());
         return new ResponseEntity<>(ex.getMessage(),
                 HttpStatus.UNPROCESSABLE_ENTITY);
-
     }
     @ExceptionHandler(value = {EntityAlreadyExistInDbException.class})
     @ResponseBody ResponseEntity<String> handleUsernameAlreadyTaken(RuntimeException ex, HttpServletResponse response)
