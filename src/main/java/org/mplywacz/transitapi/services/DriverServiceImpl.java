@@ -31,8 +31,8 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override public Driver addDriver(DriverDto driverDto) {
-        containsOnlyLetter(driverDto.getFirstName(),"illegal first name given");
-        containsOnlyLetter(driverDto.getLastName(),"illegal last name given");
+        containsOnlyLetter(driverDto.getFirstName(), "illegal first name given");
+        containsOnlyLetter(driverDto.getLastName(), "illegal last name given");
         isAlreadyInDb(driverDto);
         return driverRepo.save(driverMapper.convertDto(driverDto));
     }
@@ -61,10 +61,11 @@ public class DriverServiceImpl implements DriverService {
         return "deleted driver with id: " + id;
     }
 
-    @Override public DriverReport getDriverReport(Long id) {
+    @Override
+    public DriverReport getDriverReport(Long id) {
         List<Object[]> totalDriverInfo = driverRepo.getTotalReportForDriver(id);
 
-        //total driverRepo.getTotalReportForDriver(id) should always contain one element list with 3 element array(because of query)
+        //total driverRepo.getTotalReportForDriver(id) always returns list that contains one Object[], arr contains elements related with query
         var driverId = totalDriverInfo.get(0)[0];
         var driverFirstName = totalDriverInfo.get(0)[1];
         var driverLastName = totalDriverInfo.get(0)[2];
@@ -113,6 +114,8 @@ public class DriverServiceImpl implements DriverService {
 
     @Override public Driver updateDriver(DriverDto driverDto, Long id) {
         isAlreadyInDb(driverDto);
+        containsOnlyLetter(driverDto.getFirstName(), "illegal first name given");
+        containsOnlyLetter(driverDto.getFirstName(), "illegal last name given");
         driverRepo
                 .findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Driver with given id: " + id + " doesnt exist"));
