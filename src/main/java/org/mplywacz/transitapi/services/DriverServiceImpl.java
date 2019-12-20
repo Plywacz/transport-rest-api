@@ -64,8 +64,31 @@ public class DriverServiceImpl implements DriverService {
     @Override
     public DriverReport getDriverReport(Long id) {
         List<Object[]> totalDriverInfo = driverRepo.getTotalReportForDriver(id);
+        var driverReport = createTotalDriverReport(totalDriverInfo);
 
-        //total driverRepo.getTotalReportForDriver(id) always returns list that contains one Object[], arr contains elements related with query
+        List<Object[]> monthlyDriverInfo = driverRepo.getReportPerMonthForDriver(id);
+        return addMonthlyInfoToDriverReport(driverReport, monthlyDriverInfo);
+    }
+
+    private DriverReport addMonthlyInfoToDriverReport(DriverReport driverReport, List<Object[]> monthlyDriverInfo) {
+        for (Object[] monthInfo : monthlyDriverInfo) {
+            //order of objects in monthInfo[] as in query (check getReportPerMonthForDriver method in DriverRepo)
+            var formattedDate = monthInfo[0];
+            var totalMonthlyDistance = monthInfo[1];
+            var maxMonthlyDistance = monthInfo[2];
+            var maxMonthlyTransitPrice = monthInfo[3];
+            driverReport.addMonthlyInfo(
+                    (String) formattedDate,
+                    (BigDecimal) totalMonthlyDistance,
+                    (BigDecimal) maxMonthlyDistance,
+                    (BigDecimal) maxMonthlyTransitPrice);
+        }
+        return driverReport;
+    }
+
+    private DriverReport createTotalDriverReport(List<Object[]> totalDriverInfo) {
+        //total driverRepo.getTotalReportForDriver(id) always returns list that contains ONE Object[]
+        // because of query. Arr contains elements related with query in order as in the query
         var driverId = totalDriverInfo.get(0)[0];
         var driverFirstName = totalDriverInfo.get(0)[1];
         var driverLastName = totalDriverInfo.get(0)[2];
@@ -74,41 +97,18 @@ public class DriverServiceImpl implements DriverService {
         var mostExpensiveTransit = totalDriverInfo.get(0)[5];
 
         if (driverId == null) {
-            throw new NoSuchElementException("Wanted driver doesnt exist in DB or doesnt have any reported transits");//todo throw appropriate exception
+            throw new NoSuchElementException(
+                    "Wanted driver doesnt exist in DB or doesnt have any reported transits");//todo throw appropriate exception
         }
-        if (driverLastName == null || driverLastName.getClass() != String.class ||
-                driverFirstName == null || driverFirstName.getClass() != String.class ||
-                totalDistance == null || totalDistance.getClass() != BigDecimal.class ||
-                longestTransit == null || longestTransit.getClass() != BigDecimal.class ||
-                mostExpensiveTransit == null || mostExpensiveTransit.getClass() != BigDecimal.class) {
-            throw new InternalError("Unexpected DB output");//todo throw appropriate exception
-        }
-        DriverReport driverReport = new DriverReport(
+        var driverReport = new DriverReport(
                 (String) driverFirstName,
-                (String) driverLastName,
+                (String) driverLastName);
+
+        driverReport.setTotalInfo(
                 (BigDecimal) totalDistance,
                 (BigDecimal) longestTransit,
                 (BigDecimal) mostExpensiveTransit);
 
-        //=================
-        List<Object[]> monthlyDriverInfo = driverRepo.getReportPerMonthForDriver(id);
-        for (Object[] elem : monthlyDriverInfo) {
-            var formattedDate = elem[0];
-            var totalMonthlyDistance = elem[1];
-            var maxMonthlyDistance = elem[2];
-            var maxMonthlyTransitPrice = elem[3];
-            if (formattedDate == null || formattedDate.getClass() != String.class ||
-                    totalMonthlyDistance == null || totalMonthlyDistance.getClass() != BigDecimal.class ||
-                    maxMonthlyDistance == null || maxMonthlyDistance.getClass() != BigDecimal.class ||
-                    maxMonthlyTransitPrice == null || maxMonthlyTransitPrice.getClass() != BigDecimal.class) {
-                throw new InternalError("Unexpected result from database");//todo throw appropriate exception
-            }
-            driverReport.addMonthlyInfo(
-                    (String) formattedDate,
-                    (BigDecimal) totalMonthlyDistance,
-                    (BigDecimal) maxMonthlyDistance,
-                    (BigDecimal) maxMonthlyTransitPrice);
-        }
         return driverReport;
     }
 

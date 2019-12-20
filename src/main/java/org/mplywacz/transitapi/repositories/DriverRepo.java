@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface DriverRepo extends CrudRepository<Driver, Long> {
 
-    Driver findDriverByFirstNameAndLastName(String firstName,String lastName);
+    Driver findDriverByFirstNameAndLastName(String firstName, String lastName);
 
     @Query(value =
             "SELECT t.id,d.first_name ,d.last_name ,SUM(t.distance),MAX(t.distance),MAX(t.price) " +
@@ -31,5 +31,4 @@ public interface DriverRepo extends CrudRepository<Driver, Long> {
                     "GROUP BY  YEAR(t.date), MONTH(t.date)DESC",
             nativeQuery = true)
     List<Object[]> getReportPerMonthForDriver(Long id);
-
 }

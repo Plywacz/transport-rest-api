@@ -9,31 +9,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class DriverReport {
-
-    private final String firstName;
-
-    private final String lastName;
-
-    private final BigDecimal totalDistance;
-
-    private final BigDecimal longestTransit;
-
-    private final BigDecimal mostExpensiveTransit;
-
-    private final List<MonthlyInfo> monthlyInfos = new LinkedList<>();
-
     private class MonthlyInfo {
-
-        private final String yearMonthDate;
-
-
-        private final BigDecimal distancePerMonth;
-
-
-        private final BigDecimal longestTransitPerMonth;
-
-
-        private final BigDecimal mostExpensiveTransitPerMonth;
+        private String yearMonthDate;
+        private BigDecimal distancePerMonth;
+        private BigDecimal longestTransitPerMonth;
+        private BigDecimal mostExpensiveTransitPerMonth;
 
         private MonthlyInfo(String yearMonthDate, BigDecimal distancePerMonth,
                             BigDecimal longestTransitPerMonth, BigDecimal mostExpensiveTransitPerMonth) {
@@ -60,19 +40,51 @@ public class DriverReport {
         }
     }
 
-    public DriverReport(String firstName, String lastName,
-                        BigDecimal totalDistance, BigDecimal longestTransit,
-                        BigDecimal mostExpensiveTransit) {
+    private class TotalInfo {
+        private BigDecimal totalDistance;
+
+        private BigDecimal longestTransit;
+
+        private BigDecimal mostExpensiveTransit;
+
+        public TotalInfo() {
+        }
+
+        public TotalInfo(BigDecimal totalDistance, BigDecimal longestTransit, BigDecimal mostExpensiveTransit) {
+            this.totalDistance = totalDistance;
+            this.longestTransit = longestTransit;
+            this.mostExpensiveTransit = mostExpensiveTransit;
+        }
+
+        public BigDecimal getTotalDistance() {
+            return totalDistance;
+        }
+
+        public BigDecimal getLongestTransit() {
+            return longestTransit;
+        }
+
+        public BigDecimal getMostExpensiveTransit() {
+            return mostExpensiveTransit;
+        }
+    }
+
+    private final String firstName;
+
+    private final String lastName;
+
+    private TotalInfo totalInfo;
+
+    private final List<MonthlyInfo> monthlyInfos = new LinkedList<>();
+
+    public DriverReport(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.totalDistance = totalDistance;
-        this.longestTransit = longestTransit;
-        this.mostExpensiveTransit = mostExpensiveTransit;
     }
 
     public void addMonthlyInfo(String yearMonthDate, BigDecimal distancePerMonth,
                                BigDecimal longestTransitPerMonth, BigDecimal mostExpensiveTransitPerMonth) {
-        var monthlyInfo = this.new MonthlyInfo(
+        var monthlyInfo = new MonthlyInfo(
                 yearMonthDate, distancePerMonth,
                 longestTransitPerMonth, mostExpensiveTransitPerMonth);
         monthlyInfos.add(monthlyInfo);
@@ -90,16 +102,15 @@ public class DriverReport {
         return monthlyInfos;
     }
 
-    public BigDecimal getTotalDistance() {
-        return totalDistance;
+    public void setTotalInfo(BigDecimal totalDistance,
+                             BigDecimal longestTransit,
+                             BigDecimal mostExpensiveTransit) {
+        this.totalInfo = new TotalInfo(totalDistance,
+                longestTransit,
+                mostExpensiveTransit);
     }
 
-    public BigDecimal getLongestTransit() {
-        return longestTransit;
+    public TotalInfo getTotalInfo() {
+        return totalInfo;
     }
-
-    public BigDecimal getMostExpensiveTransit() {
-        return mostExpensiveTransit;
-    }
-
 }
