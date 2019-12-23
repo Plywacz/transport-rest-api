@@ -29,6 +29,9 @@ public class TransitDto {
     @NotNull(message = "you have to provide valid date")
     private LocalDate date;
 
+    public TransitDto() {
+    }
+
     public TransitDto(Long driverId,
                       String sourceAddress,
                       String destinationAddress,
@@ -41,6 +44,25 @@ public class TransitDto {
         this.date = date;
     }
 
+    public void setDriverId(Long driverId) {
+        this.driverId = driverId;
+    }
+
+    public void setSourceAddress(String sourceAddress) {
+        this.sourceAddress = sourceAddress;
+    }
+
+    public void setDestinationAddress(String destinationAddress) {
+        this.destinationAddress = destinationAddress;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
     public Long getDriverId() {
         return driverId;
