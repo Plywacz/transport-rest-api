@@ -11,12 +11,12 @@ import org.mplywacz.transitapi.model.Transit;
 
 import java.io.IOException;
 
-public class TransitDtoSerializer extends StdSerializer<Transit> {
-    public TransitDtoSerializer() {
+public class TransitSerializer extends StdSerializer<Transit> {
+    public TransitSerializer() {
         this(Transit.class);
     }
 
-    private TransitDtoSerializer(Class<Transit> di) {
+    private TransitSerializer(Class<Transit> di) {
         super(di);
     }
 
@@ -26,9 +26,9 @@ public class TransitDtoSerializer extends StdSerializer<Transit> {
         gen.writeNumberField("id", value.getId());
         gen.writeStringField("sourceAddress", value.getSourceAddress());
         gen.writeStringField("destinationAddress", value.getDestinationAddress());
-        gen.writeStringField("price", value.getPrice().toString());
+        gen.writeNumberField("price", value.getPrice());
         gen.writeStringField("date", value.getDate().toString());
-        gen.writeStringField("distance", value.getDistance().toString());
+        gen.writeNumberField("distance", value.getDistance());
         gen.writeNumberField("driverId", value.getDriver().getId());
         gen.writeEndObject();
 

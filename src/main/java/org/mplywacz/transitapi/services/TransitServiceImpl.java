@@ -6,10 +6,10 @@ Date: 05.07.2019
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.mplywacz.jwtsecurity.exceptions.EntityAlreadyExistInDbException;
 import org.mplywacz.transitapi.dto.DailyInfo;
 import org.mplywacz.transitapi.dto.TransitDto;
 import org.mplywacz.transitapi.dto.mappers.Mapper;
+import org.mplywacz.transitapi.exceptions.EntityAlreadyExistInDbException;
 import org.mplywacz.transitapi.model.Transit;
 import org.mplywacz.transitapi.repositories.DriverRepo;
 import org.mplywacz.transitapi.repositories.TransitRepo;
@@ -97,8 +97,8 @@ public class TransitServiceImpl implements TransitService {
 
         try {
             return new JSONObject()
-                    .put("total_distance", distanceSum.toString())
-                    .put("total_price", priceSum.toString());
+                    .put("total_distance", distanceSum.doubleValue())
+                    .put("total_price", priceSum.doubleValue());
         }
         catch (JSONException e) {
             throw new RuntimeException(e);

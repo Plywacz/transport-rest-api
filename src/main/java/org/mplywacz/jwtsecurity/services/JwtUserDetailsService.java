@@ -4,10 +4,10 @@ Author: BeGieU
 Date: 26.11.2019
 */
 
-import org.mplywacz.jwtsecurity.exceptions.EntityAlreadyExistInDbException;
 import org.mplywacz.jwtsecurity.model.UserDao;
 import org.mplywacz.jwtsecurity.model.UserDto;
 import org.mplywacz.jwtsecurity.repo.UserRepo;
+import org.mplywacz.transitapi.exceptions.EntityAlreadyExistInDbException;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

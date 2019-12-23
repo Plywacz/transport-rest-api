@@ -4,12 +4,9 @@ Author: BeGieU
 Date: 08.10.2019
 */
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.mplywacz.transitapi.json.DriverDtoDeserializer;
-
 import javax.validation.constraints.NotBlank;
 
-@JsonDeserialize(using = DriverDtoDeserializer.class)
+//@JsonDeserialize(using = DriverDtoDeserializer.class)
 public class DriverDto {
     @NotBlank(message = "first name cannot be empty")
     private String firstName;

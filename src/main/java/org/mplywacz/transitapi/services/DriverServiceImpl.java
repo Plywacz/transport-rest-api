@@ -1,9 +1,9 @@
 package org.mplywacz.transitapi.services;
 
-import org.mplywacz.jwtsecurity.exceptions.EntityAlreadyExistInDbException;
 import org.mplywacz.transitapi.dto.DriverDto;
 import org.mplywacz.transitapi.dto.DriverReport;
 import org.mplywacz.transitapi.dto.mappers.Mapper;
+import org.mplywacz.transitapi.exceptions.EntityAlreadyExistInDbException;
 import org.mplywacz.transitapi.model.Driver;
 import org.mplywacz.transitapi.repositories.DriverRepo;
 import org.springframework.dao.DataAccessException;
@@ -64,6 +64,13 @@ public class DriverServiceImpl implements DriverService {
     @Override
     public DriverReport getDriverReport(Long id) {
         List<Object[]> totalDriverInfo = driverRepo.getTotalReportForDriver(id);
+
+        var driverId = totalDriverInfo.get(0)[0];
+        if (driverId == null) {
+            throw new NoSuchElementException(
+                    "Wanted driver doesnt exist in DB ");//todo throw appropriate exception
+        }
+
         var driverReport = createTotalDriverReport(totalDriverInfo);
 
         List<Object[]> monthlyDriverInfo = driverRepo.getReportPerMonthForDriver(id);
@@ -89,17 +96,12 @@ public class DriverServiceImpl implements DriverService {
     private DriverReport createTotalDriverReport(List<Object[]> totalDriverInfo) {
         //total driverRepo.getTotalReportForDriver(id) always returns list that contains ONE Object[]
         // because of query. Arr contains elements related with query in order as in the query
-        var driverId = totalDriverInfo.get(0)[0];
         var driverFirstName = totalDriverInfo.get(0)[1];
         var driverLastName = totalDriverInfo.get(0)[2];
         var totalDistance = totalDriverInfo.get(0)[3];
         var longestTransit = totalDriverInfo.get(0)[4];
         var mostExpensiveTransit = totalDriverInfo.get(0)[5];
 
-        if (driverId == null) {
-            throw new NoSuchElementException(
-                    "Wanted driver doesnt exist in DB or doesnt have any reported transits");//todo throw appropriate exception
-        }
         var driverReport = new DriverReport(
                 (String) driverFirstName,
                 (String) driverLastName);

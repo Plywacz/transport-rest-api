@@ -16,7 +16,7 @@ public interface DriverRepo extends CrudRepository<Driver, Long> {
     Driver findDriverByFirstNameAndLastName(String firstName, String lastName);
 
     @Query(value =
-            "SELECT t.id,d.first_name ,d.last_name ,SUM(t.distance),MAX(t.distance),MAX(t.price) " +
+            "SELECT d.id,d.first_name ,d.last_name ,SUM(t.distance),MAX(t.distance),MAX(t.price) " +
                     "FROM transit t " +
                     "INNER join driver d ON t.driver_id = d.id " +
                     "WHERE t.driver_id=?1",

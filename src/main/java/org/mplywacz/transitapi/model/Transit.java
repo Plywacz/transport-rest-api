@@ -5,7 +5,7 @@ Date: 02.07.2019
 */
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.mplywacz.transitapi.json.TransitDtoSerializer;
+import org.mplywacz.transitapi.json.TransitSerializer;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@JsonSerialize(using = TransitDtoSerializer.class)
+@JsonSerialize(using = TransitSerializer.class)
 public class Transit extends BasicEntity {
 
     private String sourceAddress;

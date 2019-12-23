@@ -6,10 +6,10 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mplywacz.transitapi.dto.TransitDto;
 import org.mplywacz.transitapi.model.Driver;
+import org.mplywacz.transitapi.model.Transit;
 import org.mplywacz.transitapi.repositories.DriverRepo;
-import org.mplywacz.transitapi.services.TransitService;
+import org.mplywacz.transitapi.repositories.TransitRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -45,7 +45,7 @@ public class DriverControllerIntegrationTest {
     DriverRepo driverRepo;
 
     @Autowired
-    TransitService transitService;
+    TransitRepo transitRepo;
 
     private MockMvc mockMvc;
 
@@ -56,12 +56,14 @@ public class DriverControllerIntegrationTest {
 
     @Test
     public void addDriver_HappyPath() throws Exception {
+        deleteAllDrivers();
+
         JSONObject inputJson = new JSONObject()
                 .put(JSON_PROPER_FIRST_NAME_KEY, JSON_PROPER_VALUE_NAME)
                 .put(JSON_PROPER_LAST_NAME_KEY, JSON_PROPER_VALUE_NAME);
 
         mockMvc
-                .perform(post("/api/drivers/")
+                .perform(post(DRIVERS_API_PREFIX)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(inputJson.toString()))
                 .andExpect(status().isCreated())
@@ -85,6 +87,7 @@ public class DriverControllerIntegrationTest {
                 .andExpect(status().isUnprocessableEntity());
 
     }
+
 
     @Test
     public void addDriver_InvalidJsonInput_Value() throws Exception {
@@ -150,6 +153,7 @@ public class DriverControllerIntegrationTest {
     public void updateDriver_happyPath() throws Exception {
         deleteAllDrivers();
         addDriverToDbIfNoneExist();
+        var idOfActuallyExistingDriver = getIdOfRandomDriver();
 
         final String updatedName = "updatedNAme";
         JSONObject inputJson = new JSONObject()
@@ -157,12 +161,12 @@ public class DriverControllerIntegrationTest {
                 .put(JSON_PROPER_LAST_NAME_KEY, updatedName);
 
         mockMvc
-                .perform(put(DRIVERS_API_PREFIX + "1")
+                .perform(put(DRIVERS_API_PREFIX + idOfActuallyExistingDriver)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(inputJson.toString()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", Matchers.is(1)))
+                .andExpect(jsonPath("$.id", Matchers.is(idOfActuallyExistingDriver.intValue())))
                 .andExpect(jsonPath("$.firstName", Matchers.is(updatedName)))
                 .andExpect(jsonPath("$.lastName", Matchers.is(updatedName)));
     }
@@ -314,27 +318,89 @@ public class DriverControllerIntegrationTest {
     }
 
     @Test
-    public void getDriverReport_happyPath() throws Exception{
+    public void getDriverReport_happyPath() throws Exception {
+        //fails because of date bug
         deleteAllDrivers();
-        addDriverToDbIfNoneExist();
-
-        var transitDto = new TransitDto(
-                1L,
-                "ul. Zakręt 8, Poznań",
-                "Złota 44, Warszawa",
-                new BigDecimal(12),
+        var driver = new Driver(
+                JSON_PROPER_VALUE_NAME,
+                JSON_PROPER_VALUE_NAME,
                 LocalDate.now());
-//        transitService.addTransit(transitDto);
-//        transitService.addTransit(transitDto);
+        driverRepo.save(driver);
+
+        var idOfDriverThatActuallyExist = getIdOfRandomDriver();
+
+        var transit1 = new Transit();
+        transit1.setDriver(driver);
+        transit1.setDate(LocalDate.of(2014, 1, 1));
+        transit1.setSourceAddress("ul. Nowodąbrowska 18, Tarnów");
+        transit1.setDestinationAddress("ul. Zakręt 8, Poznań");
+        final int distance1 = 100;
+        transit1.setDistance(new BigDecimal(distance1));
+        transit1.setPrice(new BigDecimal(10));
+        transitRepo.save(transit1);
+
+        var transit2 = new Transit();
+        transit2.setDriver(driver);
+        transit2.setDate(LocalDate.of(1998, 12, 1));
+        transit2.setSourceAddress("ul. Nowodąbrowska 18, Tarnów");
+        transit2.setDestinationAddress("ul. Zakręt 8, Poznań");
+        final int distance2 = 200;
+        transit2.setDistance(new BigDecimal(distance2));
+        transit2.setPrice(new BigDecimal(20));
+        transitRepo.save(transit2);
+
 
         mockMvc
-                .perform(get(DRIVERS_API_PREFIX + "1/report"))
+                .perform(get(DRIVERS_API_PREFIX + idOfDriverThatActuallyExist + "/report"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName", Matchers.is(JSON_PROPER_VALUE_NAME)))
+                .andExpect(jsonPath("$.lastName", Matchers.is(JSON_PROPER_VALUE_NAME)))
+                .andExpect(jsonPath("$.totalInfo.totalDistance", Matchers.is(300.0)))
+                .andExpect(jsonPath("$.monthlyInfos[0].yearMonthDate", Matchers.is("1998-12"))) //todo fix date bug
+                .andExpect(jsonPath("$.monthlyInfos[1].yearMonthDate", Matchers.is("2014-01")));
+
+    }
+
+    @Test
+    public void getDriverReport_WrongId() throws Exception {
+        var wrongId = "!@#";
+        mockMvc
+                .perform(get(DRIVERS_API_PREFIX + wrongId + "/report"))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+
+    }
+
+    @Test
+    public void getDriverReport_getReportForDriverThatNotExist() throws Exception {
+        deleteAllDrivers();
+        mockMvc
+                .perform(get(DRIVERS_API_PREFIX + 1 + "/report"))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+
+    }
+
+    @Test
+    public void getDriverReport_driverDoesntExist() throws Exception {
+        deleteAllDrivers();
+        mockMvc
+                .perform(get(DRIVERS_API_PREFIX + 1 + "/report"))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+
+    }
+
+    @Test
+    public void getDriverReport_driverHasNoTransits() throws Exception {
+        transitRepo.deleteAll();
+        addDriverToDbIfNoneExist();
+        var driverId=getIdOfRandomDriver();
+        mockMvc
+                .perform(get(DRIVERS_API_PREFIX + driverId + "/report"))
                 .andDo(print())
                 .andExpect(status().isOk());
-//                .andExpect(jsonPath("$.id", Matchers.is(1)))
-//                .andExpect(jsonPath("$.firstName", Matchers.is(updatedName)))
-//                .andExpect(jsonPath("$.lastName", Matchers.is(updatedName)));
-
     }
 
     private void addDriverToDbIfNoneExist() {

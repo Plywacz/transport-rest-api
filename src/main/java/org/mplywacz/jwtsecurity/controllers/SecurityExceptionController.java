@@ -4,7 +4,7 @@ Author: BeGieU
 Date: 27.11.2019
 */
 
-import org.mplywacz.jwtsecurity.exceptions.EntityAlreadyExistInDbException;
+import org.mplywacz.transitapi.exceptions.EntityAlreadyExistInDbException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

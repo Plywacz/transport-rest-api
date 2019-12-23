@@ -4,7 +4,6 @@ Author: BeGieU
 Date: 08.10.2019
 */
 
-import org.json.JSONException;
 import org.mplywacz.transitapi.dto.DriverDto;
 import org.mplywacz.transitapi.dto.DriverReport;
 import org.mplywacz.transitapi.model.Driver;
@@ -69,7 +68,7 @@ public class DriverController {
     public ResponseEntity<String> deleteDriver(
             @PathVariable
             @Min(1)
-                    Long id) throws JSONException {
+                    Long id)   {
         return ResponseEntity.ok(driverService.deleteDriver(id));
     }
 

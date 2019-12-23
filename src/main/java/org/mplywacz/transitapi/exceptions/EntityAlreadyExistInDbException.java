@@ -1,4 +1,4 @@
-package org.mplywacz.jwtsecurity.exceptions;
+package org.mplywacz.transitapi.exceptions;
 /*
 Author: BeGieU
 Date: 27.11.2019

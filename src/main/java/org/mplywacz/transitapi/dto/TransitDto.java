@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-
+//@JsonDeserialize(using = TransitDtoDeserializer.class)
 public class TransitDto {
     @NotNull(message = "driver id cannot be null")
     private Long driverId;

@@ -30,7 +30,7 @@ public class TransitController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody Transit addTransit(
+    public  Transit addTransit(
             @Valid
             @RequestBody
                     TransitDto transitDto) {
@@ -41,7 +41,7 @@ public class TransitController {
     @GetMapping(value = "/reports/range/{date1}&&{date2}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public @ResponseBody String getRangeReport(
+    public  String getRangeReport(
             @PathVariable
             @NotEmpty(message = "date where report ends")
                     String date1,
