@@ -5,7 +5,7 @@ Date: 09.07.2019
 */
 
 import com.fasterxml.jackson.core.JsonParseException;
-import org.mplywacz.transitapi.exceptions.EntityDoesntExistInDbException;
+import org.mplywacz.transitapi.exceptions.EntityNotFoundException;
 import org.mplywacz.transitapi.exceptions.IllegalDateInputException;
 import org.mplywacz.transitapi.exceptions.IncorrectLocationException;
 import org.mplywacz.transitapi.exceptions.UnprocessableRequestException;
@@ -91,7 +91,7 @@ public class CustomExceptionHandler {
 
     }
 
-    @ExceptionHandler(value = {EntityDoesntExistInDbException.class})
+    @ExceptionHandler(value = {EntityNotFoundException.class})
     @ResponseBody ResponseEntity<String> handleEntityDoesntExistInDb(RuntimeException ex, HttpServletResponse response) throws IOException {
         ex.printStackTrace();
         response.sendError(HttpStatus.CONFLICT.value());

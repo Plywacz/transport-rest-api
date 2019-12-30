@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mplywacz.transitapi.dto.TransitDto;
+import org.mplywacz.transitapi.model.Driver;
 import org.mplywacz.transitapi.model.Transit;
 import org.mplywacz.transitapi.services.TransitService;
 import org.springframework.http.MediaType;
@@ -22,6 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,7 +47,7 @@ public class TransitControllerTest {
     @Test
     public void addTransitHappyPath() throws Exception {
         JSONObject inputJson = new JSONObject()
-                .put("driverId", 2)
+                .put("driverId", "2")
                 .put("sourceAddress", "ul. Zakręt 8, Poznań")
                 .put("destinationAddress", "Złota 44, Warszawa")
                 .put("price", "450")
@@ -57,6 +59,9 @@ public class TransitControllerTest {
         savedTransit.setDestinationAddress(inputJson.getString("destinationAddress"));
         savedTransit.setPrice(BigDecimal.valueOf(inputJson.getDouble("price")));
         savedTransit.setDate(LocalDate.parse(inputJson.getString("date")));
+        var driver = new Driver();
+        driver.setId(1L);
+        savedTransit.setDriver(driver);
         savedTransit.setDistance(BigDecimal.valueOf(12));
 
         when(transitService.addTransit(any(TransitDto.class))).thenReturn(savedTransit);
@@ -72,17 +77,21 @@ public class TransitControllerTest {
 
 
     @Test
-    public void addTransitValidationFailed() throws Exception {
+    public void addTransit_LackOfDriverId() throws Exception {
         JSONObject inputJson = new JSONObject()
-                .put("source_address", "") //blank
-                .put("destination_address", "")
+                .put("sourceAddress", "") //blank
+                .put("destinationAddress", "")
                 .put("price", "450")
                 .put("date", "2018-03-15");
 
-        mockMvc.perform(post("/api/transits/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(inputJson.toString()))
-                .andExpect(status().is4xxClientError());
+        mockMvc.perform(
+                post("/api/transits/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(inputJson.toString()))
+                .andDo(print())
+                .andExpect(status().is5xxServerError());
+
+
     }
 
     @Test

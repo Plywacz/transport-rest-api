@@ -7,7 +7,7 @@ Date: 26.11.2019
 import org.mplywacz.jwtsecurity.model.UserDao;
 import org.mplywacz.jwtsecurity.model.UserDto;
 import org.mplywacz.jwtsecurity.repo.UserRepo;
-import org.mplywacz.transitapi.exceptions.EntityAlreadyExistInDbException;
+import org.mplywacz.transitapi.exceptions.EntityAlreadyExistException;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -41,7 +41,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     public UserDao save(UserDto user) {
         String username = user.getUsername();
         if (userRepo.findByUsername(username) != null) {
-            throw new EntityAlreadyExistInDbException("username is not available");
+            throw new EntityAlreadyExistException("username is not available");
         }
 
         UserDao newUser = new UserDao();

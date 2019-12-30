@@ -14,9 +14,20 @@ public class DriverDto {
     @NotBlank(message = "last name cannot be empty")
     private String lastName;
 
+    public DriverDto() {
+    }
+
     public DriverDto(String fName, String lName) {
         this.firstName = fName;
         this.lastName = lName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getFirstName() {

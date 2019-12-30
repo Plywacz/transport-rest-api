@@ -40,7 +40,7 @@ public class DriverReport {
         }
     }
 
-    private class TotalInfo {
+    public class TotalInfo {
         private BigDecimal totalDistance;
 
         private BigDecimal longestTransit;

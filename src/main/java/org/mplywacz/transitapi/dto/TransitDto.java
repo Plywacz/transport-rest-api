@@ -13,7 +13,8 @@ import java.time.LocalDate;
 
 //@JsonDeserialize(using = TransitDtoDeserializer.class)
 public class TransitDto {
-    @NotNull(message = "driver id cannot be null")
+    @Min(value = 0,message = "driver id cannot be null")
+    @NotNull
     private Long driverId;
 
     @NotBlank(message = "source address must not be blank")

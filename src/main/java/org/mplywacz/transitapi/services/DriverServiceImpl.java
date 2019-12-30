@@ -3,7 +3,7 @@ package org.mplywacz.transitapi.services;
 import org.mplywacz.transitapi.dto.DriverDto;
 import org.mplywacz.transitapi.dto.DriverReport;
 import org.mplywacz.transitapi.dto.mappers.Mapper;
-import org.mplywacz.transitapi.exceptions.EntityAlreadyExistInDbException;
+import org.mplywacz.transitapi.exceptions.EntityAlreadyExistException;
 import org.mplywacz.transitapi.model.Driver;
 import org.mplywacz.transitapi.repositories.DriverRepo;
 import org.springframework.dao.DataAccessException;
@@ -31,8 +31,8 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override public Driver addDriver(DriverDto driverDto) {
-        containsOnlyLetter(driverDto.getFirstName(), "illegal first name given");
-        containsOnlyLetter(driverDto.getLastName(), "illegal last name given");
+        containsOnlyLetter(driverDto.getFirstName(), "first name must contain only letters");
+        containsOnlyLetter(driverDto.getFirstName(), "last name must contain only letters");
         isAlreadyInDb(driverDto);
         return driverRepo.save(driverMapper.convertDto(driverDto));
     }
@@ -42,7 +42,7 @@ public class DriverServiceImpl implements DriverService {
                 driverRepo.findDriverByFirstNameAndLastName(
                         driverDto.getFirstName(),
                         driverDto.getLastName()) != null) {
-            throw new EntityAlreadyExistInDbException("driver with given first name and alst name already exist in db");
+            throw new EntityAlreadyExistException("driver with given first name and alst name already exist in db");
         }
     }
 

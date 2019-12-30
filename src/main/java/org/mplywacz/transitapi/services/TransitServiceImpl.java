@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import org.mplywacz.transitapi.dto.DailyInfo;
 import org.mplywacz.transitapi.dto.TransitDto;
 import org.mplywacz.transitapi.dto.mappers.Mapper;
-import org.mplywacz.transitapi.exceptions.EntityAlreadyExistInDbException;
+import org.mplywacz.transitapi.exceptions.EntityNotFoundException;
 import org.mplywacz.transitapi.model.Transit;
 import org.mplywacz.transitapi.repositories.DriverRepo;
 import org.mplywacz.transitapi.repositories.TransitRepo;
@@ -41,28 +41,28 @@ public class TransitServiceImpl implements TransitService {
 
     //todo fix bug: app adds to DB transit which date  is incorrect i.e you add transit with 2019-09-01 date it saves 2019-08-31 !!!!!!!!!
     public Transit addTransit(final TransitDto transitDto) {
+        var driverId = transitDto.getDriverId();
+        var driverOpt = driverRepo.findById(driverId);
+        var driver = driverOpt.orElseThrow(
+                () ->  new EntityNotFoundException("couldn't add transit to db because driver with ID: "
+                        + driverId + " related with this transit doesn't exist in db. ")
+        );
+
         var incompleteTransit = transitMapper.convertDto(transitDto);
+        incompleteTransit.setDriver(driver);
 
         try {
-            incompleteTransit.setDistance(distanceCalculator.calculateDistance(
-                    transitDto.getSourceAddress(),
-                    transitDto.getDestinationAddress()));
+            incompleteTransit.setDistance(
+                    distanceCalculator.calculateDistance(
+                            transitDto.getSourceAddress(),
+                            transitDto.getDestinationAddress()
+                    )
+            );
         }
         catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        var driverId = transitDto.getDriverId();
-        var driverOpt = driverRepo.findById(driverId);
-        if (driverOpt.isEmpty()) {
-            throw new EntityAlreadyExistInDbException("couldn't add transit to db because driver with ID: "
-                    + driverId + " related with this transit doesn't exist in db. ");
-        }
-
-        var driver = driverOpt.get();
-        incompleteTransit.setDriver(driver);
-        //after this line incomplete transit is already complete
-        driver.addTransit(incompleteTransit);
 
         return transitRepository.save(incompleteTransit);
     }
@@ -84,15 +84,8 @@ public class TransitServiceImpl implements TransitService {
         BigDecimal priceSum = new BigDecimal(0);
 
         for (Transit t : transits) {
-            var distance = t.getDistance();
-            var price = t.getPrice();
-            if (distance.compareTo(BigDecimal.ZERO) < 0 ||
-                    price.compareTo(BigDecimal.ZERO) < 0) {
-                throw new RuntimeException("Records fetched from DB are corrupted by STH !!!");
-            }
-
-            distanceSum = distanceSum.add(distance);
-            priceSum = priceSum.add(price);
+            distanceSum = distanceSum.add(t.getDistance());
+            priceSum = priceSum.add(t.getPrice());
         }
 
         try {

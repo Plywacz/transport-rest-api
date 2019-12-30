@@ -4,7 +4,7 @@ Author: BeGieU
 Date: 27.11.2019
 */
 
-import org.mplywacz.transitapi.exceptions.EntityAlreadyExistInDbException;
+import org.mplywacz.transitapi.exceptions.EntityAlreadyExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -25,7 +25,7 @@ public class SecurityExceptionController {
         return new ResponseEntity<>(ex.getMessage(),
                 HttpStatus.UNPROCESSABLE_ENTITY);
     }
-    @ExceptionHandler(value = {EntityAlreadyExistInDbException.class})
+    @ExceptionHandler(value = {EntityAlreadyExistException.class})
     @ResponseBody ResponseEntity<String> handleUsernameAlreadyTaken(RuntimeException ex, HttpServletResponse response)
             throws IOException {
         ex.printStackTrace();
