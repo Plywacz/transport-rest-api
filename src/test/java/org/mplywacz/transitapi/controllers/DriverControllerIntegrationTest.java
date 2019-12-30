@@ -189,8 +189,8 @@ public class DriverControllerIntegrationTest {
 
     @Test
     public void updateDriver_invalidJsonValue() throws Exception {
-        deleteAllDrivers();
         addDriverToDbIfNoneExist();
+        var id = getIdOfRandomDriver();
 
         final String invalidNameValue = "123";
         JSONObject inputJson = new JSONObject()
@@ -198,7 +198,7 @@ public class DriverControllerIntegrationTest {
                 .put(JSON_PROPER_LAST_NAME_KEY, JSON_PROPER_VALUE_NAME);
 
         mockMvc
-                .perform(put(DRIVERS_API_PREFIX + "1")
+                .perform(put(DRIVERS_API_PREFIX + id)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(inputJson.toString()))
                 .andDo(print())
@@ -396,7 +396,7 @@ public class DriverControllerIntegrationTest {
     public void getDriverReport_driverHasNoTransits() throws Exception {
         transitRepo.deleteAll();
         addDriverToDbIfNoneExist();
-        var driverId=getIdOfRandomDriver();
+        var driverId = getIdOfRandomDriver();
         mockMvc
                 .perform(get(DRIVERS_API_PREFIX + driverId + "/report"))
                 .andDo(print())

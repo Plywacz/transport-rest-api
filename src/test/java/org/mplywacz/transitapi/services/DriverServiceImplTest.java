@@ -189,6 +189,80 @@ public class DriverServiceImplTest {
 
     @Test
     public void updateDriverHappyPath() {
-//todo !!!!!!
+        final String driverFname = "fname";
+        final String driverLname = "lname";
+        final long driverId = 1L;
+
+        var driverDto = new DriverDto(driverFname, driverLname);
+
+        var updatedDriver = new Driver();
+        updatedDriver.setFirstName(driverFname);
+        updatedDriver.setLastName(driverLname);
+        updatedDriver.setEnrolledDate(LocalDate.now());
+
+        when(
+                driverRepo.findDriverByFirstNameAndLastName(anyString(), anyString())
+        ).thenReturn(null);
+
+        when(
+                driverRepo.findById(anyLong())
+        ).thenReturn(Optional.of(mock(Driver.class)));
+
+        when(
+                driverMapper.convertDto(any(DriverDto.class))
+        ).thenReturn(updatedDriver);
+
+        when(
+                driverRepo.save(any(Driver.class))
+        ).thenReturn(updatedDriver);
+
+        var res = driverService.updateDriver(driverDto, driverId);
+
+        assertEquals(driverId, (long) res.getId());
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void updateDriver_NoSuchElement() {
+        when(
+                driverRepo.findById(anyLong())
+        ).thenReturn(Optional.empty());
+
+        driverService.updateDriver(mock(DriverDto.class), 1L);
+    }
+
+    @Test(expected = EntityAlreadyExistException.class)
+    public void updateDriver_isAlreadyInDb() {
+        final String driverFname = "fname";
+        final String driverLname = "lname";
+
+        var driverDto = new DriverDto(driverFname, driverLname);
+
+        when(
+                driverRepo.findById(anyLong())
+        ).thenReturn(Optional.of(mock(Driver.class)));
+
+        when(
+                driverRepo.findDriverByFirstNameAndLastName(anyString(), anyString())
+        ).thenReturn(mock(Driver.class));
+
+        driverService.updateDriver(driverDto,1L);
+    }
+
+    @Test(expected = UnprocessableRequestException.class)
+    public void updateDriver_doesntContainOnlyLetters() {
+        final String driverFname = "fname24f3qeewcqrg6543421xdawda";
+        final String driverLname = "lname2reabv re ebdb d f f   f3rgwv";
+
+        var driverDto = new DriverDto(driverFname, driverLname);
+
+        when(
+                driverRepo.findById(anyLong())
+        ).thenReturn(Optional.of(mock(Driver.class)));
+
+        when(
+                driverRepo.findDriverByFirstNameAndLastName(anyString(), anyString())
+        ).thenReturn(null);
+
+        driverService.updateDriver(driverDto,1L);
     }
 }

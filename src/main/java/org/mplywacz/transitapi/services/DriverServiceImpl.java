@@ -68,7 +68,7 @@ public class DriverServiceImpl implements DriverService {
         var driverId = totalDriverInfo.get(0)[0];
         if (driverId == null) {
             throw new NoSuchElementException(
-                    "Wanted driver doesnt exist in DB ");//todo throw appropriate exception
+                    "Wanted driver doesnt exist in DB ");
         }
 
         var driverReport = createTotalDriverReport(totalDriverInfo);
@@ -114,13 +114,15 @@ public class DriverServiceImpl implements DriverService {
         return driverReport;
     }
 
-    @Override public Driver updateDriver(DriverDto driverDto, Long id) {
-        isAlreadyInDb(driverDto);
-        containsOnlyLetter(driverDto.getFirstName(), "illegal first name given");
-        containsOnlyLetter(driverDto.getFirstName(), "illegal last name given");
+    @Override
+    public Driver updateDriver(DriverDto driverDto, Long id) {
         driverRepo
                 .findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Driver with given id: " + id + " doesnt exist"));
+
+        isAlreadyInDb(driverDto);
+        containsOnlyLetter(driverDto.getFirstName(), "illegal first name given");
+        containsOnlyLetter(driverDto.getFirstName(), "illegal last name given");
 
         var updatedDriver = driverMapper.convertDto(driverDto);
         updatedDriver.setId(id);
