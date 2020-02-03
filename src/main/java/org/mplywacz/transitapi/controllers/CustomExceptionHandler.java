@@ -23,8 +23,6 @@ import java.io.IOException;
 import java.time.format.DateTimeParseException;
 import java.util.NoSuchElementException;
 
-//todo fix unsuitable HttpsStatus in response entity
-
 @ControllerAdvice
 public class CustomExceptionHandler {
     @ExceptionHandler(value = IncorrectLocationException.class)

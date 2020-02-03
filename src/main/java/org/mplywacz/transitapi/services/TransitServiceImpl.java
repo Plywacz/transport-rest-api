@@ -63,7 +63,6 @@ public class TransitServiceImpl implements TransitService {
             throw new RuntimeException(e);
         }
 
-
         return transitRepository.save(incompleteTransit);
     }
 

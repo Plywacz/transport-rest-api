@@ -26,7 +26,6 @@ public class OpenDirectionsApiDistanceCalculator implements DistanceCalculator {
         this.uriTemplate = uriTemplate;
     }
 
-    //todo try to make this async ( if possible or sensible)
     @Override
     public BigDecimal calculateDistance(String fromAdr, String toAdr) throws IOException {
         var uriVariables = new HashMap<String, String>();
