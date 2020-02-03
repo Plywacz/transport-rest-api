@@ -9,14 +9,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class DriverReport {
-    private class MonthlyInfo {
+    public static class MonthlyInfo {
         private String yearMonthDate;
         private BigDecimal distancePerMonth;
         private BigDecimal longestTransitPerMonth;
         private BigDecimal mostExpensiveTransitPerMonth;
 
-        private MonthlyInfo(String yearMonthDate, BigDecimal distancePerMonth,
-                            BigDecimal longestTransitPerMonth, BigDecimal mostExpensiveTransitPerMonth) {
+        public MonthlyInfo(String yearMonthDate, BigDecimal distancePerMonth,
+                           BigDecimal longestTransitPerMonth, BigDecimal mostExpensiveTransitPerMonth) {
             this.yearMonthDate = yearMonthDate;
             this.distancePerMonth = distancePerMonth;
             this.longestTransitPerMonth = longestTransitPerMonth;
@@ -40,7 +40,7 @@ public class DriverReport {
         }
     }
 
-    public class TotalInfo {
+    public static class TotalInfo {
         private BigDecimal totalDistance;
 
         private BigDecimal longestTransit;

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/")
 @CrossOrigin
 public class JwtAuthenticationController {
 

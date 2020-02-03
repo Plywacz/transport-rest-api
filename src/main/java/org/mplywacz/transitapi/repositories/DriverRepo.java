@@ -15,6 +15,7 @@ public interface DriverRepo extends CrudRepository<Driver, Long> {
 
     Driver findDriverByFirstNameAndLastName(String firstName, String lastName);
 
+
     @Query(value =
             "SELECT d.id,d.first_name ,d.last_name ,SUM(t.distance),MAX(t.distance),MAX(t.price) " +
                     "FROM transit t " +
@@ -23,6 +24,7 @@ public interface DriverRepo extends CrudRepository<Driver, Long> {
             nativeQuery = true)
     List<Object[]> getTotalReportForDriver(Long id);
 
+    //todo instead of using date_format procedure from my sql, consider getting normal local date and just format it on mapping to json(i could use StdSerializer<LocalDate>)
     @Query(value =
             "SELECT " +
                     "DATE_FORMAT(t.date,'%Y-%m'), SUM(t.distance), MAX(t.distance),MAX(t.price) " +

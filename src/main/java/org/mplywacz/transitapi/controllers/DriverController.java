@@ -68,7 +68,7 @@ public class DriverController {
     public ResponseEntity<String> deleteDriver(
             @PathVariable
             @Min(1)
-                    Long id)   {
+                    Long id) {
         return ResponseEntity.ok(driverService.deleteDriver(id));
     }
 

@@ -4,6 +4,9 @@ Author: BeGieU
 Date: 02.07.2019
 */
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.mplywacz.transitapi.json.LocalDateSerializer;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,6 +23,7 @@ public class Driver extends BasicEntity {
      * then we add him to DB, therefore
      * enrolledDate is set by service not sent with json
      */
+    @JsonSerialize(using = LocalDateSerializer.class) //fixes bug, before jackson mapped this field as array ([26,11,2019])xd
     private LocalDate enrolledDate;
 
     private String firstName;

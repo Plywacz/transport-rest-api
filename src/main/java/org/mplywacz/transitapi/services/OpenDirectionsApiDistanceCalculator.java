@@ -17,11 +17,6 @@ import java.util.HashMap;
 
 @Service
 public class OpenDirectionsApiDistanceCalculator implements DistanceCalculator {
-    //    private final ObjectMapper objectMapper = new ObjectMapper();
-    //
-    //    public static final UriTemplate uriTemplate = new UriTemplate(
-    //            "http://open.mapquestapi.com/directions/v2/route?key=wNq7cvi0pFSuG50szmeFaYI6VH9c2KEP&unit=k&from={from}&to={to}");
-
     private final ObjectMapper objectMapper;
     private final UriTemplate uriTemplate;
 

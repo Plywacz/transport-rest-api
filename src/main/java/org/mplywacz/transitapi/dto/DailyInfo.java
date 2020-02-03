@@ -19,7 +19,7 @@ public class DailyInfo {
 
     //constructor is based on what is returned from JPA query in TransitRepo,
     public DailyInfo(LocalDate date, BigDecimal totalDistance,
-                     double avgDistance, double avgPrice) {
+                       double avgDistance, double avgPrice) {
         this.date = date;
         this.totalDistance = totalDistance;
         this.avgDistance = avgDistance;
