@@ -4,7 +4,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mplywacz.transitapi.dto.BasicDriverInfo;
 import org.mplywacz.transitapi.dto.DriverDto;
+import org.mplywacz.transitapi.dto.MonthlyDriverInfo;
+import org.mplywacz.transitapi.dto.TotalDriverInfo;
 import org.mplywacz.transitapi.dto.mappers.Mapper;
 import org.mplywacz.transitapi.exceptions.EntityAlreadyExistException;
 import org.mplywacz.transitapi.exceptions.UnprocessableRequestException;
@@ -13,8 +16,7 @@ import org.mplywacz.transitapi.repositories.DriverRepo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -127,62 +129,54 @@ public class DriverServiceImplTest {
 
     @Test
     public void getDriverReportHappyPath() {
-        Object[] totalDriverInfo = new Object[]{
-                1L, //id
-                "firstName",
-                "lastName",
-                new BigDecimal(100), //totalDistance
-                new BigDecimal(100), //totalPrice
-                new BigDecimal(100) //mostExpensiveTransit
-        };
-        List<Object[]> totalInfoList = new ArrayList<>();
-        totalInfoList.add(totalDriverInfo);
-
-        Object[] monthInfo1 = new Object[]{
-                "2012-01-01",
-                new BigDecimal(100), //totalMonthlyDistance
-                new BigDecimal(100), //maxMonthlyDistance
-                new BigDecimal(100), //maxMonthlyTransitPrice
-        };
-
-        Object[] monthInfo2 = new Object[]{
-                "2018-01-01",
-                new BigDecimal(100), //totalMonthlyDistance
-                new BigDecimal(100), //maxMonthlyDistance
-                new BigDecimal(100), //maxMonthlyTransitPrice
-        };
-
-        List<Object[]> monthlyDriverInfo = new ArrayList<>();
-        monthlyDriverInfo.add(monthInfo1);
-        monthlyDriverInfo.add(monthInfo2);
-
         when(
-                driverRepo.getTotalReportForDriver(anyLong())
-        ).thenReturn(totalInfoList);
+                driverRepo.existsById(anyLong())
+        ).thenReturn(true);
 
+        var basicDriverInfo = new BasicDriverInfo(1L, DRIVER_FNAME, DRIVER_LNAME);
         when(
-                driverRepo.getReportPerMonthForDriver(anyLong())
-        ).thenReturn(monthlyDriverInfo);
+                driverRepo.getBasicDriverInfo(anyLong())
+        ).thenReturn(basicDriverInfo);
+
+        var monthlyDriverInfo0 = new MonthlyDriverInfo(
+                "2012-12",
+                BigDecimal.valueOf(12),
+                BigDecimal.valueOf(13),
+                BigDecimal.valueOf(14)
+        );
+        var monthlyDriverInfo1 = new MonthlyDriverInfo(
+                "2013-11",
+                BigDecimal.valueOf(15),
+                BigDecimal.valueOf(16),
+                BigDecimal.valueOf(17)
+        );
+        var monthlyInfoList = Arrays.asList(monthlyDriverInfo0, monthlyDriverInfo1);
+        when(
+                driverRepo.getMonthlyDriverInfo(anyLong())
+        ).thenReturn(monthlyInfoList);
+
+        final BigDecimal longestTransit = BigDecimal.valueOf(11);
+        var totalDriverInfo = new TotalDriverInfo(
+                BigDecimal.valueOf(10),
+                longestTransit,
+                BigDecimal.valueOf(12));
+        when(
+                driverRepo.getTotalDriverInfo(anyLong())
+        ).thenReturn(totalDriverInfo);
 
         var res = driverService.getDriverReport(1L);
 
-        assertEquals("firstName", res.getFirstName());
-        assertEquals("lastName", res.getLastName());
-        assertEquals(new BigDecimal(100), res.getTotalInfo().getLongestTransit());
-        assertEquals(2, res.getMonthlyInfos().size());
+        assertEquals(DRIVER_FNAME, res.getBasicInfo().getFirstName());
+        assertEquals(DRIVER_LNAME, res.getBasicInfo().getLastName());
+        assertEquals(longestTransit, res.getTotalDriverInfo().getLongestTransit());
+        assertEquals(2, res.getMonthlyDriverInfos().size());
     }
 
     @Test(expected = NoSuchElementException.class)
     public void getDriverReport_noDriver() {
-        Object[] totalDriverInfo = new Object[]{
-                null,
-                "mockValue"
-        };
-        List<Object[]> totalInfoList = new ArrayList<>();
-        totalInfoList.add(totalDriverInfo);
         when(
-                driverRepo.getTotalReportForDriver(anyLong())
-        ).thenReturn(totalInfoList);
+                driverRepo.existsById(anyLong())
+        ).thenReturn(false);
 
         driverService.getDriverReport(1L);
     }
@@ -245,7 +239,7 @@ public class DriverServiceImplTest {
                 driverRepo.findDriverByFirstNameAndLastName(anyString(), anyString())
         ).thenReturn(mock(Driver.class));
 
-        driverService.updateDriver(driverDto,1L);
+        driverService.updateDriver(driverDto, 1L);
     }
 
     @Test(expected = UnprocessableRequestException.class)
@@ -263,6 +257,6 @@ public class DriverServiceImplTest {
                 driverRepo.findDriverByFirstNameAndLastName(anyString(), anyString())
         ).thenReturn(null);
 
-        driverService.updateDriver(driverDto,1L);
+        driverService.updateDriver(driverDto, 1L);
     }
 }

@@ -354,8 +354,8 @@ public class DriverControllerIntegrationTest {
                 .perform(get(DRIVERS_API_PREFIX + idOfDriverThatActuallyExist + "/report"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName", Matchers.is(JSON_PROPER_VALUE_NAME)))
-                .andExpect(jsonPath("$.lastName", Matchers.is(JSON_PROPER_VALUE_NAME)))
+                .andExpect(jsonPath("$.basicInfo.firstName", Matchers.is(JSON_PROPER_VALUE_NAME)))
+                .andExpect(jsonPath("$.basicInfo.lastName", Matchers.is(JSON_PROPER_VALUE_NAME)))
                 .andExpect(jsonPath("$.totalInfo.totalDistance", Matchers.is(300.0)))
                 .andExpect(jsonPath("$.monthlyInfos[0].yearMonthDate", Matchers.is("1998-12"))) //todo fix date bug
                 .andExpect(jsonPath("$.monthlyInfos[1].yearMonthDate", Matchers.is("2014-01")));

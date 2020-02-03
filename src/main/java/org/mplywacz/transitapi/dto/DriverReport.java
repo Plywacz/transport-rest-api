@@ -4,113 +4,34 @@ Author: BeGieU
 Date: 01.11.2019
 */
 
-import java.math.BigDecimal;
-import java.util.LinkedList;
 import java.util.List;
 
+/*
+ * Couldn't implement BasicDriverInfo, TotalInfo, MonthlyInfo as inner classes because it causes problems with JPQL query,
+ * even public static inner classes included
+ */
 public class DriverReport {
-    public static class MonthlyInfo {
-        private String yearMonthDate;
-        private BigDecimal distancePerMonth;
-        private BigDecimal longestTransitPerMonth;
-        private BigDecimal mostExpensiveTransitPerMonth;
+    private final BasicDriverInfo basicInfo;
 
-        public MonthlyInfo(String yearMonthDate, BigDecimal distancePerMonth,
-                           BigDecimal longestTransitPerMonth, BigDecimal mostExpensiveTransitPerMonth) {
-            this.yearMonthDate = yearMonthDate;
-            this.distancePerMonth = distancePerMonth;
-            this.longestTransitPerMonth = longestTransitPerMonth;
-            this.mostExpensiveTransitPerMonth = mostExpensiveTransitPerMonth;
-        }
+    private final TotalDriverInfo totalDriverInfo;
 
-        public String getYearMonthDate() {
-            return yearMonthDate;
-        }
+    private final List<MonthlyDriverInfo> monthlyDriverInfos;
 
-        public BigDecimal getDistancePerMonth() {
-            return distancePerMonth;
-        }
-
-        public BigDecimal getLongestTransitPerMonth() {
-            return longestTransitPerMonth;
-        }
-
-        public BigDecimal getMostExpensiveTransitPerMonth() {
-            return mostExpensiveTransitPerMonth;
-        }
+    public DriverReport(BasicDriverInfo basicInfo, TotalDriverInfo totalDriverInfo, List<MonthlyDriverInfo> monthlyDriverInfos) {
+        this.basicInfo = basicInfo;
+        this.totalDriverInfo = totalDriverInfo;
+        this.monthlyDriverInfos = monthlyDriverInfos;
     }
 
-    public static class TotalInfo {
-        private BigDecimal totalDistance;
-
-        private BigDecimal longestTransit;
-
-        private BigDecimal mostExpensiveTransit;
-
-        public TotalInfo() {
-        }
-
-        public TotalInfo(BigDecimal totalDistance, BigDecimal longestTransit, BigDecimal mostExpensiveTransit) {
-            this.totalDistance = totalDistance;
-            this.longestTransit = longestTransit;
-            this.mostExpensiveTransit = mostExpensiveTransit;
-        }
-
-        public BigDecimal getTotalDistance() {
-            return totalDistance;
-        }
-
-        public BigDecimal getLongestTransit() {
-            return longestTransit;
-        }
-
-        public BigDecimal getMostExpensiveTransit() {
-            return mostExpensiveTransit;
-        }
+    public BasicDriverInfo getBasicInfo() {
+        return basicInfo;
     }
 
-    private final String firstName;
-
-    private final String lastName;
-
-    private TotalInfo totalInfo;
-
-    private final List<MonthlyInfo> monthlyInfos = new LinkedList<>();
-
-    public DriverReport(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public TotalDriverInfo getTotalDriverInfo() {
+        return totalDriverInfo;
     }
 
-    public void addMonthlyInfo(String yearMonthDate, BigDecimal distancePerMonth,
-                               BigDecimal longestTransitPerMonth, BigDecimal mostExpensiveTransitPerMonth) {
-        var monthlyInfo = new MonthlyInfo(
-                yearMonthDate, distancePerMonth,
-                longestTransitPerMonth, mostExpensiveTransitPerMonth);
-        monthlyInfos.add(monthlyInfo);
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public List<MonthlyInfo> getMonthlyInfos() {
-        return monthlyInfos;
-    }
-
-    public void setTotalInfo(BigDecimal totalDistance,
-                             BigDecimal longestTransit,
-                             BigDecimal mostExpensiveTransit) {
-        this.totalInfo = new TotalInfo(totalDistance,
-                longestTransit,
-                mostExpensiveTransit);
-    }
-
-    public TotalInfo getTotalInfo() {
-        return totalInfo;
+    public List<MonthlyDriverInfo> getMonthlyDriverInfos() {
+        return monthlyDriverInfos;
     }
 }

@@ -1,7 +1,6 @@
 package org.mplywacz.transitapi.services;
 
-import org.mplywacz.transitapi.dto.DriverDto;
-import org.mplywacz.transitapi.dto.DriverReport;
+import org.mplywacz.transitapi.dto.*;
 import org.mplywacz.transitapi.dto.mappers.Mapper;
 import org.mplywacz.transitapi.exceptions.EntityAlreadyExistException;
 import org.mplywacz.transitapi.model.Driver;
@@ -9,7 +8,6 @@ import org.mplywacz.transitapi.repositories.DriverRepo;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -63,55 +61,23 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public DriverReport getDriverReport(Long id) {
-        List<Object[]> totalDriverInfo = driverRepo.getTotalReportForDriver(id);
+        if (!driverRepo.existsById(id))
+            throw new NoSuchElementException("Wanted driver doesnt exist in DB ");
 
-        var driverId = totalDriverInfo.get(0)[0];
-        if (driverId == null) {
-            throw new NoSuchElementException(
-                    "Wanted driver doesnt exist in DB ");
-        }
+        var basicDriverInfo = driverRepo.getBasicDriverInfo(id);
+        var monthlyDriverInfo = driverRepo.getMonthlyDriverInfo(id);
+        var totalDriverInfo = driverRepo.getTotalDriverInfo(id);
 
-        var driverReport = createTotalDriverReport(totalDriverInfo);
-
-        List<Object[]> monthlyDriverInfo = driverRepo.getReportPerMonthForDriver(id);
-        return addMonthlyInfoToDriverReport(driverReport, monthlyDriverInfo);
+        return createDriverReport(basicDriverInfo, totalDriverInfo, monthlyDriverInfo);
     }
 
-    private DriverReport addMonthlyInfoToDriverReport(DriverReport driverReport, List<Object[]> monthlyDriverInfo) {
-        for (Object[] monthInfo : monthlyDriverInfo) {
-            //order of objects in monthInfo[] as in query (check getReportPerMonthForDriver method in DriverRepo)
-            var formattedDate = monthInfo[0];
-            var totalMonthlyDistance = monthInfo[1];
-            var maxMonthlyDistance = monthInfo[2];
-            var maxMonthlyTransitPrice = monthInfo[3];
-            driverReport.addMonthlyInfo(
-                    (String) formattedDate,
-                    (BigDecimal) totalMonthlyDistance,
-                    (BigDecimal) maxMonthlyDistance,
-                    (BigDecimal) maxMonthlyTransitPrice);
-        }
-        return driverReport;
-    }
-
-    private DriverReport createTotalDriverReport(List<Object[]> totalDriverInfo) {
-        //total driverRepo.getTotalReportForDriver(id) always returns list that contains ONE Object[]
-        // because of query. Arr contains elements related with query in order as in the query
-        var driverFirstName = totalDriverInfo.get(0)[1];
-        var driverLastName = totalDriverInfo.get(0)[2];
-        var totalDistance = totalDriverInfo.get(0)[3];
-        var longestTransit = totalDriverInfo.get(0)[4];
-        var mostExpensiveTransit = totalDriverInfo.get(0)[5];
-
-        var driverReport = new DriverReport(
-                (String) driverFirstName,
-                (String) driverLastName);
-
-        driverReport.setTotalInfo(
-                (BigDecimal) totalDistance,
-                (BigDecimal) longestTransit,
-                (BigDecimal) mostExpensiveTransit);
-
-        return driverReport;
+    private DriverReport createDriverReport(BasicDriverInfo basicDriverInfo,
+                                            TotalDriverInfo totalDriverInfo,
+                                            List<MonthlyDriverInfo> monthlyDriverInfo) {
+        return new DriverReport(
+                basicDriverInfo,
+                totalDriverInfo,
+                monthlyDriverInfo);
     }
 
     @Override

@@ -54,10 +54,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    //todo Update swagger, changed mappings for logging and registering
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
-                .authorizeRequests().antMatchers("/api/users/login", "/api/users/register").permitAll()
+                .authorizeRequests().antMatchers("/api/login", "/api/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 // make sure we use stateless session; session won't be used to
