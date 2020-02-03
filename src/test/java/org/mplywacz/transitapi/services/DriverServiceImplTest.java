@@ -113,18 +113,22 @@ public class DriverServiceImplTest {
 
     @Test
     public void deleteDriverHappyPath() {
+        when(
+                driverRepo.existsById(anyLong())
+        ).thenReturn(true);
+
         var res = driverService.deleteDriver(1L);
         assertEquals("deleted driver with id: " + 1L, res);
     }
 
-    //    @Test
-    //    public void deleteDriver_noDriver() {
-    //        when(
-    //                driverRepo.deleteById(anyLong())
-    //        ).thenThrow(new RuntimeException());
-    //
-    //        driverService.deleteDriver(1L);
-    //    }
+    @Test(expected = NoSuchElementException.class)
+    public void deleteDriver_noDriver() {
+        when(
+                driverRepo.existsById(anyLong())
+        ).thenReturn(false);
+
+        driverService.deleteDriver(1L);
+    }
 
 
     @Test

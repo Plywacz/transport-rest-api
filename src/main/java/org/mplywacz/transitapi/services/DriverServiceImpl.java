@@ -5,7 +5,6 @@ import org.mplywacz.transitapi.dto.mappers.Mapper;
 import org.mplywacz.transitapi.exceptions.EntityAlreadyExistException;
 import org.mplywacz.transitapi.model.Driver;
 import org.mplywacz.transitapi.repositories.DriverRepo;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,12 +49,10 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override public String deleteDriver(Long id) {
-        try {
-            driverRepo.deleteById(id);
-        }
-        catch (DataAccessException e) {
+        if (!driverRepo.existsById(id))
             throw new NoSuchElementException("Driver with given id: " + id + " not found, so we couldn't delete");
-        }
+        driverRepo.deleteById(id);
+
         return "deleted driver with id: " + id;
     }
 
