@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 
 @Entity(name = "app_user")
-public class UserDao {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -21,10 +21,10 @@ public class UserDao {
     @JsonIgnore
     private String password;
 
-    public UserDao() {
+    public User() {
     }
 
-    public UserDao(String username, String password) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
     }

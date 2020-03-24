@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.util.UriTemplate;
 
+//todo TRY TO MOVE DATABASE TO REMOTE SEVICE
 @SpringBootApplication
 public class DemoApplication {
     public static void main(String[] args) {

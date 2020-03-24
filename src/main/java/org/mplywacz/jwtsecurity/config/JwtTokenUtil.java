@@ -62,8 +62,10 @@ public class JwtTokenUtil   {
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
+
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token)); //if username from token is same as
+                                                                                        // the one used to login to API
     }
 }

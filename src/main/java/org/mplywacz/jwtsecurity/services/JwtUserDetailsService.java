@@ -4,7 +4,7 @@ Author: BeGieU
 Date: 26.11.2019
 */
 
-import org.mplywacz.jwtsecurity.model.UserDao;
+import org.mplywacz.jwtsecurity.model.User;
 import org.mplywacz.jwtsecurity.model.UserDto;
 import org.mplywacz.jwtsecurity.repo.UserRepo;
 import org.mplywacz.transitapi.exceptions.EntityAlreadyExistException;
@@ -30,7 +30,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDao user = userRepo.findByUsername(username);
+        User user = userRepo.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
@@ -38,15 +38,15 @@ public class JwtUserDetailsService implements UserDetailsService {
                 new ArrayList<>());
     }
 
-    public UserDao save(UserDto user) {
-        String username = user.getUsername();
+    public User save(UserDto userDto) {
+        String username = userDto.getUsername();
         if (userRepo.findByUsername(username) != null) {
             throw new EntityAlreadyExistException("username is not available");
         }
 
-        UserDao newUser = new UserDao();
+        User newUser = new User();
         newUser.setUsername(username);
-        newUser.setPassword(encoder.encode(user.getPassword()));
+        newUser.setPassword(encoder.encode(userDto.getPassword()));
         return userRepo.save(newUser);
     }
 }

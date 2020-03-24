@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@CrossOrigin(origins = "*",allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/")
-@CrossOrigin
 public class JwtAuthenticationController {
 
     private final JwtUserDetailsService userDetailsService;
@@ -42,7 +42,9 @@ public class JwtAuthenticationController {
 
     @PostMapping(value = "/register")
     public ResponseEntity<?> saveUser(@RequestBody @Valid UserDto user) throws Exception {
-        return ResponseEntity.ok(userDetailsService.save(user));
+        return ResponseEntity.ok(
+                userDetailsService.save(user)
+        );
     }
 
 
