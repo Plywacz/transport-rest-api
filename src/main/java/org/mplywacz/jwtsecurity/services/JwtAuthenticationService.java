@@ -20,8 +20,8 @@ public class JwtAuthenticationService implements AuthenticationService {
     private final JwtUserDetailsService userDetailsService;
 
     public JwtAuthenticationService(AuthenticationManager authenticationManager,
-                                 JwtTokenUtil jwtTokenUtil,
-                                 JwtUserDetailsService userDetailsService) {
+                                    JwtTokenUtil jwtTokenUtil,
+                                    JwtUserDetailsService userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
         this.userDetailsService = userDetailsService;
@@ -35,10 +35,11 @@ public class JwtAuthenticationService implements AuthenticationService {
                 .loadUserByUsername(uName);
 
         final String tokenStr = jwtTokenUtil.generateToken(userDetails);
-        return new JwtResponse(tokenStr);
+        return new JwtResponse(userDetails.getUsername(),
+                tokenStr);
     }
 
     private void authenticateCredentials(String username, String password) throws Exception {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
     }
 }
