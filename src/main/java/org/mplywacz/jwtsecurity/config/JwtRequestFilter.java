@@ -34,7 +34,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
-
         final var requestTokenHeader = request.getHeader("Authorization");
 
         String username = null;
@@ -56,7 +55,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             System.out.println("JWT Token does not begin with Bearer String");
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {//jesli token ma username
-                                                                                                // ale jest nie uwierzytelniony
+            // ale jest nie uwierzytelniony
 
             var userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
 
@@ -72,7 +71,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }
+
         chain.doFilter(request, response);
     }
-    
 }

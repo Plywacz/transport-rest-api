@@ -87,6 +87,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     /*
+     * Those OPTIONS request described below, are actually named pre-flight requests
+     *
      * Web browsers for example chrome, sends OPTIONS http request to check
      * if they can properly use/connect to endpoints, before request that  we actually send,
      * they do this once, if they receive OK response , then they stop sending OPTIONS
@@ -102,9 +104,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * So this method causes that JwtRequestFilter doesnt intercept OPTIONS request
      * so that browser gets OK response from server on OPTION request, that means
-     * this endpoint is OK for browser, that means CORS problem is solved. !     *
+     * this endpoint is OK for browser, that means CORS problem is solved. !
      *
+     * Whole story of solving this bug:
+     * 1. Moving Cors config from annotation based to bean based so that there is one config
+     *    for every controller. ESSENTIAL: I SET ALLOWED CORS METHOD TO ALL SO THAT, SPRING
+     *    ALLOWS pre-flight request aka OPTIONS
+     * 2. Wrote this below method: to unlock every endpoint for pre-flight requests.
+     *    so that when JwtRequestFilter reject pre flight token due to lack of token,
+     *    it is ignored by spring, and spring still allows pre flight requests to
+     *    succeed.     *
      */
+    //todo try to handle this problem differently
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
