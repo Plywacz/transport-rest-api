@@ -1,7 +1,7 @@
 # transport-rest-api
  see endpoints at: https://app.swaggerhub.com/apis/e8197/transport-api/1.0.0#/info
 
-Simple rest-api written in java 11 using Spring Framework. Endpoints secured with Java Web Tokens. App enables you to to add              transits to data base for particular driver. App gets distance between  given addresses itself from remote API                            (http://open.mapquestapi.com). App shares basic crud enndpoints for drivers and some endpoints to  generate simple JSON reports          based on done transits such as: 
+Simple rest-api written in java 11 using Spring Framework. Project covered with unit and integration tests. Endpoints secured with Java Web Tokens. App enables you to to add transits to data base for particular driver. App gets distance between  given addresses itself from remote API (http://open.mapquestapi.com). App shares basic crud enndpoints for drivers and some endpoints to  generate simple JSON reports  based on done transits such as: 
   - get report about specific driver that gives informations about total kilometers, longest ever transit, most expensive transit ever       done by this driver.  Moreover it includes informations about distance, longest transit, most expensive transit done per month as a     list. 
   - get raport about average distance, average price, and total distance done by every driver in system in current month to current day.
   - get repot about total price, and total distance done by every driver in system in given period of time
