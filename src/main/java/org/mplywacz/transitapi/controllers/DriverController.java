@@ -10,7 +10,6 @@ import org.mplywacz.transitapi.model.Driver;
 import org.mplywacz.transitapi.services.DriverService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -65,11 +64,11 @@ public class DriverController {
     @DeleteMapping(value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public ResponseEntity<String> deleteDriver(
+    public String deleteDriver(
             @PathVariable
             @Min(1)
                     Long id) {
-        return ResponseEntity.ok(driverService.deleteDriver(id));
+        return driverService.deleteDriver(id);
     }
 
     @GetMapping(value = "/{id}/report",
