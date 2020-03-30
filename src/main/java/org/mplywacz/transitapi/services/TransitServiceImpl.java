@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Service
@@ -44,7 +45,7 @@ public class TransitServiceImpl implements TransitService {
         var driverId = transitDto.getDriverId();
         var driverOpt = driverRepo.findById(driverId);
         var driver = driverOpt.orElseThrow(
-                () ->  new EntityNotFoundException("couldn't add transit to db because driver with ID: "
+                () -> new EntityNotFoundException("couldn't add transit to db because driver with ID: "
                         + driverId + " related with this transit doesn't exist in db. ")
         );
 
@@ -124,5 +125,12 @@ public class TransitServiceImpl implements TransitService {
         return new LocalDate[]{sDate, currDate};
     }
 
-
+    @Override
+    public String deleteTransit(Long id) {
+        if (!transitRepository.existsById(id)) {
+            throw new NoSuchElementException("Transit with id: " + id + " doesn't exist");
+        }
+        transitRepository.deleteById(id);
+        return "Successfully deleted transit with id: " + id;
+    }
 }

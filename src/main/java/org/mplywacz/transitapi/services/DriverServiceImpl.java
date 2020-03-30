@@ -50,7 +50,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override public String deleteDriver(Long id) {
         if (!driverRepo.existsById(id))
-            throw new NoSuchElementException("Driver with given id: " + id + " not found, so we couldn't delete");
+            throw new NoSuchElementException("Driver with given id: " + id + " not found.");
         driverRepo.deleteById(id);
 
         return "deleted driver with id: " + id;

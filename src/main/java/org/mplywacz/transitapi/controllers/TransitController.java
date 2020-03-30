@@ -30,7 +30,7 @@ public class TransitController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public  Transit addTransit(
+    public Transit addTransit(
             @Valid
             @RequestBody
                     TransitDto transitDto) {
@@ -41,7 +41,7 @@ public class TransitController {
     @GetMapping(value = "/reports/range/{date1}&&{date2}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public  String getRangeReport(
+    public String getRangeReport(
             @PathVariable
             @NotEmpty(message = "date where report ends")
                     String date1,
@@ -56,5 +56,12 @@ public class TransitController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public List<DailyInfo> getMonthlyReport() {
         return transitService.getMonthlyReport();
+    }
+
+    @DeleteMapping(value = "/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public String deleteTransit(@PathVariable Long id) {
+        return transitService.deleteTransit(id);
     }
 }

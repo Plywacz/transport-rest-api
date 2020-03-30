@@ -18,4 +18,6 @@ public interface TransitService {
 
     List<DailyInfo> getMonthlyReport();
 
+    String deleteTransit(Long id);
+
 }
