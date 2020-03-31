@@ -13,17 +13,19 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-public class Driver extends BasicEntity {
+public class Driver extends BasicEntity implements Comparable<Driver> {
 
     /**
      * When driver is enrolled to the company
      * then we add him to DB, therefore
      * enrolledDate is set by service not sent with json
      */
-    @JsonSerialize(using = LocalDateSerializer.class) //fixes bug, before jackson mapped this field as array ([26,11,2019])xd
+    @JsonSerialize(using = LocalDateSerializer.class)
+    //fixes bug, before jackson mapped this field as array ([26,11,2019])xd
     private LocalDate enrolledDate;
 
     private String firstName;
@@ -53,6 +55,30 @@ public class Driver extends BasicEntity {
         transits.add(transit);
     }
 
+    @Override
+    public int compareTo(Driver o) {
+        return this.lastName.compareTo(o.lastName);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Driver driver = (Driver) o;
+        return
+                Objects.equals(enrolledDate, driver.enrolledDate) &&
+                Objects.equals(firstName, driver.firstName) &&
+                Objects.equals(lastName, driver.lastName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(enrolledDate, firstName, lastName);
+    }
+
+    //getters and setters
     public void setEnrolledDate(LocalDate enrolledDate) {
         this.enrolledDate = enrolledDate;
     }
@@ -73,8 +99,9 @@ public class Driver extends BasicEntity {
         this.lastName = lastName;
     }
 
+    //i want driver json to have  transits sorted by date, that is why this method converts hashset -> treeset
     public Set<Transit> getTransits() {
-        return transits;
+        return this.transits;
     }
 
     public void setTransits(Set<Transit> transits) {

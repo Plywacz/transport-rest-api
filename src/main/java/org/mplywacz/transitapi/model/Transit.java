@@ -13,10 +13,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @JsonSerialize(using = TransitSerializer.class)
-public class Transit extends BasicEntity {
+public class Transit extends BasicEntity implements Comparable<LocalDate>{
 
     private String sourceAddress;
 
@@ -38,6 +39,33 @@ public class Transit extends BasicEntity {
     public Transit() {
     }
 
+    @Override
+    public int compareTo(LocalDate o) {
+        return this.date.compareTo(o);
+    }
+
+    @Override public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
+        Transit transit = (Transit) o;
+        return
+                Objects.equals(sourceAddress, transit.sourceAddress) &&
+                Objects.equals(destinationAddress, transit.destinationAddress) &&
+                Objects.equals(price, transit.price) &&
+                Objects.equals(date, transit.date) &&
+                Objects.equals(distance, transit.distance)&&
+                Objects.equals(this.driver,transit.driver);
+    }
+
+    @Override public int hashCode() {
+        return Objects.hash( sourceAddress, destinationAddress, price, date, distance,driver);
+    }
+
+    //getters and setters
     public String getSourceAddress() {
         return sourceAddress;
     }

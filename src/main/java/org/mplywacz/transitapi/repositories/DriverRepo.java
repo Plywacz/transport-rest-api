@@ -39,4 +39,6 @@ public interface DriverRepo extends CrudRepository<Driver, Long> {
                     "FROM Driver d " +
                     "WHERE d.id=?1")
     BasicDriverInfo getBasicDriverInfo(Long id);
+
+    //todo fetch driver with transits sorted by date
 }
