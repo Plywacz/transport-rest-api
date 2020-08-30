@@ -9,6 +9,8 @@ import org.mplywacz.transitapi.dto.DriverReport;
 import org.mplywacz.transitapi.model.Driver;
 
 public interface DriverService {
+    Iterable<Driver> getAllDrivers();
+
     Driver addDriver(DriverDto driverDto);
 
     Driver getDriver(Long id);

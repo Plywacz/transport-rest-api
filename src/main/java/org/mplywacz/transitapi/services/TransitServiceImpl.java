@@ -68,7 +68,7 @@ public class TransitServiceImpl implements TransitService {
     }
 
     @Override
-    public JSONObject getRangeReport(String startDate, String endDate) {
+    public JSONObject getRangeReport(String startDate, String endDate) { //todo return some dto class instead of this object !!!
         LocalDate sDate = getLocalDateFromString(startDate);
         LocalDate eDate = getLocalDateFromString(endDate);
 

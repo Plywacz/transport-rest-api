@@ -25,6 +25,14 @@ public class DriverController {
         this.driverService = driverService;
     }
 
+    //todo Add this endpoint to swagger doc !!!
+    @GetMapping(value = "/",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody Iterable<Driver> getAllDrivers() {
+        return driverService.getAllDrivers();
+    }
+
     @PostMapping(value = "/",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -46,7 +54,7 @@ public class DriverController {
             @RequestBody
                     DriverDto driverDto,
             @PathVariable
-            @Min(1)
+            @Min(0)
                     Long id) {
         return driverService.updateDriver(driverDto, id);
     }
@@ -56,7 +64,7 @@ public class DriverController {
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Driver getDriver(
             @PathVariable
-            @Min(1)
+            @Min(0)
                     Long id) {
         return driverService.getDriver(id);
     }
@@ -66,7 +74,7 @@ public class DriverController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public String deleteDriver(
             @PathVariable
-            @Min(1)
+            @Min(0)
                     Long id) {
         return driverService.deleteDriver(id);
     }
@@ -76,7 +84,7 @@ public class DriverController {
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody DriverReport getDriverReport(
             @PathVariable
-            @Min(1)
+            @Min(0)
                     Long id) {
         return driverService.getDriverReport(id);
 

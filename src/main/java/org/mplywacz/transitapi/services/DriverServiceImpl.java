@@ -18,7 +18,6 @@ Date: 08.10.2019
 */
 @Service
 public class DriverServiceImpl implements DriverService {
-
     private final DriverRepo driverRepo;
     private final Mapper<DriverDto, Driver> driverMapper;
 
@@ -27,7 +26,13 @@ public class DriverServiceImpl implements DriverService {
         this.driverMapper = driverMapper;
     }
 
-    @Override public Driver addDriver(DriverDto driverDto) {
+    @Override
+    public Iterable<Driver> getAllDrivers() {
+        return driverRepo.findAll();
+    }
+
+    @Override
+    public Driver addDriver(DriverDto driverDto) {
         containsOnlyLetter(driverDto.getFirstName(), "first name must contain only letters");
         containsOnlyLetter(driverDto.getFirstName(), "last name must contain only letters");
         isAlreadyInDb(driverDto);

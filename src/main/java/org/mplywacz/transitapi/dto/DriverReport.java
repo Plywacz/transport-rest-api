@@ -10,6 +10,7 @@ import java.util.List;
  * Couldn't implement BasicDriverInfo, TotalInfo, MonthlyInfo as inner classes because it causes problems with JPQL query,
  * even public static inner classes included
  */
+//todo update swagger doc on this
 public class DriverReport {
     private final BasicDriverInfo basicInfo;
 
