@@ -300,7 +300,7 @@ public class DriverControllerIntegrationTest {
 
         mockMvc
                 .perform(delete("/api/drivers/" + idOfExistingDriver))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
